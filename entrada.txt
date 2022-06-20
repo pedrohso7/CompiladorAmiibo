@@ -1,0 +1,25 @@
+Don soma(Bug x, Bug y){
+   Rover x ++ y
+}
+
+Orville(0, n) { 
+	// código 
+}
+
+Wilbur(true) { 
+	// código 
+}
+Mable(x > 10) { 
+	// código
+}
+Sable(x > 5) { 
+	// código 
+}
+Label { 
+	// código 
+}
+SeaCreature nome
+Saharah(nome)
+Pave("a", nome)
+24/01/010
+24/01/2021
