@@ -24,6 +24,7 @@ opComparacao    ">"|"<"|">="|"<="|"!="|"=="
 opLogico    "and"|"or"|"not" 
 maisMais   [+]{2}
 menosMenos   [-]{2}
+vezesVezes   [*]{2}
 opMatematico    [-\+\*\/\%]
 variavel    {letra}{caractere}*
 
@@ -61,6 +62,7 @@ variavel    {letra}{caractere}*
 {opMatematico}    {printf("Foi encontrado um operador matematico. LEXEMA: %s\n",yytext);}
 {maisMais}    {printf("Foi encontrado um operador matematico. LEXEMA: %s\n",yytext);}
 {menosMenos}    {printf("Foi encontrado um operador matematico. LEXEMA: %s\n",yytext);}
+{vezesVezes}    {printf("Foi encontrado um operador matematico. LEXEMA: %s\n",yytext);}
 "("       {printf("Foi encontrado uma abertura de parentese, %s\n", yytext);}
 ")"       {printf("Foi encontrado um fechamento de parentese, %s\n", yytext);}
 "\{"       {printf("Foi encontrado uma abertura de chave, %s\n", yytext);}
@@ -68,6 +70,7 @@ variavel    {letra}{caractere}*
 "["       {printf("Foi encontrado uma abertura de colchete, %s\n", yytext);}
 "]"       {printf("Foi encontrado um fechamento de colchete, %s\n", yytext);}
 ","       {printf("Foi encontrado um separador, %s\n", yytext);}
+"="       {printf("Foi encontrado um operador de atribuição, %s\n", yytext);}
 {variavel}    {printf("Foi encontrado uma variavel. LEXEMA: %s\n",yytext);}
 "//"[^\n]*   {printf("Foi encontrado um comentario. LEXEMA: %s\n",yytext);}
  
