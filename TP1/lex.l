@@ -39,8 +39,8 @@ variavel    {letra}{caractere}*
 "SeaCreature"       {printf("Foi encontrado um STRING, %s\n", yytext);}
 "Fish"       {printf("Foi encontrado um CHAR, %s\n", yytext);}
 "Butterfly"       {printf("Foi encontrado um BOOL, %s\n", yytext);}
-"Flower"       {printf("Foi encontrado um DATETIME, %s\n", yytext);}
-"Tree"       {printf("Foi encontrado um ARRAY, %s\n", yytext);}
+"Tree"       {printf("Foi encontrado um DATETIME, %s\n", yytext);}
+"Flower"       {printf("Foi encontrado um ARRAY, %s\n", yytext);}
 "Mabel"       {printf("Foi encontrado um IF, %s\n", yytext);}
 "Sable"       {printf("Foi encontrado um ELSE IF, %s\n", yytext);}
 "Label"       {printf("Foi encontrado um ELSE, %s\n", yytext);}
