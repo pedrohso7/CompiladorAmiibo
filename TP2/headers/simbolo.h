@@ -1,8 +1,7 @@
 #ifndef simbolo_h
 #define simbolo_h
 
-#include <stdlib.h>
-// #include "tokens.h"
+#include <stdio.h>
 #include "../headers/tipos.h"
 
 // Ponteiro para um símbolo

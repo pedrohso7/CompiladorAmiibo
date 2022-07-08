@@ -15,8 +15,7 @@ typedef struct Escopo {
 	TabelaDeSimbolos* tabela;
 } Escopo;
 
-void iniciaEscopo(Escopo* escopo, Escopo* prev);
-void criaEscopo(Escopo* escopoAtual);
+Escopo* criarEscopo(Escopo *prev);
 Simbolo* procuraTokenPeloLexema();
 Simbolo* procuraTokenPeloLexemaEscopoAtual();
 

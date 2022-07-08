@@ -1,5 +1,4 @@
 #include "../headers/simbolo.h"
-#include <stdio.h>
 #include <string.h>
 
 Simbolo* criaSimbolo(char* lexema, Tipo tipo){
@@ -19,7 +18,7 @@ void imprimeSimbolo(Simbolo* s){
 }
 
 TabelaDeSimbolos* criaTabelaDeSimbolos(){
-    TabelaDeSimbolos* t = (TabelaDeSimbolos*) malloc(sizeof(TabelaDeSimbolos));
+    TabelaDeSimbolos* t = malloc(sizeof(TabelaDeSimbolos));
 
     if (!t) return NULL;
 
@@ -29,7 +28,7 @@ TabelaDeSimbolos* criaTabelaDeSimbolos(){
 }
 
 void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, Tipo tipo){
-    Simbolo* s = criaSimbolo(lexema, tipo);
+    Simbolo *s = criaSimbolo(lexema, tipo);
     
     if (t->contador == 0) {
         t->prox = s;
@@ -37,12 +36,13 @@ void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, Tipo tipo){
         return;
     }
 
-    Simbolo* atual = t->prox;
+    Simbolo *atual = t->prox;
     
     while (atual->prox != NULL) {
         atual = atual->prox;
     }
-    
+
+    atual->prox = s;
     t->contador += 1;
     return;
 }

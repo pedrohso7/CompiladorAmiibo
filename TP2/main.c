@@ -1,24 +1,39 @@
-#include <stdio.h>
 #include "headers/simbolo.h"
 #include "headers/tipos.h"
 #include "headers/escopo.h"
 
 int main(){
-    Escopo eInicial;
-    Escopo ordinario; 
+    // Criando uma Tabela e Adicionando Simbolos
+    TabelaDeSimbolos *tabela;
+    tabela = criaTabelaDeSimbolos();
+    adicionaSimboloNaTabela(tabela, "A", INT);
+    adicionaSimboloNaTabela(tabela, "B", STRING);
+    adicionaSimboloNaTabela(tabela, "C", DATE);
+    imprimirTabeladeSimbolos(tabela);
+
+    // Procurando um Símbolo
+    Simbolo *s = pegarSimbolo(tabela, "A");
+    imprimeSimbolo(s);
+
+    // Criando um Escopo e Adicionando uma Tabela
+    Escopo *eInicial = criarEscopo(NULL);
+    eInicial->tabela = tabela;
+    adicionaSimboloNaTabela(eInicial->tabela, "E", INT);
+    printf("\n");
+    imprimirTabeladeSimbolos(eInicial->tabela);
     
-    // printf("1");
-    iniciaEscopo(&eInicial, NULL);
-    // printf("2");
-    iniciaEscopo(&ordinario, &eInicial);
-    // printf("3");
-    // adicionaSimboloNaTabela(eInicial.tabela , "A", INT);
-    // adicionaSimboloNaTabela(ordinario.tabela , "A", INT);
-    // adicionaSimboloNaTabela(ordinario.tabela , "E", INT);
-    // adicionaSimboloNaTabela(ordinario.tabela , "I", INT);
-    // adicionaSimboloNaTabela(ordinario.tabela , "O", INT);
-    // imprimirTabeladeSimbolos(eInicial.tabela);
-    // Simbolo* s = procuraTokenPeloLexema(eInicial, "E");
-    // imprimeSimbolo(s);
+    Escopo *ordinario = criarEscopo(eInicial); 
+    adicionaSimboloNaTabela(ordinario->tabela, "A", DATE);
+    adicionaSimboloNaTabela(ordinario->tabela, "O", STRING);
+    printf("\n");
+    imprimirTabeladeSimbolos(ordinario->tabela);
+
+    Simbolo *s1 = procuraTokenPeloLexema(eInicial, "A");
+    Simbolo *s2 = procuraTokenPeloLexema(ordinario, "A");
+
+    printf("\n");
+    imprimeSimbolo(s);
+    printf("\n");
+    imprimeSimbolo(s1);
     return 0;
 }

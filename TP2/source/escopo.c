@@ -3,13 +3,14 @@
 #include <stdio.h>
 #include <string.h>
 
-void iniciaEscopo(EscopoPonteiro *escopo, EscopoPonteiro *prev){
-    *escopo = (EscopoPonteiro) malloc(sizeof(EscopoPonteiro));
-    
-    if(!(*escopo)) return;
-    
-    (*escopo)->prev = prev;
-    (*escopo)->tabela = criaTabelaDeSimbolos();
+Escopo* criarEscopo(Escopo* prev){
+    Escopo* escopo = (Escopo *) malloc(sizeof(Escopo));
+
+    if(!escopo) return NULL;
+
+    escopo->prev = prev;
+    escopo->tabela = criaTabelaDeSimbolos();
+    return escopo;
 }
 
 
