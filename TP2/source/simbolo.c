@@ -18,10 +18,9 @@ void imprimeSimbolo(Simbolo* s){
         printf("Endereco: %d, Lexema: %s, Tipo: %s\n", s->enderecoMemoria, s->lexema, retornaNomeTipo(s->tipo));
 }
 
-TabelaDeSimbolos* iniciaTabelaDeSimbolos(){
+TabelaDeSimbolos* criaTabelaDeSimbolos(){
     TabelaDeSimbolos* t = malloc(sizeof(TabelaDeSimbolos));
 
-    printf("Inicia tabela");
     if (!t) return NULL;
 
     t->prox = NULL;
@@ -32,7 +31,6 @@ TabelaDeSimbolos* iniciaTabelaDeSimbolos(){
 void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, Tipo tipo){
     Simbolo* s = criaSimbolo(lexema, tipo);
     
-    printf("ADICIONA simbolos");
     if (t->contador == 0) {
         t->prox = s;
         t->contador += 1;
@@ -67,7 +65,6 @@ void imprimirTabeladeSimbolos(TabelaDeSimbolos* t){
     // int id = 1;
     Simbolo* atual = t->prox;
     
-    printf("Imprimir tabela");
     while(atual != NULL){
         imprimeSimbolo(atual/*, id*/);
         atual = atual->prox   ;

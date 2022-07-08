@@ -31,8 +31,8 @@ Simbolo* criaSimbolo(char* lexema, Tipo tipo);
 // Imprimir um Símbolo
 void imprimeSimbolo(Simbolo* s);
 
-// Iniciar uma Tabela de Símbolos
-TabelaDeSimbolos* iniciaTabelaDeSimbolos();
+// Criae uma Tabela de Símbolos
+TabelaDeSimbolos* criaTabelaDeSimbolos();
 
 // Inserir um Símbolo na Tabela de Símbolos
 void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, Tipo tipo);

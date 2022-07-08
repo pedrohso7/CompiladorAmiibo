@@ -1,14 +1,22 @@
 #include <stdio.h>
 #include "headers/simbolo.h"
 #include "headers/tipos.h"
+#include "headers/escopo.h"
 
 int main(){
-    TabelaDeSimbolos *t;
-    Tipo tipo = INT;
+    Escopo *eInicial;
+    Escopo *ordinario; 
     
-    t = iniciaTabelaDeSimbolos();
+    iniciaEscopo(eInicial, NULL);
+    iniciaEscopo(ordinario, eInicial);
+    adicionaSimboloNaTabela(eInicial->tabela , "A", INT);
 
-    adicionaSimboloNaTabela(t, "ASKNDAN", tipo);
-    imprimirTabeladeSimbolos(t);
+    adicionaSimboloNaTabela(ordinario , "A", INT);
+    adicionaSimboloNaTabela(ordinario , "E", INT);
+    adicionaSimboloNaTabela(ordinario , "I", INT);
+    adicionaSimboloNaTabela(ordinario , "O", INT);
+    imprimirTabeladeSimbolos(ordinario);
+    Simbolo* s = procuraTokenPeloLexema(eInicial, "E");
+    imprimeSimbolo(s);
     return 0;
 }
