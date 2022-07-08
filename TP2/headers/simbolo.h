@@ -6,6 +6,7 @@
 #include "../headers/tipos.h"
 
 // Ponteiro para um símbolo
+typedef struct Simbolo* SimboloPonteiro;
 typedef struct Simbolo {
     // Endereço do símbolo
     unsigned int enderecoMemoria;//0 - 255
@@ -14,13 +15,13 @@ typedef struct Simbolo {
 	// Tipo do símbolo
 	Tipo tipo;
 	// Ponteiro para o próximo símbolo da lista
-	Simbolo* prox;
+	SimboloPonteiro prox;
 } Simbolo;
 
 // Ponteiro para a tabela de símbolos
 typedef struct TabelaDeSimbolos {
 	// Ponteiro para a célula cabeça
-	Simbolo* prox;
+	SimboloPonteiro prox;
 	int contador;
 } TabelaDeSimbolos;
 

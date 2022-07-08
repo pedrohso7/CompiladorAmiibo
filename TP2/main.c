@@ -5,10 +5,10 @@
 int main(){
     TabelaDeSimbolos *t;
     Tipo tipo = INT;
-
+    
     t = iniciaTabelaDeSimbolos();
 
-    adicionaSimboloNaTabela(t, "ASKNDAN", INT);
+    adicionaSimboloNaTabela(t, "ASKNDAN", tipo);
     imprimirTabeladeSimbolos(t);
     return 0;
 }
