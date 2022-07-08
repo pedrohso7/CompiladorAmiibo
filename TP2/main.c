@@ -11,11 +11,11 @@ int main(){
     iniciaEscopo(ordinario, eInicial);
     adicionaSimboloNaTabela(eInicial->tabela , "A", INT);
 
-    adicionaSimboloNaTabela(ordinario , "A", INT);
-    adicionaSimboloNaTabela(ordinario , "E", INT);
-    adicionaSimboloNaTabela(ordinario , "I", INT);
-    adicionaSimboloNaTabela(ordinario , "O", INT);
-    imprimirTabeladeSimbolos(ordinario);
+    adicionaSimboloNaTabela(ordinario->tabela , "A", INT);
+    adicionaSimboloNaTabela(ordinario->tabela , "E", INT);
+    adicionaSimboloNaTabela(ordinario->tabela , "I", INT);
+    adicionaSimboloNaTabela(ordinario->tabela , "O", INT);
+    imprimirTabeladeSimbolos(ordinario->tabela);
     Simbolo* s = procuraTokenPeloLexema(eInicial, "E");
     imprimeSimbolo(s);
     return 0;
