@@ -3,25 +3,15 @@
 #include <stdio.h>
 #include <string.h>
 
-void iniciaEscopo(Escopo* escopo, Escopo* prev){
-    escopo = (Escopo*) malloc(sizeof(Escopo*));
+void iniciaEscopo(EscopoPonteiro *escopo, EscopoPonteiro *prev){
+    *escopo = (EscopoPonteiro) malloc(sizeof(EscopoPonteiro));
     
-    if(!(escopo)) return;
+    if(!(*escopo)) return;
     
-    escopo->prev = prev;
-    escopo->tabela = criaTabelaDeSimbolos();
+    (*escopo)->prev = prev;
+    (*escopo)->tabela = criaTabelaDeSimbolos();
 }
 
-void criaEscopo(Escopo* escopoAtual){
-    Escopo* escopo = (Escopo *) malloc(sizeof(Escopo));
-	
-    if (!escopo) return;
-
-	escopo->prev = escopoAtual;
-	escopo->tabela = criaTabelaDeSimbolos();
-
-    escopoAtual = escopo;
-}
 
 Simbolo* procuraTokenPeloLexema(Escopo* escopoInicial, char* lexema){
     Escopo* atual = escopoInicial;

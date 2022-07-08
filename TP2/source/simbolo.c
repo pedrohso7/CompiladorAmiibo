@@ -19,7 +19,7 @@ void imprimeSimbolo(Simbolo* s){
 }
 
 TabelaDeSimbolos* criaTabelaDeSimbolos(){
-    TabelaDeSimbolos* t = malloc(sizeof(TabelaDeSimbolos));
+    TabelaDeSimbolos* t = (TabelaDeSimbolos*) malloc(sizeof(TabelaDeSimbolos));
 
     if (!t) return NULL;
 
