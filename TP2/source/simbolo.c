@@ -35,10 +35,10 @@ void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, Tipo tipo){
         return;
     }
 
-    Simbolo* simboloAtual = t->prox;
+    Simbolo* atual = t->prox;
     
-    while (simboloAtual->prox != NULL) {
-        simboloAtual = simboloAtual->prox;
+    while (atual->prox != NULL) {
+        atual = atual->prox;
     }
     
     t->contador += 1;
@@ -61,11 +61,11 @@ Simbolo* pegarSimbolo(TabelaDeSimbolos* tabela, char* lexema){
 
 void imprimirTabeladeSimbolos(TabelaDeSimbolos* t){
     // int id = 1;
-    Simbolo* simboloAtual = t->prox;
+    Simbolo* atual = t->prox;
     
-    while(simboloAtual != NULL){
-        imprimeSimbolo(simboloAtual/*, id*/);
-        simboloAtual = simboloAtual->prox;
+    while(atual != NULL){
+        imprimeSimbolo(atual/*, id*/);
+        atual = atual->prox   ;
         // id+=1;
     }
 }
