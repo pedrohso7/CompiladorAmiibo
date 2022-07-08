@@ -30,10 +30,13 @@ int main(){
 
     Simbolo *s1 = procuraTokenPeloLexema(eInicial, "A");
     Simbolo *s2 = procuraTokenPeloLexema(ordinario, "A");
+    Simbolo *s3 = procuraTokenPeloLexemaEscopoAtual(ordinario, "A");
 
     printf("\n");
-    imprimeSimbolo(s);
-    printf("\n");
     imprimeSimbolo(s1);
+    printf("\n");
+    imprimeSimbolo(s2);
+    printf("\n");
+    imprimeSimbolo(s3);
     return 0;
 }

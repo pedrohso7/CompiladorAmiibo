@@ -26,5 +26,9 @@ Simbolo* procuraTokenPeloLexema(Escopo* escopoInicial, char* lexema){
         atual = atual->prev;
     }
     return NULL;
+}
 
+Simbolo* procuraTokenPeloLexemaEscopoAtual(Escopo* escopoAutal, char* lexema){
+    if(escopoAutal == NULL) return NULL;
+    return pegarSimbolo(escopoAutal->tabela, lexema);
 }
