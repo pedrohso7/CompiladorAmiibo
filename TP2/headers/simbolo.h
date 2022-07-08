@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 // #include "tokens.h"
-#include "tipos.h"
+#include "../headers/tipos.h"
 
 // Ponteiro para um símbolo
 typedef struct Simbolo {
@@ -25,13 +25,13 @@ typedef struct TabelaDeSimbolos {
 } TabelaDeSimbolos;
 
 // Iniciar um Símbolo
-Simbolo* criaSimbolo(Lexema lexema, Tipo tipo);
+Simbolo* criaSimbolo(char* lexema, Tipo tipo);
 
 // Imprimir um Símbolo
 void imprimeSimbolo(Simbolo* s);
 
 // Iniciar uma Tabela de Símbolos
-TabelaDeSimbolos* iniciaTabelaDeSimbolos(Simbolo *table);
+TabelaDeSimbolos* iniciaTabelaDeSimbolos();
 
 // Inserir um Símbolo na Tabela de Símbolos
 void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, Tipo tipo);
@@ -39,10 +39,7 @@ void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, Tipo tipo);
 // Buscar um Símbolo na Tabela de Símbolos
 Simbolo* pegarSimbolo(TabelaDeSimbolos* tabela, char* lexema);
 
-// Remover um Símbolo na Tabela de Símbolos
-void removerSimbolo(TabelaDeSimbolos* tabela, char* lexema);
-
 // Imprimir a Tabela de Símbolos
-void imprimirTabeladeSimbolos(TabelaDeSimbolos* t)/
+void imprimirTabeladeSimbolos(TabelaDeSimbolos* t);
 
 #endif

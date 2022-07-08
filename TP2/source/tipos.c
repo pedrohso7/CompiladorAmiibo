@@ -1,5 +1,4 @@
-#include "tipos.h"
-
+#include "../headers/tipos.h"
 
 char* retornaNomeTipo(Tipo tipo){
     switch(tipo){

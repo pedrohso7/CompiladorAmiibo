@@ -1,11 +1,13 @@
-#ifndef tokens_h
-#define tokens_h
+#ifndef token_h
+#define token_h
 
 #include <stdlib.h>
 #include <string.h>
 
 typedef enum Token {
-	UNKNOWN_TOKEN = -1,
+	DESCONHECIDO = -1,
+	
+
 	MODULE_START_TOKEN = 258,
 	MODULE_END_TOKEN = 259,
 	ASSIGN_TOKEN = 260,

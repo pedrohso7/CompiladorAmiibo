@@ -1,4 +1,4 @@
-#include "simbolo.h"
+#include "../headers/simbolo.h"
 
 Simbolo* criaSimbolo(char* lexema, Tipo tipo){
     Simbolo* s = (Simbolo *) malloc(sizeof(Simbolo));
@@ -59,28 +59,13 @@ Simbolo* pegarSimbolo(TabelaDeSimbolos* tabela, char* lexema){
     return NULL;
 }
 
-void removerSimbolo(TabelaDeSimbolos* tabela, char* lexema){
-    if (tabela == NULL) { return;}
-    
-    Simbolo* atual = tabela->prox;
-    Simbolo* anterior = tabela->prox;
-
-    if(atual == NULL) {return;}
-
-    while(atual != NULL){
-        if(atual.)
-    }
-
-
-}
-
 void imprimirTabeladeSimbolos(TabelaDeSimbolos* t){
-    int id = 1;
+    // int id = 1;
     Simbolo* simboloAtual = t->prox;
     
     while(simboloAtual != NULL){
-        imprimeSimbolo(simboloAtual, id);
+        imprimeSimbolo(simboloAtual/*, id*/);
         simboloAtual = simboloAtual->prox;
-        id+=1;
+        // id+=1;
     }
 }
