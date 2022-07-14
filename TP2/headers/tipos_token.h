@@ -1,5 +1,5 @@
-#ifndef tipos_h
-#define tipos_h
+#ifndef tipos_token_h
+#define tipos_token_h
 
 #include <stdlib.h>
 

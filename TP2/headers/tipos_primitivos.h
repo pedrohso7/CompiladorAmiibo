@@ -1,5 +1,5 @@
-#ifndef tipos_h
-#define tipos_h
+#ifndef tipos_primitivos_h
+#define tipos_primitivos_h
 
 #include <stdlib.h>
 
