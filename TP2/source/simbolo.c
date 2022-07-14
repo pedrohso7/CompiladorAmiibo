@@ -83,6 +83,7 @@ int simboloExiste(TabelaDeSimbolos* tabela, char* lexema){
 void imprimirTabeladeSimbolos(TabelaDeSimbolos* t){
     // int id = 1;
     Simbolo* atual = t->prox;
+    printf("\n");
     printf("______________________________________________\n");
     printf("_______________Tabela de Símbolos_____________\n");
     printf("_____________ Num. Símbolos = %d _____________\n",t->contador);

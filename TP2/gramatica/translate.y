@@ -8,10 +8,19 @@
     #include "../headers/escopo.h"
     extern int yylineno;
     extern char* yytext;
+
     void yyerror(char *c);
     int yylex(void);
+    void inserir_tipo(Tipo entrada);
+    void adicionar_tabela(char c,TabelaDeSimbolos* tabela,TabelaDeSimbolos* global);
+    EscopoPonteiro aprofundarEscopo(EscopoPonteiro escopoAcima);
+    EscopoPonteiro voltarEscopo(EscopoPonteiro escopo);
+
+
+    int ImprimirFechamentoEscopo = 1;
     Tipo tipo;
-    TabelaDeSimbolos *tabela;
+    TabelaDeSimbolos *tabelaGlobal;
+    EscopoPonteiro escopoAtual;
     
 %}
 
@@ -62,6 +71,7 @@ expr:
 aritmetica :
     numero
     | VAR_TOKEN
+    | funcao
     | aritmetica MATEMATICO_SOMA aritmetica
     | aritmetica MATEMATICO_SUBTRACAO aritmetica
     | aritmetica MATEMATICO_DIVISAO aritmetica
@@ -80,6 +90,7 @@ numero:
     
 relacional :
     valorBool
+    | funcao
     | valorBool RELACIONAL_IGUALDADE valorBool
     | valorBool RELACIONAL_NEGACAO valorBool
     | valorBool RELACIONAL_MAIORQUE valorBool
@@ -110,13 +121,13 @@ declaracao:
     ;
 
 varNames:
-    VAR_TOKEN {adicionar_tabela('v',tabela);}
-    | varNames VIRGULA_TOKEN VAR_TOKEN
+    VAR_TOKEN {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal);}
+    | varNames VIRGULA_TOKEN VAR_TOKEN {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal);}
     ;
 
 varNomesETipos:
-    tipos VAR_TOKEN
-    | varNomesETipos VIRGULA_TOKEN tipos VAR_TOKEN
+    tipos VAR_TOKEN {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal);}
+    | varNomesETipos VIRGULA_TOKEN tipos VAR_TOKEN {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal);}
     ;
 
 funcao:
@@ -124,16 +135,16 @@ funcao:
 
 
 criarFuncao:
-    CREATE_FUNC_TOKEN VAR_TOKEN ABRIR_PARENTESES_TOKEN varNomesETipos FECHAR_PARENTESES_TOKEN ABRIR_CHAVE_TOKEN expr FECHAR_CHAVE_TOKEN
+    CREATE_FUNC_TOKEN VAR_TOKEN {adicionar_tabela('f',escopoAtual->tabela,tabelaGlobal);} ABRIR_PARENTESES_TOKEN varNomesETipos FECHAR_PARENTESES_TOKEN corpo 
 
 anyTipe:
-    INT
-	| FLOAT
-	| CHAR
-	| STRING
-	| BOOLEAN
-	| VECTOR
-	| DATE
+    INT {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+	| FLOAT {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+	| CHAR {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+	| STRING {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+	| BOOLEAN {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+	| VECTOR {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+	| DATE {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
     | VAR_TOKEN
     
 comando:
@@ -145,7 +156,7 @@ comando:
     | BREAK_TOKEN
 
 corpo:
-    ABRIR_CHAVE_TOKEN expr FECHAR_CHAVE_TOKEN
+    ABRIR_CHAVE_TOKEN {escopoAtual = aprofundarEscopo(escopoAtual);} expr FECHAR_CHAVE_TOKEN {escopoAtual = voltarEscopo(escopoAtual);}
     | ABRIR_CHAVE_TOKEN FECHAR_CHAVE_TOKEN
 
 
@@ -155,7 +166,7 @@ condicional:
     | elseIF
 
 if:
-    IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo
+    IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo 
 
 else:
     ELSE_TOKEN corpo
@@ -194,7 +205,7 @@ void inserir_tipo(Tipo entrada) {
 	tipo = entrada;
 }
 
-void adicionar_tabela(char c,TabelaDeSimbolos* tabela){
+void adicionar_tabela(char c,TabelaDeSimbolos* tabela,TabelaDeSimbolos* global){
     int S = 0;
     S = simboloExiste(tabela,strdup(yytext));
     //printf("\n%d\n",S);
@@ -202,24 +213,40 @@ void adicionar_tabela(char c,TabelaDeSimbolos* tabela){
     if(S == 0){
         if(c == 'v'){
             adicionaSimboloNaTabela(tabela, strdup(yytext), tipo);
+            adicionaSimboloNaTabela(global, strdup(yytext), tipo);
         }
         else {
             adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO);
+            adicionaSimboloNaTabela(global, strdup(yytext), T_DESCONHECIDO);
+
         }
     }
- 
+}
+
+EscopoPonteiro aprofundarEscopo(EscopoPonteiro escopoAcima){
+    EscopoPonteiro escp = criarEscopo(escopoAcima);
+    return escp;
+}
+
+EscopoPonteiro voltarEscopo(EscopoPonteiro escopo){
+    if(ImprimirFechamentoEscopo) {imprimirTabeladeSimbolos(escopo->tabela);}
+    return escopo->prev;
 }
 
 int main(){
-    tabela = criaTabelaDeSimbolos();
-    adicionaSimboloNaTabela(tabela, "A", T_INT);
-
+    tabelaGlobal = criaTabelaDeSimbolos();
+    escopoAtual = criarEscopo(NULL); 
     #ifdef YYDEBUG
     yydebug = 0;
     #endif
     yyparse();
     printf("\n\nCódigo compilado com sucesso!\n\n");
-    imprimirTabeladeSimbolos(tabela);
+    printf("\n\n\n Tabela de Símbolos no Escopo Master:\n");
+    imprimirTabeladeSimbolos(escopoAtual->tabela);
+    printf("\n\n\n Tabela de Símbolos Global:\n");
+    imprimirTabeladeSimbolos(tabelaGlobal);
+
+
 
 
     return 0;
