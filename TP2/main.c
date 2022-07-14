@@ -1,5 +1,5 @@
 #include "headers/simbolo.h"
-#include "headers/tipos.h"
+#include "headers/tipos_primitivos.h"
 #include "headers/escopo.h"
 
 int main(){

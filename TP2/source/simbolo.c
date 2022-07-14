@@ -1,7 +1,7 @@
 #include "../headers/simbolo.h"
 #include <string.h>
 
-Simbolo* criaSimbolo(char* lexema, Tipo tipo){
+Simbolo* criaSimbolo(char* lexema, TipoPrimitivo tipo){
     Simbolo* s = (Simbolo *) malloc(sizeof(Simbolo));
     
     if (!s) return NULL;
@@ -27,7 +27,7 @@ TabelaDeSimbolos* criaTabelaDeSimbolos(){
     return t;
 }
 
-void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, Tipo tipo){
+void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, TipoPrimitivo tipo){
     Simbolo *s = criaSimbolo(lexema, tipo);
 
     if (t->contador == 0) {

@@ -1,6 +1,6 @@
-#include "../headers/tipos.h"
+#include "../headers/tipos_primitivos.h"
 
-char* retornaNomeTipo(Tipo tipo){
+char* retornaNomeTipoPrimitivo(TipoPrimitivo tipo){
     switch(tipo){
         case T_FLOAT:
             return "Fossil";        

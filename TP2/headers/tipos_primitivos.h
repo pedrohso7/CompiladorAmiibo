@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-typedef enum Tipo {
+typedef enum TipoPrimitivo {
 	T_DESCONHECIDO = -1,
 	T_INT,
 	T_FLOAT,
@@ -12,8 +12,8 @@ typedef enum Tipo {
 	T_BOOLEAN,
 	T_DATE,
 	T_ARRAY,
-} Tipo;
+} TipoPrimitivo;
 
-char* retornaNomeTipo(int tipo);
+char* retornaNomeTipoPrimitivo(TipoPrimitivo tipo);
 
 #endif

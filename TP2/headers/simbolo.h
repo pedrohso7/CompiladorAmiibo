@@ -2,7 +2,7 @@
 #define simbolo_h
 
 #include <stdio.h>
-#include "../headers/tipos.h"
+#include "../headers/tipos_primitivos.h"
 
 // Ponteiro para um símbolo
 typedef struct Simbolo* SimboloPonteiro;
@@ -12,7 +12,7 @@ typedef struct Simbolo {
 	// Lexema do símbolo
 	char* lexema;
 	// Tipo do símbolo
-	Tipo tipo;
+	TipoPrimitivo tipo;
 	// Ponteiro para o próximo símbolo da lista
 	SimboloPonteiro prox;
 } Simbolo;
@@ -25,7 +25,7 @@ typedef struct TabelaDeSimbolos {
 } TabelaDeSimbolos;
 
 // Iniciar um Símbolo
-Simbolo* criaSimbolo(char* lexema, Tipo tipo);
+Simbolo* criaSimbolo(char* lexema, TipoPrimitivo tipo);
 
 // Imprimir um Símbolo
 void imprimeSimbolo(Simbolo* s);
@@ -34,7 +34,7 @@ void imprimeSimbolo(Simbolo* s);
 TabelaDeSimbolos* criaTabelaDeSimbolos();
 
 // Inserir um Símbolo na Tabela de Símbolos
-void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, Tipo tipo);
+void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, TipoPrimitivo tipo);
 
 // Buscar um Símbolo na Tabela de Símbolos
 Simbolo* pegarSimbolo(TabelaDeSimbolos* tabela, char* lexema);
