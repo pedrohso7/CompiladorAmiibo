@@ -1,0 +1,21 @@
+Don numeroPar(Bug x){
+    Mabel(x%2==0){
+        Rover true
+    }
+
+    Label{
+        Rover false
+    }
+}
+
+Bug numero
+Pave("Digite um número: ")
+numero = Saharah()
+
+Mabel(numeroPar(numero) == true){
+    Pave("O número é par!")
+}
+
+Label{
+    Pave("O número é impar!")
+}
