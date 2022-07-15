@@ -1,20 +1,22 @@
 #include "../headers/simbolo.h"
 #include <string.h>
 
-Simbolo* criaSimbolo(char* lexema, TipoPrimitivo tipo, TipoToken tipoToken){
+Simbolo* criaSimbolo(char* lexema, TipoPrimitivo tipo, TipoToken tipoToken, int linha){
     Simbolo* s = (Simbolo *) malloc(sizeof(Simbolo));
     
     if (!s) return NULL;
 
     s->lexema = lexema;
     s->tipo = tipo;
+    s->tipoToken = tipo;
+    s->linha = linha;
     s->prox = NULL;
 
     return s;
 }
 
 void imprimeSimbolo(Simbolo* s){
-        printf("Endereco: %d, Lexema: %s, Tipo: %s, Tipo token: %s\n", s->enderecoMemoria, s->lexema, retornaNomeTipoPrimitivo(s->tipo), retornaNomeTipoToken(s->tipo));
+        printf("Endereco: %d, Lexema: %s, Tipo: %s, Tipo token: %s, Linha: %d\n", s->enderecoMemoria, s->lexema, retornaNomeTipoPrimitivo(s->tipo), retornaNomeTipoToken(s->tipo), s->linha);
 }
 
 TabelaDeSimbolos* criaTabelaDeSimbolos(){
@@ -27,8 +29,8 @@ TabelaDeSimbolos* criaTabelaDeSimbolos(){
     return t;
 }
 
-void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, TipoPrimitivo tipo, TipoToken tipoToken){
-    Simbolo *s = criaSimbolo(lexema, tipo, tipoToken);
+void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, TipoPrimitivo tipo, TipoToken tipoToken, int linha){
+    Simbolo *s = criaSimbolo(lexema, tipo, tipoToken, linha);
 
     if (t->contador == 0) {
         t->prox = s;

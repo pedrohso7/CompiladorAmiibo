@@ -15,6 +15,7 @@ typedef struct Simbolo {
 	// Tipo do símbolo
 	TipoPrimitivo tipo;
 	TipoToken tipoToken;
+	int linha;
 	// Ponteiro para o próximo símbolo da lista
 	SimboloPonteiro prox;
 } Simbolo;
@@ -27,7 +28,7 @@ typedef struct TabelaDeSimbolos {
 } TabelaDeSimbolos;
 
 // Iniciar um Símbolo
-Simbolo* criaSimbolo(char* lexema, TipoPrimitivo tipo, TipoToken tipoToken);
+Simbolo* criaSimbolo(char* lexema, TipoPrimitivo tipo, TipoToken tipoToken, int linha);
 
 // Imprimir um Símbolo
 void imprimeSimbolo(Simbolo* s);
@@ -36,7 +37,7 @@ void imprimeSimbolo(Simbolo* s);
 TabelaDeSimbolos* criaTabelaDeSimbolos();
 
 // Inserir um Símbolo na Tabela de Símbolos
-void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, TipoPrimitivo tipo, TipoToken tipoToken);
+void adicionaSimboloNaTabela(TabelaDeSimbolos* t, char* lexema, TipoPrimitivo tipo, TipoToken tipoToken, int linha);
 
 // Buscar um Símbolo na Tabela de Símbolos
 Simbolo* pegarSimbolo(TabelaDeSimbolos* tabela, char* lexema);
