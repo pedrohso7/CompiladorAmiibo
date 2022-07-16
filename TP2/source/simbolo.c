@@ -1,4 +1,5 @@
 #include "../headers/simbolo.h"
+#include "../source/tipos_token.c"
 #include <string.h>
 
 Simbolo* criaSimbolo(char* lexema, TipoPrimitivo tipo, TipoToken tipoToken, int linha){

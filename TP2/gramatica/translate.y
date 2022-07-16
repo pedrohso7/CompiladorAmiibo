@@ -11,14 +11,14 @@
 
     void yyerror(char *c);
     int yylex(void);
-    void inserir_tipo(Tipo entrada);
+    void inserir_tipo(TipoPrimitivo entrada);
     void adicionar_tabela(char c,TabelaDeSimbolos* tabela,TabelaDeSimbolos* global);
     EscopoPonteiro aprofundarEscopo(EscopoPonteiro escopoAcima);
     EscopoPonteiro voltarEscopo(EscopoPonteiro escopo);
 
 
     int ImprimirFechamentoEscopo = 1;
-    Tipo tipo;
+    TipoPrimitivo tipo;
     TabelaDeSimbolos *tabelaGlobal;
     EscopoPonteiro escopoAtual;
     
@@ -201,7 +201,7 @@ void yyerror(char *c){
     exit(0);
 }
 
-void inserir_tipo(Tipo entrada) {
+void inserir_tipo(TipoPrimitivo entrada) {
 	tipo = entrada;
 }
 
@@ -212,12 +212,12 @@ void adicionar_tabela(char c,TabelaDeSimbolos* tabela,TabelaDeSimbolos* global){
 
     if(S == 0){
         if(c == 'v'){
-            adicionaSimboloNaTabela(tabela, strdup(yytext), tipo);
-            adicionaSimboloNaTabela(global, strdup(yytext), tipo);
+            adicionaSimboloNaTabela(tabela, strdup(yytext), tipo, T_VARIAVEL, yylineno);
+            adicionaSimboloNaTabela(global, strdup(yytext), tipo, T_VARIAVEL, yylineno);
         }
         else {
-            adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO);
-            adicionaSimboloNaTabela(global, strdup(yytext), T_DESCONHECIDO);
+            adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO, T_DESCONHECIDO_TOKEN, yylineno);
+            adicionaSimboloNaTabela(global, strdup(yytext), T_DESCONHECIDO, T_DESCONHECIDO_TOKEN, yylineno );
 
         }
     }

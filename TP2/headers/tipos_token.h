@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 typedef enum TipoToken {
-	T_DESCONHECIDO = -1,
+	T_DESCONHECIDO_TOKEN = -1,
 	T_FUNCAO,
 	T_VARIAVEL,
 	T_CONSTANTE,
