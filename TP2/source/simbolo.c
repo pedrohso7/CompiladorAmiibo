@@ -17,7 +17,7 @@ Simbolo* criaSimbolo(char* lexema, TipoPrimitivo tipo, TipoToken tipoToken, int 
 }
 
 void imprimeSimbolo(Simbolo* s){
-        printf("Endereco: %d, Lexema: %s, Tipo: %s, Tipo token: %s, Linha: %d\n", s->enderecoMemoria, s->lexema, retornaNomeTipoPrimitivo(s->tipo), retornaNomeTipoToken(s->tipo), s->linha);
+        printf("Endereco: %d, Lexema: %s, Tipo: %s, Tipo token: %s, Linha: %d\n", s->enderecoMemoria, s->lexema, retornaNomeTipoPrimitivo(s->tipo), retornaNomeTipoToken(s->tipoToken), s->linha);
 }
 
 TabelaDeSimbolos* criaTabelaDeSimbolos(){
