@@ -9,7 +9,7 @@ Simbolo* criaSimbolo(char* lexema, TipoPrimitivo tipo, TipoToken tipoToken, int 
 
     s->lexema = lexema;
     s->tipo = tipo;
-    s->tipoToken = tipo;
+    s->tipoToken = tipoToken;
     s->linha = linha;
     s->prox = NULL;
 

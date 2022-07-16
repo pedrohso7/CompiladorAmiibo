@@ -138,13 +138,13 @@ criarFuncao:
     CREATE_FUNC_TOKEN VAR_TOKEN {adicionar_tabela('f',escopoAtual->tabela,tabelaGlobal);} ABRIR_PARENTESES_TOKEN varNomesETipos FECHAR_PARENTESES_TOKEN corpo 
 
 anyTipe:
-    INT {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-	| FLOAT {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-	| CHAR {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-	| STRING {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-	| BOOLEAN {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-	| VECTOR {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-	| DATE {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+    INT {inserir_tipo(T_INT); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+	| FLOAT {inserir_tipo(T_FLOAT); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+	| CHAR {inserir_tipo(T_CHAR); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+	| STRING {inserir_tipo(T_STRING); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+	| BOOLEAN {inserir_tipo(T_BOOLEAN); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+	| VECTOR {inserir_tipo(T_ARRAY); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+	| DATE {inserir_tipo(T_DATE); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
     | VAR_TOKEN
     
 comando:
@@ -214,6 +214,18 @@ void adicionar_tabela(char c,TabelaDeSimbolos* tabela,TabelaDeSimbolos* global){
         if(c == 'v'){
             adicionaSimboloNaTabela(tabela, strdup(yytext), tipo, T_VARIAVEL, yylineno);
             adicionaSimboloNaTabela(global, strdup(yytext), tipo, T_VARIAVEL, yylineno);
+        }
+        else if(c == 'f'){
+            adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO, T_FUNCAO, yylineno);
+            adicionaSimboloNaTabela(global, strdup(yytext), T_DESCONHECIDO, T_FUNCAO, yylineno);
+        }
+        else if(c == 'c'){
+            adicionaSimboloNaTabela(tabela, strdup(yytext), tipo, T_CONSTANTE, yylineno);
+            adicionaSimboloNaTabela(global, strdup(yytext), tipo, T_CONSTANTE, yylineno);
+        }
+        else if(c == 'p'){
+            adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO, T_PALAVRACHAVE, yylineno);
+            adicionaSimboloNaTabela(global, strdup(yytext), T_DESCONHECIDO, T_PALAVRACHAVE, yylineno);
         }
         else {
             adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO, T_DESCONHECIDO_TOKEN, yylineno);

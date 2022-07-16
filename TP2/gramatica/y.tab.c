@@ -1668,43 +1668,43 @@ yyreduce:
 
   case 64:
 #line 141 "translate.y"
-        {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+        {inserir_tipo(T_INT); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
 #line 1673 "y.tab.c"
     break;
 
   case 65:
 #line 142 "translate.y"
-                {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+                {inserir_tipo(T_FLOAT); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
 #line 1679 "y.tab.c"
     break;
 
   case 66:
 #line 143 "translate.y"
-               {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+               {inserir_tipo(T_CHAR); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
 #line 1685 "y.tab.c"
     break;
 
   case 67:
 #line 144 "translate.y"
-                 {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+                 {inserir_tipo(T_STRING); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
 #line 1691 "y.tab.c"
     break;
 
   case 68:
 #line 145 "translate.y"
-                  {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+                  {inserir_tipo(T_BOOLEAN); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
 #line 1697 "y.tab.c"
     break;
 
   case 69:
 #line 146 "translate.y"
-                 {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+                 {inserir_tipo(T_ARRAY); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
 #line 1703 "y.tab.c"
     break;
 
   case 70:
 #line 147 "translate.y"
-               {adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
+               {inserir_tipo(T_DATE); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
 #line 1709 "y.tab.c"
     break;
 
@@ -1976,6 +1976,18 @@ void adicionar_tabela(char c,TabelaDeSimbolos* tabela,TabelaDeSimbolos* global){
         if(c == 'v'){
             adicionaSimboloNaTabela(tabela, strdup(yytext), tipo, T_VARIAVEL, yylineno);
             adicionaSimboloNaTabela(global, strdup(yytext), tipo, T_VARIAVEL, yylineno);
+        }
+        else if(c == 'f'){
+            adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO, T_FUNCAO, yylineno);
+            adicionaSimboloNaTabela(global, strdup(yytext), T_DESCONHECIDO, T_FUNCAO, yylineno);
+        }
+        else if(c == 'c'){
+            adicionaSimboloNaTabela(tabela, strdup(yytext), tipo, T_CONSTANTE, yylineno);
+            adicionaSimboloNaTabela(global, strdup(yytext), tipo, T_CONSTANTE, yylineno);
+        }
+        else if(c == 'p'){
+            adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO, T_PALAVRACHAVE, yylineno);
+            adicionaSimboloNaTabela(global, strdup(yytext), T_DESCONHECIDO, T_PALAVRACHAVE, yylineno);
         }
         else {
             adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO, T_DESCONHECIDO_TOKEN, yylineno);
