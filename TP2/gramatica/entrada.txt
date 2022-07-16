@@ -7,10 +7,12 @@ Orville(0, n) {
 	Brewster
 }
 
-Wilbur(true) { 
+Wilbur(true) {
+	Bug nome 
 	// código 
 }
 Mabel(x > 10) { 
+	Bug nome 
 	// código
 }
 Sable(x > 5) { 
@@ -19,7 +21,8 @@ Sable(x > 5) {
 Label { 
 	// código 
 }
-SeaCreature nome
+SeaCreature nome,da,var
+soma(x,y)
 //SeaCreature
 a = 10
 a = Saharah()

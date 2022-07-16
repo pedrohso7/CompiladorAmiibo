@@ -17,3 +17,6 @@ run:
 
 file:
 	./TP2 < entrada.txt
+
+file2:
+	./TP2 < entrada1.txt
