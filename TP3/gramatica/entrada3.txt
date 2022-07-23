@@ -1,19 +1,21 @@
-SeaCreature nome
-Pave("Digite seu nome: ")
-nome = Saharah()
+Don main(){
+    SeaCreature nome
+    Pave("Digite seu nome: ")
+    nome = Saharah()
 
-Tree nascimento
-Pave("Digite sua data de nascimento: ")
-nascimento = Saharah()
+    Tree nascimento
+    Pave("Digite sua data de nascimento: ")
+    nascimento = Saharah()
 
-Fossil peso
-Pave("Digite seu peso: ")
-peso = Saharah()
+    Fossil peso
+    Pave("Digite seu peso: ")
+    peso = Saharah()
 
-Fossil altura
-Pave("Digite sua altura: ")
-altura = Saharah()
+    Fossil altura
+    Pave("Digite sua altura: ")
+    altura = Saharah()
 
-Fossil imc = peso / (altura**2)
+    Fossil imc = peso / (altura**2)
 
-Pave("A pessoa ", nome, " nasceu em ", nascimento, " e um IMC de ", imc)
+    Pave(imc)
+}

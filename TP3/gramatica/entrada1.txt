@@ -8,14 +8,16 @@ Don numeroPar(Bug x){
     }
 }
 
-Bug numero
-Pave("Digite um número: ")
-numero = Saharah()
+Don main(){
+    Bug numero
+    Pave("Digite um número: ")
+    numero = Saharah()
 
-Mabel(numeroPar(numero) == true){
-    Pave("O número é par!")
-}
+    Mabel(numeroPar(numero) == true){
+        Pave("O número é par!")
+    }
 
-Label{
-    Pave("O número é impar!")
+    Label{
+        Pave("O número é impar!")
+    }
 }

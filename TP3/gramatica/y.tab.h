@@ -158,6 +158,23 @@ extern int yydebug;
 #define VECTOR 309
 
 /* Value type.  */
+#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+union YYSTYPE
+{
+#line 49 "translate.y"
+
+  struct nomeVariavel{
+    char nome[100];
+    struct node* np;
+  } NoObjeto;
+
+#line 172 "y.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
+# define YYSTYPE_IS_TRIVIAL 1
+# define YYSTYPE_IS_DECLARED 1
+#endif
 
 
 extern YYSTYPE yylval;

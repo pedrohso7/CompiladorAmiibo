@@ -577,7 +577,6 @@ char *yytext;
 #line 2 "lex.l"
     void yyerror(char *c);
     #include "y.tab.h" //Contém as definições do token, o YACC gera
-    #include "../headers/arvore.h"
    
     #define RED     "\x1b[31m"
     #define BLACK     "\033[38;5;0m"
@@ -596,9 +595,9 @@ char *yytext;
     #define MAGENTA "\x1b[35m"
     #define CYAN    "\x1b[36m"
     #define RESET   "\x1b[0m"
-#line 600 "lex.yy.c"
+#line 599 "lex.yy.c"
 /*Declarações*/
-#line 602 "lex.yy.c"
+#line 601 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -815,12 +814,12 @@ YY_DECL
 		}
 
 	{
-#line 51 "lex.l"
+#line 50 "lex.l"
 
 
-#line 54 "lex.l"
+#line 53 "lex.l"
  /* Tokens de fim de linha e ignorar espaço */
-#line 824 "lex.yy.c"
+#line 823 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -889,280 +888,280 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 55 "lex.l"
+#line 54 "lex.l"
 {/*nenhuma acao e nenhum retorno*/}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 56 "lex.l"
+#line 55 "lex.l"
 {printf("\n%d\t",yylineno); strcpy(yylval.NoObjeto.nome,(yytext)); return EOL_TOKEN;}
 	YY_BREAK
 /* Tokens de declarações de tipos */ 
 case 3:
 YY_RULE_SETUP
-#line 59 "lex.l"
+#line 58 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(RED"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return INT_TYPE;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 60 "lex.l"
+#line 59 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(BLACK"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return FLOAT_TYPE;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 61 "lex.l"
+#line 60 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(AQUABLUE"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return STRING_TYPE;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 62 "lex.l"
+#line 61 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(HIGHBLUE"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return CHAR_TYPE;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 63 "lex.l"
+#line 62 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(HIGHPINK"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return BOOLEAN_TYPE;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 64 "lex.l"
+#line 63 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(LEAFGREEN"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return DATE_TYPE;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 65 "lex.l"
+#line 64 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(ROSERED"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return VECTOR_TYPE;}
 	YY_BREAK
 /* Comandos da linguagem  */
 case 10:
 YY_RULE_SETUP
-#line 68 "lex.l"
+#line 67 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(BLUE"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return IF_TOKEN;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 69 "lex.l"
+#line 68 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(ORANGE"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return ELSE_IF_TOKEN;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 70 "lex.l"
+#line 69 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(MAGENTA"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return ELSE_TOKEN;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 71 "lex.l"
+#line 70 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(CYAN"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return FOR_TOKEN;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 72 "lex.l"
+#line 71 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(CYAN"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return WHILE_TOKEN;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 73 "lex.l"
+#line 72 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(PINK"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return CREATE_FUNC_TOKEN;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 74 "lex.l"
+#line 73 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(GREEN"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return PRINT_TOKEN;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 75 "lex.l"
+#line 74 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(YELLOW"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return SCANF_TOKEN;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 76 "lex.l"
+#line 75 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(DEEPBLUE"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return RETURN_TOKEN;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 77 "lex.l"
+#line 76 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf(GRAY"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return BREAK_TOKEN;}
 	YY_BREAK
 /*  Tokens de caractéres em geral */
 case 20:
 YY_RULE_SETUP
-#line 80 "lex.l"
+#line 79 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return ABRIR_PARENTESES_TOKEN;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 81 "lex.l"
+#line 80 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return FECHAR_PARENTESES_TOKEN;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 82 "lex.l"
+#line 81 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return ABRIR_CHAVE_TOKEN;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 83 "lex.l"
+#line 82 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return FECHAR_CHAVE_TOKEN;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 84 "lex.l"
+#line 83 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return ABRIR_COLCHETE_TOKEN;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 85 "lex.l"
+#line 84 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return FECHAR_COLCHETE_TOKEN;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 86 "lex.l"
+#line 85 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return VIRGULA_TOKEN;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 87 "lex.l"
+#line 86 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return ATRIB_TOKEN;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 88 "lex.l"
+#line 87 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return COMMENT_TOKEN;}
 	YY_BREAK
 /* Tokens dos tipos */
 case 29:
 YY_RULE_SETUP
-#line 91 "lex.l"
+#line 90 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return DATE;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 92 "lex.l"
+#line 91 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return INT;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 93 "lex.l"
+#line 92 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return FLOAT;}
 	YY_BREAK
 case 32:
 /* rule 32 can match eol */
 YY_RULE_SETUP
-#line 94 "lex.l"
+#line 93 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return STRING;}
 	YY_BREAK
 case 33:
 /* rule 33 can match eol */
 YY_RULE_SETUP
-#line 95 "lex.l"
+#line 94 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return CHAR;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 96 "lex.l"
+#line 95 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return BOOLEAN;}
 	YY_BREAK
 /* Tokens dos operadores relacionais */
 case 35:
 YY_RULE_SETUP
-#line 99 "lex.l"
+#line 98 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return RELACIONAL_MAIORQUE;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 100 "lex.l"
+#line 99 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return RELACIONAL_MENORQUE;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 101 "lex.l"
+#line 100 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return RELACIONAL_MAIORIGUAL;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 102 "lex.l"
+#line 101 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return RELACIONAL_MENORIGUAL;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 103 "lex.l"
+#line 102 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return RELACIONAL_NEGACAO;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 104 "lex.l"
+#line 103 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return RELACIONAL_NEGACAO;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 105 "lex.l"
+#line 104 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return RELACIONAL_IGUALDADE;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 106 "lex.l"
+#line 105 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return RELACIONAL_AND;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 107 "lex.l"
+#line 106 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return RELACIONAL_OR;}
 	YY_BREAK
 /* Tokens dos operadores matemáticos */
 case 44:
 YY_RULE_SETUP
-#line 110 "lex.l"
+#line 109 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return MATEMATICO_SOMA;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 111 "lex.l"
+#line 110 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return MATEMATICO_SUBTRACAO;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 112 "lex.l"
+#line 111 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return MATEMATICO_MULTIPLICACAO;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 113 "lex.l"
+#line 112 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return MATEMATICO_DIVISAO;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 114 "lex.l"
+#line 113 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return MATEMATICO_MOD;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 115 "lex.l"
+#line 114 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return MATEMATICO_INCREMENTO;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 116 "lex.l"
+#line 115 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return MATEMATICO_DECREMENTO;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 117 "lex.l"
+#line 116 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return MATEMATICO_POW;}
 	YY_BREAK
 /* Token para a nomeclatura de variáveis */
 case 52:
 YY_RULE_SETUP
-#line 121 "lex.l"
+#line 120 "lex.l"
 {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return VAR_TOKEN;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 126 "lex.l"
+#line 125 "lex.l"
 ECHO;
 	YY_BREAK
-#line 1166 "lex.yy.c"
+#line 1165 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2179,6 +2178,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 126 "lex.l"
+#line 125 "lex.l"
 
 

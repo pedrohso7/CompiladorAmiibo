@@ -1,21 +1,18 @@
 #ifndef arvore_h
 #define arvore_h
-#include "token.h"
 
-typedef struct No* NoPonteiro;
-typedef struct No {
-  NoPonteiro filhoEsquerdo;
-  NoPonteiro filhoDireito;
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+struct No {
+  struct No *filhoEsquerdo;
+  struct No *filhoDireito;
   char *token;     
-} No; 
+};
 
-typedef struct NomeVariavel {
-   char nome[100];
-   NoPonteiro np;
-} NoObjeto;
-
-NoPonteiro criaNo(NoPonteiro filhoEsquerdo, NoPonteiro filhoDireito, char *token);
-void imprimirArvore(NoPonteiro arvore);
-void imprimirEmOrdem(NoPonteiro arvore);
+struct No* criaNo(struct No *filhoEsquerdo, struct No *filhoDireito, char *token);
+void imprimirArvore(struct No* arvore);
+void imprimirEmOrdem(struct No *arvore);
 
 #endif

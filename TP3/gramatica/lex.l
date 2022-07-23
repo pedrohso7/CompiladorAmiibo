@@ -1,7 +1,6 @@
 %{ 
     void yyerror(char *c);
     #include "y.tab.h" //Contém as definições do token, o YACC gera
-    #include "../headers/arvore.h"
    
     #define RED     "\x1b[31m"
     #define BLACK     "\033[38;5;0m"

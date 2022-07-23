@@ -1,4 +1,4 @@
-yacc:
+ yacc:
 	bison -dy calc.y
 
 lex:
@@ -10,7 +10,7 @@ gcc:
 all:
 	bison -dy -t translate.y
 	lex lex.l
-	gcc -oTP2 lex.yy.c y.tab.c ../source/simbolo.c ../source/tipos_primitivos.c ../source/escopo.c -lm 
+	gcc -oTP2 lex.yy.c y.tab.c ../source/simbolo.c ../source/tipos_primitivos.c ../source/escopo.c ../source/arvore.c -lm 
 
 run: 
 	./TP2
