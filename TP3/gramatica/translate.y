@@ -5,6 +5,7 @@
     #include <math.h>
     #include <string.h>
     #include "../headers/simbolo.h"
+    #include "../headers/arvore.h"
     #include "../headers/escopo.h"
     extern int yylineno;
     extern char* yytext;
@@ -21,22 +22,26 @@
     TipoPrimitivo tipo;
     TabelaDeSimbolos *tabelaGlobal;
     EscopoPonteiro escopoAtual;
+    NoPonteiro no;
+    
     
 %}
 
-%token INT_TYPE FLOAT_TYPE STRING_TYPE BOOLEAN_TYPE VECTOR_TYPE CHAR_TYPE DATE_TYPE
-%token RELACIONAL_IGUALDADE RELACIONAL_NEGACAO RELACIONAL_MAIORQUE RELACIONAL_MENORQUE RELACIONAL_MAIORIGUAL RELACIONAL_MENORIGUAL RELACIONAL_OR RELACIONAL_AND
-%token MATEMATICO_SOMA MATEMATICO_SUBTRACAO MATEMATICO_MULTIPLICACAO MATEMATICO_DIVISAO MATEMATICO_MOD MATEMATICO_POW MATEMATICO_INCREMENTO MATEMATICO_DECREMENTO
-%token DESCONHECIDO
-%token IF_TOKEN ELSE_IF_TOKEN ELSE_TOKEN
-%token FOR_TOKEN WHILE_TOKEN RETURN_TOKEN BREAK_TOKEN
-%token CREATE_FUNC_TOKEN PRINT_TOKEN SCANF_TOKEN
-%token ABRIR_PARENTESES_TOKEN FECHAR_PARENTESES_TOKEN
-%token ABRIR_CHAVE_TOKEN FECHAR_CHAVE_TOKEN  
-%token ABRIR_COLCHETE_TOKEN FECHAR_COLCHETE_TOKEN
-%token ATRIB_TOKEN VIRGULA_TOKEN VAR_TOKEN COMMENT_TOKEN
-%token EOL_TOKEN
-%token INT FLOAT DATE STRING CHAR BOOLEAN VECTOR
+%token <NoObjeto> INT_TYPE FLOAT_TYPE STRING_TYPE BOOLEAN_TYPE VECTOR_TYPE CHAR_TYPE DATE_TYPE
+%token <NoObjeto> RELACIONAL_IGUALDADE RELACIONAL_NEGACAO RELACIONAL_MAIORQUE RELACIONAL_MENORQUE RELACIONAL_MAIORIGUAL RELACIONAL_MENORIGUAL RELACIONAL_OR RELACIONAL_AND
+%token <NoObjeto> MATEMATICO_SOMA MATEMATICO_SUBTRACAO MATEMATICO_MULTIPLICACAO MATEMATICO_DIVISAO MATEMATICO_MOD MATEMATICO_POW MATEMATICO_INCREMENTO MATEMATICO_DECREMENTO
+%token <NoObjeto> DESCONHECIDO
+%token <NoObjeto> IF_TOKEN ELSE_IF_TOKEN ELSE_TOKEN
+%token <NoObjeto> FOR_TOKEN WHILE_TOKEN RETURN_TOKEN BREAK_TOKEN
+%token <NoObjeto> CREATE_FUNC_TOKEN PRINT_TOKEN SCANF_TOKEN
+%token <NoObjeto> ABRIR_PARENTESES_TOKEN FECHAR_PARENTESES_TOKEN
+%token <NoObjeto> ABRIR_CHAVE_TOKEN FECHAR_CHAVE_TOKEN  
+%token <NoObjeto> ABRIR_COLCHETE_TOKEN FECHAR_COLCHETE_TOKEN
+%token <NoObjeto> ATRIB_TOKEN VIRGULA_TOKEN VAR_TOKEN COMMENT_TOKEN
+%token <NoObjeto> EOL_TOKEN
+%token <NoObjeto> INT FLOAT DATE STRING CHAR BOOLEAN VECTOR
+%type <NoObjeto> expr aritmetica numero relacional valorBool tipos declaracao varNames varNomesETipos funcao criarFuncao anyTipe comando corpo condicional if else elseIF tabulacao repeticao imprimir input retornar comment
+
 
 %left MATEMATICO_SOMA MATEMATICO_SUBTRACAO
 %left MATEMATICO_DIVISAO MATEMATICO_MULTIPLICACAO
@@ -45,13 +50,14 @@
 %%
 
 
+
 expr: 
     aritmetica
     | relacional
     | declaracao
     | VAR_TOKEN ATRIB_TOKEN expr
     | funcao
-    | comando
+    | comando {no = $$.np;}
     | criarFuncao
     | EOL_TOKEN
     | comment
@@ -68,6 +74,7 @@ expr:
     | expr anyTipe
     |
     ;
+
 aritmetica :
     numero
     | VAR_TOKEN
@@ -84,21 +91,21 @@ aritmetica :
     ;
 
 numero:
-    FLOAT
-    | INT
+    FLOAT {$$.np = criaNo(NULL, NULL, $1.nome);}
+    | INT {$$.np = criaNo(NULL, NULL, $1.nome);}
     ;
     
 relacional :
-    valorBool
-    | funcao
-    | valorBool RELACIONAL_IGUALDADE valorBool
-    | valorBool RELACIONAL_NEGACAO valorBool
-    | valorBool RELACIONAL_MAIORQUE valorBool
-    | valorBool RELACIONAL_MENORQUE valorBool
-    | valorBool RELACIONAL_MAIORIGUAL valorBool
-    | valorBool RELACIONAL_MENORIGUAL valorBool
-    | valorBool RELACIONAL_AND valorBool
-    | valorBool RELACIONAL_OR valorBool
+    valorBool {$$.nd = NULL;}
+    | funcao  {$$.nd = NULL;}
+    | valorBool RELACIONAL_IGUALDADE valorBool { $$.nd = mknode($1.nd, $3.nd, $2.nome);}
+    | valorBool RELACIONAL_NEGACAO valorBool { $$.nd = mknode($1.nd, $3.nd, $2.nome);}
+    | valorBool RELACIONAL_MAIORQUE valorBool { $$.nd = mknode($1.nd, $3.nd, $2.nome);}
+    | valorBool RELACIONAL_MENORQUE valorBool { $$.nd = mknode($1.nd, $3.nd, $2.nome);}
+    | valorBool RELACIONAL_MAIORIGUAL valorBool { $$.nd = mknode($1.nd, $3.nd, $2.nome);}
+    | valorBool RELACIONAL_MENORIGUAL valorBool { $$.nd = mknode($1.nd, $3.nd, $2.nome);}
+    | valorBool RELACIONAL_AND valorBool { $$.nd = mknode($1.nd, $3.nd, $2.nome);}
+    | valorBool RELACIONAL_OR valorBool { $$.nd = mknode($1.nd, $3.nd, $2.nome);}
     ;
 
 valorBool:
@@ -107,13 +114,13 @@ valorBool:
     ;
 
 tipos:
-    INT_TYPE {inserir_tipo(T_INT); }
-    |FLOAT_TYPE {inserir_tipo(T_FLOAT); }
-    |CHAR_TYPE {inserir_tipo(T_CHAR); }
-	|STRING_TYPE {inserir_tipo(T_STRING); }
-	|BOOLEAN_TYPE {inserir_tipo(T_BOOLEAN); }
-	|VECTOR_TYPE {inserir_tipo(T_ARRAY); }
-	|DATE_TYPE{inserir_tipo(T_DATE); }
+    INT_TYPE {inserir_tipo(T_INT);}
+    |FLOAT_TYPE {inserir_tipo(T_FLOAT);}
+    |CHAR_TYPE {inserir_tipo(T_CHAR);}
+	|STRING_TYPE {inserir_tipo(T_STRING);}
+	|BOOLEAN_TYPE {inserir_tipo(T_BOOLEAN);}
+	|VECTOR_TYPE {inserir_tipo(T_ARRAY);}
+	|DATE_TYPE{inserir_tipo(T_DATE);}
 
 
 declaracao:
@@ -165,13 +172,13 @@ condicional:
 
 
 if:
-    IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo tabulacao
-	| IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo tabulacao else 
+    IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo tabulacao { NoPonteiro if = criaNo($3.np, $5.np, $1.nome);}
+	| IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo tabulacao else { NoPonteiro if = criaNo($3.np, $5.np, $1.nome); $$.np = criaNo(if, $7.np, "elseIF"); }
 	| IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo tabulacao elseIF 
 	| IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo tabulacao elseIF tabulacao else
 
 else:
-    ELSE_TOKEN corpo
+    ELSE_TOKEN corpo { $$.np = criaNo(NULL, $2.np, $1.nome); }
 
 elseIF:
     ELSE_IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo
@@ -183,19 +190,19 @@ tabulacao:
 	|
 
 repeticao:
-    FOR_TOKEN ABRIR_PARENTESES_TOKEN aritmetica FECHAR_PARENTESES_TOKEN corpo
-    | FOR_TOKEN ABRIR_PARENTESES_TOKEN aritmetica VIRGULA_TOKEN aritmetica FECHAR_PARENTESES_TOKEN corpo
+    FOR_TOKEN ABRIR_PARENTESES_TOKEN aritmetica FECHAR_PARENTESES_TOKEN corpo {$$.np = criaNo($1.np, NULL, "for");}
+    | FOR_TOKEN ABRIR_PARENTESES_TOKEN aritmetica VIRGULA_TOKEN aritmetica FECHAR_PARENTESES_TOKEN corpo {$$.np = criaNo($1.np, $2.np, "for");}
     | WHILE_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo
 
 imprimir:
-    PRINT_TOKEN ABRIR_PARENTESES_TOKEN expr FECHAR_PARENTESES_TOKEN
+    PRINT_TOKEN ABRIR_PARENTESES_TOKEN expr FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, "printf");}
 
 input:
-    SCANF_TOKEN ABRIR_PARENTESES_TOKEN  FECHAR_PARENTESES_TOKEN
+    SCANF_TOKEN ABRIR_PARENTESES_TOKEN  FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, "scanf");}
 
 retornar:
-    RETURN_TOKEN anyTipe
-    | RETURN_TOKEN aritmetica
+    RETURN_TOKEN anyTipe {$$.np = NULL;}
+    | RETURN_TOKEN aritmetica {$1.np = criaNo(NULL, NULL, "return"); $$.np = criaNo($1.np, $2.np, "RETURN");}
 
 comment:
     COMMENT_TOKEN
@@ -238,7 +245,6 @@ void adicionar_tabela(char c,TabelaDeSimbolos* tabela,TabelaDeSimbolos* global){
         else {
             adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO, T_DESCONHECIDO_TOKEN, yylineno);
             adicionaSimboloNaTabela(global, strdup(yytext), T_DESCONHECIDO, T_DESCONHECIDO_TOKEN, yylineno );
-
         }
     }
 }
@@ -255,7 +261,8 @@ EscopoPonteiro voltarEscopo(EscopoPonteiro escopo){
 
 int main(){
     tabelaGlobal = criaTabelaDeSimbolos();
-    escopoAtual = criarEscopo(NULL); 
+    escopoAtual = criarEscopo(NULL);
+    
     #ifdef YYDEBUG
     yydebug = 0;
     #endif
@@ -266,9 +273,8 @@ int main(){
     printf("\n\n\n Tabela de Símbolos Global:\n");
     imprimirTabeladeSimbolos(tabelaGlobal);
 
-
-
-
+    printf("\n\n\n Árvore de Sintaxe Abstrata: \n");
+    imprimirArvore(no);
     return 0;
 }
 
