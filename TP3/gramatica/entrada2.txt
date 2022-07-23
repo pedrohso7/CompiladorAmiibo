@@ -1,0 +1,29 @@
+Bug numero
+Pave("Digite um número: ")
+numero = Saharah()
+
+// Variavel para armazenar a soma da sequencia ate o numero
+Bug somaSequencia = 0
+Bug i = 1
+
+Orville(1, numero){
+    somaSequencia = somaSequencia + i
+    i++
+}
+
+Pave("Soma da Sequência: ", somaSequencia)
+
+// Variavel para armazenar a soma de dois em dois
+Bug somaIntervalo = 0
+Bug i = 1
+
+Wilbur(true){
+    Mabel(i == numero-1){
+        Brewster
+    }
+
+    somaIntervalo = somaIntervalo + i
+    i = i + 2
+}
+
+Pave("Soma do Intervalo de Dois em Dois: ", somaIntervalo)
