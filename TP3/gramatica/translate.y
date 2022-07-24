@@ -17,13 +17,20 @@
     EscopoPonteiro aprofundarEscopo(EscopoPonteiro escopoAcima);
     EscopoPonteiro voltarEscopo(EscopoPonteiro escopo);
 
-    int ImprimirFechamentoEscopo = 1;
+    int ImprimirFechamentoEscopo = -1;
     TipoPrimitivo tipo;
     TabelaDeSimbolos *tabelaGlobal;
     EscopoPonteiro escopoAtual;
     struct No *no;
 
 %}
+
+%union{
+    struct nomeVariavel{
+        char nome[100];
+        struct node* np;
+    } NoObjeto;
+}
 
 %token <NoObjeto> INT_TYPE FLOAT_TYPE STRING_TYPE BOOLEAN_TYPE VECTOR_TYPE CHAR_TYPE DATE_TYPE
 %token <NoObjeto> RELACIONAL_IGUALDADE RELACIONAL_NEGACAO RELACIONAL_MAIORQUE RELACIONAL_MENORQUE RELACIONAL_MAIORIGUAL RELACIONAL_MENORIGUAL RELACIONAL_OR RELACIONAL_AND
@@ -46,15 +53,8 @@
 
 %%
 
-%union{
-  struct nomeVariavel{
-    char nome[100];
-    struct node* np;
-  } NoObjeto;
-};
-
 program:
-    main ABRIR_PARENTESES_TOKEN FECHAR_PARENTESES_TOKEN corpo {$1.np = criaNo($4, NULL, "main"); no = $$.np;}
+    main ABRIR_PARENTESES_TOKEN FECHAR_PARENTESES_TOKEN corpo {no = $$.np;}
     ;
 
 main:
@@ -67,9 +67,8 @@ expr:
     | relacional
     | declaracao
     | atribuicao
-    | VAR_TOKEN ATRIB_TOKEN expr
     | funcao
-    | comando {no = $$.np;}
+    | comando
     | criarFuncao
     | EOL_TOKEN
     | comment
@@ -161,8 +160,6 @@ funcao:
 
 criarFuncao:
     CREATE_FUNC_TOKEN VAR_TOKEN {adicionar_tabela('f',escopoAtual->tabela,tabelaGlobal);} ABRIR_PARENTESES_TOKEN varNomesETipos FECHAR_PARENTESES_TOKEN corpo 
-    | CREATE_FUNC_TOKEN VAR_TOKEN {adicionar_tabela('f',escopoAtual->tabela,tabelaGlobal);} ABRIR_PARENTESES_TOKEN  FECHAR_PARENTESES_TOKEN corpo 
-    ;
     
 
 anyTipe:
@@ -176,7 +173,7 @@ anyTipe:
     | VAR_TOKEN
     
 comando:
-   condicional
+    condicional
     | repeticao 
     | imprimir
     | input

@@ -1,7 +1,7 @@
 #include "../headers/arvore.h"
 
 struct No* criaNo(struct No *filhoEsquerdo, struct No *filhoDireito, char *token) {
-  struct No *novoNo = (struct No*) malloc(sizeof(struct No));
+  struct No *novoNo = (struct No *) malloc(sizeof(struct No));
   char *novaString = (char*) malloc(strlen(token)+1);
   
   strcpy(novaString, token);

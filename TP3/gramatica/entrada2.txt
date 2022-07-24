@@ -17,9 +17,10 @@ Don main(){
     // Variavel para armazenar a soma de dois em dois
     Bug somaIntervalo = 0
     Bug i = 1
+    numero = numero-1
 
     Wilbur(true){
-        Mabel(i == numero-1){
+        Mabel(i == numero){
             Brewster
         }
 

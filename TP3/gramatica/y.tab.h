@@ -161,12 +161,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 49 "translate.y"
+#line 28 "translate.y"
 
-  struct nomeVariavel{
-    char nome[100];
-    struct node* np;
-  } NoObjeto;
+    struct nomeVariavel{
+        char nome[100];
+        struct node* np;
+    } NoObjeto;
 
 #line 172 "y.tab.h"
 
