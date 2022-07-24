@@ -12,14 +12,12 @@ struct No* criaNo(struct No *filhoEsquerdo, struct No *filhoDireito, char *token
 }
 
 void imprimirArvore(struct No* arvore){
-  printf("FUNCAO IMPRIMIR ARVORE");
 	imprimirEmOrdem(arvore);
 	printf("\n\n");
 }
 
 void imprimirEmOrdem(struct No *arvore){
 	int i;
-  printf("FUNCAO IMPRIMIR EM ORDEM");
 	if (arvore->filhoEsquerdo) {
 		imprimirEmOrdem(arvore->filhoEsquerdo);
 	}

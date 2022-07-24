@@ -54,7 +54,7 @@
 %%
 
 program:
-    main ABRIR_PARENTESES_TOKEN FECHAR_PARENTESES_TOKEN corpo {no = $$.np;}
+    main ABRIR_PARENTESES_TOKEN FECHAR_PARENTESES_TOKEN corpo {$2.np = criaNo($3.np, $4.np, "main"); $$.np = criaNo($1.np, $2.np, "programa"); no = $$.np;}
     ;
 
 main:
@@ -95,12 +95,12 @@ aritmetica :
     numero
     | VAR_TOKEN
     | funcao
-    | aritmetica MATEMATICO_SOMA aritmetica
-    | aritmetica MATEMATICO_SUBTRACAO aritmetica
-    | aritmetica MATEMATICO_DIVISAO aritmetica
-    | aritmetica MATEMATICO_MULTIPLICACAO aritmetica
-    | aritmetica MATEMATICO_MOD aritmetica
-    | aritmetica MATEMATICO_POW aritmetica
+    | aritmetica MATEMATICO_SOMA aritmetica {$$.np = criaNo($1.np, $3.np, $2.nome);}
+    | aritmetica MATEMATICO_SUBTRACAO aritmetica {$$.np = criaNo($1.np, $3.np, $2.nome);}
+    | aritmetica MATEMATICO_DIVISAO aritmetica {$$.np = criaNo($1.np, $3.np, $2.nome);}
+    | aritmetica MATEMATICO_MULTIPLICACAO aritmetica {$$.np = criaNo($1.np, $3.np, $2.nome);}
+    | aritmetica MATEMATICO_MOD aritmetica {$$.np = criaNo($1.np, $3.np, $2.nome);}
+    | aritmetica MATEMATICO_POW aritmetica {$$.np = criaNo($1.np, $3.np, $2.nome);}
     | ABRIR_PARENTESES_TOKEN aritmetica FECHAR_PARENTESES_TOKEN
     | aritmetica MATEMATICO_INCREMENTO 
     | aritmetica MATEMATICO_DECREMENTO
@@ -290,9 +290,10 @@ int main(){
     printf("\n\n\n Tabela de Símbolos Global:\n");
     imprimirTabeladeSimbolos(tabelaGlobal);
 
-    printf("\n Árvore de Sintaxe Abstrata: \n");
-    printf("______________________________________________");
+    printf("\n Árvore de Sintaxe Abstrata: \n\n");
+    printf(" ");
     imprimirArvore(no);
+    printf("______________________________________________\n");
     return 0;
 }
 
