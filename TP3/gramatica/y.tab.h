@@ -165,7 +165,7 @@ union YYSTYPE
 
     struct nomeVariavel{
         char nome[100];
-        struct node* np;
+        struct No *np;
     } NoObjeto;
 
 #line 172 "y.tab.h"

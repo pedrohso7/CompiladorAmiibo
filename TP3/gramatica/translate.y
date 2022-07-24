@@ -28,7 +28,7 @@
 %union{
     struct nomeVariavel{
         char nome[100];
-        struct node* np;
+        struct No *np;
     } NoObjeto;
 }
 
@@ -91,7 +91,7 @@ atribuicao:
     VAR_TOKEN ATRIB_TOKEN expr
     ;
 
-aritmetica :
+aritmetica:
     numero
     | VAR_TOKEN
     | funcao
@@ -108,10 +108,10 @@ aritmetica :
 
 numero:
     FLOAT {$$.np = criaNo(NULL, NULL, $1.nome);}
-    | INT {$$.np = criaNo(NULL, NULL, $1.nome);}
+    | INT {$$.np = criaNo(NULL, NULL, "inteiro");}
     ;
     
-relacional :
+relacional:
     valorBool {$$.np = NULL;}
     | funcao  {$$.np = NULL;}
     | valorBool RELACIONAL_IGUALDADE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);}
@@ -140,7 +140,7 @@ tipos:
 
 
 declaracao:
-    tipos varNames
+    tipos varNames {$$.np = criaNo($1.np, $2.np, "declaracao");}
     | tipos atribuicao
     ;
 
@@ -206,6 +206,7 @@ tabulacao:
 	EOL_TOKEN
 	| tabulacao EOL_TOKEN
 	|
+    ;
 
 repeticao:
     FOR_TOKEN ABRIR_PARENTESES_TOKEN aritmetica FECHAR_PARENTESES_TOKEN corpo {$$.np = criaNo($1.np, NULL, "for");}
@@ -216,11 +217,11 @@ imprimir:
     PRINT_TOKEN ABRIR_PARENTESES_TOKEN expr FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, "printf");}
 
 input:
-    SCANF_TOKEN ABRIR_PARENTESES_TOKEN  FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, "scanf");}
+    SCANF_TOKEN ABRIR_PARENTESES_TOKEN  FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, "entrada");}
 
 retornar:
     RETURN_TOKEN anyTipe {$$.np = NULL;}
-    | RETURN_TOKEN aritmetica {$1.np = criaNo(NULL, NULL, "return"); $$.np = criaNo($1.np, $2.np, "RETURN");}
+    | RETURN_TOKEN aritmetica {$1.np = criaNo(NULL, NULL, "return"); $$.np = criaNo($1.np, $2.np, "return");}
 
 comment:
     COMMENT_TOKEN
