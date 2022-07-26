@@ -1,6 +1,5 @@
-Don main(){
+main{
     SeaCreature nome
-    Pave("Digite seu nome: ")
     nome = Saharah()
 
     Tree nascimento

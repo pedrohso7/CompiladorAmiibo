@@ -1,4 +1,4 @@
-Don main(){
+main{
     Bug numero
     Pave("Digite um número: ")
     numero = Saharah()

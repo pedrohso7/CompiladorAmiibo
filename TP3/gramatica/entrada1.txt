@@ -1,14 +1,5 @@
-Don numeroPar(Bug x){
-    Mabel(x%2==0){
-        Rover true
-    }
-
-    Label{
-        Rover false
-    }
-}
-
-Don main(){
+main{
+    // declaracao variavel
     Bug numero
     Pave("Digite um número: ")
     numero = Saharah()
@@ -17,7 +8,21 @@ Don main(){
         Pave("O número é par!")
     }
 
+    Sable(numeroPar(numero) == false){
+        Pave("O número é impar!")
+    }
+
     Label{
         Pave("O número é impar!")
+    }
+
+    Don numeroPar(Bug x, Bug y){
+        Mabel(x%2==0){
+            Rover true
+        }
+
+        Label{
+            Rover false
+        }
     }
 }

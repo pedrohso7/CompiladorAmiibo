@@ -73,6 +73,8 @@ variavel    {letra}{caractere}*
 "Saharah"                          {if(yylineno==1) printf("%d\t",yylineno++); printf(YELLOW"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return SCANF_TOKEN;}
 "Rover"                            {if(yylineno==1) printf("%d\t",yylineno++); printf(DEEPBLUE"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return RETURN_TOKEN;}
 "Brewster"                         {if(yylineno==1) printf("%d\t",yylineno++); printf(GRAY"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return BREAK_TOKEN;}
+"main"                             {if(yylineno==1) printf("%d\t",yylineno++); printf(GRAY"%s "RESET,yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return MAIN_TOKEN;}
+
 
  /*  Tokens de caractéres em geral */
 "("                                {if(yylineno==1) printf("%d\t",yylineno++); printf("%s ",yytext); strcpy(yylval.NoObjeto.nome,(yytext)); return ABRIR_PARENTESES_TOKEN;}

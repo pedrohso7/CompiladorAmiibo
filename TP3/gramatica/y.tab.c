@@ -89,7 +89,7 @@
     TipoPrimitivo tipo;
     TabelaDeSimbolos *tabelaGlobal;
     EscopoPonteiro escopoAtual;
-    struct No *no;
+    struct No *raiz;
 
 
 #line 96 "y.tab.c"
@@ -140,113 +140,115 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    INT_TYPE = 258,
-    FLOAT_TYPE = 259,
-    STRING_TYPE = 260,
-    BOOLEAN_TYPE = 261,
-    VECTOR_TYPE = 262,
-    CHAR_TYPE = 263,
-    DATE_TYPE = 264,
-    RELACIONAL_IGUALDADE = 265,
-    RELACIONAL_NEGACAO = 266,
-    RELACIONAL_MAIORQUE = 267,
-    RELACIONAL_MENORQUE = 268,
-    RELACIONAL_MAIORIGUAL = 269,
-    RELACIONAL_MENORIGUAL = 270,
-    RELACIONAL_OR = 271,
-    RELACIONAL_AND = 272,
-    MATEMATICO_SOMA = 273,
-    MATEMATICO_SUBTRACAO = 274,
-    MATEMATICO_MULTIPLICACAO = 275,
-    MATEMATICO_DIVISAO = 276,
-    MATEMATICO_MOD = 277,
-    MATEMATICO_POW = 278,
-    MATEMATICO_INCREMENTO = 279,
-    MATEMATICO_DECREMENTO = 280,
-    DESCONHECIDO = 281,
-    IF_TOKEN = 282,
-    ELSE_IF_TOKEN = 283,
-    ELSE_TOKEN = 284,
-    FOR_TOKEN = 285,
-    WHILE_TOKEN = 286,
-    RETURN_TOKEN = 287,
-    BREAK_TOKEN = 288,
-    CREATE_FUNC_TOKEN = 289,
-    PRINT_TOKEN = 290,
-    SCANF_TOKEN = 291,
-    ABRIR_PARENTESES_TOKEN = 292,
-    FECHAR_PARENTESES_TOKEN = 293,
-    ABRIR_CHAVE_TOKEN = 294,
-    FECHAR_CHAVE_TOKEN = 295,
-    ABRIR_COLCHETE_TOKEN = 296,
-    FECHAR_COLCHETE_TOKEN = 297,
-    ATRIB_TOKEN = 298,
-    VIRGULA_TOKEN = 299,
-    VAR_TOKEN = 300,
-    COMMENT_TOKEN = 301,
-    EOL_TOKEN = 302,
-    INT = 303,
-    FLOAT = 304,
-    DATE = 305,
-    STRING = 306,
-    CHAR = 307,
-    BOOLEAN = 308,
-    VECTOR = 309
+    MAIN_TOKEN = 258,
+    INT_TYPE = 259,
+    FLOAT_TYPE = 260,
+    STRING_TYPE = 261,
+    BOOLEAN_TYPE = 262,
+    VECTOR_TYPE = 263,
+    CHAR_TYPE = 264,
+    DATE_TYPE = 265,
+    RELACIONAL_IGUALDADE = 266,
+    RELACIONAL_NEGACAO = 267,
+    RELACIONAL_MAIORQUE = 268,
+    RELACIONAL_MENORQUE = 269,
+    RELACIONAL_MAIORIGUAL = 270,
+    RELACIONAL_MENORIGUAL = 271,
+    RELACIONAL_OR = 272,
+    RELACIONAL_AND = 273,
+    MATEMATICO_SOMA = 274,
+    MATEMATICO_SUBTRACAO = 275,
+    MATEMATICO_MULTIPLICACAO = 276,
+    MATEMATICO_DIVISAO = 277,
+    MATEMATICO_MOD = 278,
+    MATEMATICO_POW = 279,
+    MATEMATICO_INCREMENTO = 280,
+    MATEMATICO_DECREMENTO = 281,
+    DESCONHECIDO = 282,
+    IF_TOKEN = 283,
+    ELSE_IF_TOKEN = 284,
+    ELSE_TOKEN = 285,
+    FOR_TOKEN = 286,
+    WHILE_TOKEN = 287,
+    RETURN_TOKEN = 288,
+    BREAK_TOKEN = 289,
+    CREATE_FUNC_TOKEN = 290,
+    PRINT_TOKEN = 291,
+    SCANF_TOKEN = 292,
+    ABRIR_PARENTESES_TOKEN = 293,
+    FECHAR_PARENTESES_TOKEN = 294,
+    ABRIR_CHAVE_TOKEN = 295,
+    FECHAR_CHAVE_TOKEN = 296,
+    ABRIR_COLCHETE_TOKEN = 297,
+    FECHAR_COLCHETE_TOKEN = 298,
+    ATRIB_TOKEN = 299,
+    VIRGULA_TOKEN = 300,
+    VAR_TOKEN = 301,
+    COMMENT_TOKEN = 302,
+    EOL_TOKEN = 303,
+    INT = 304,
+    FLOAT = 305,
+    DATE = 306,
+    STRING = 307,
+    CHAR = 308,
+    BOOLEAN = 309,
+    VECTOR = 310
   };
 #endif
 /* Tokens.  */
-#define INT_TYPE 258
-#define FLOAT_TYPE 259
-#define STRING_TYPE 260
-#define BOOLEAN_TYPE 261
-#define VECTOR_TYPE 262
-#define CHAR_TYPE 263
-#define DATE_TYPE 264
-#define RELACIONAL_IGUALDADE 265
-#define RELACIONAL_NEGACAO 266
-#define RELACIONAL_MAIORQUE 267
-#define RELACIONAL_MENORQUE 268
-#define RELACIONAL_MAIORIGUAL 269
-#define RELACIONAL_MENORIGUAL 270
-#define RELACIONAL_OR 271
-#define RELACIONAL_AND 272
-#define MATEMATICO_SOMA 273
-#define MATEMATICO_SUBTRACAO 274
-#define MATEMATICO_MULTIPLICACAO 275
-#define MATEMATICO_DIVISAO 276
-#define MATEMATICO_MOD 277
-#define MATEMATICO_POW 278
-#define MATEMATICO_INCREMENTO 279
-#define MATEMATICO_DECREMENTO 280
-#define DESCONHECIDO 281
-#define IF_TOKEN 282
-#define ELSE_IF_TOKEN 283
-#define ELSE_TOKEN 284
-#define FOR_TOKEN 285
-#define WHILE_TOKEN 286
-#define RETURN_TOKEN 287
-#define BREAK_TOKEN 288
-#define CREATE_FUNC_TOKEN 289
-#define PRINT_TOKEN 290
-#define SCANF_TOKEN 291
-#define ABRIR_PARENTESES_TOKEN 292
-#define FECHAR_PARENTESES_TOKEN 293
-#define ABRIR_CHAVE_TOKEN 294
-#define FECHAR_CHAVE_TOKEN 295
-#define ABRIR_COLCHETE_TOKEN 296
-#define FECHAR_COLCHETE_TOKEN 297
-#define ATRIB_TOKEN 298
-#define VIRGULA_TOKEN 299
-#define VAR_TOKEN 300
-#define COMMENT_TOKEN 301
-#define EOL_TOKEN 302
-#define INT 303
-#define FLOAT 304
-#define DATE 305
-#define STRING 306
-#define CHAR 307
-#define BOOLEAN 308
-#define VECTOR 309
+#define MAIN_TOKEN 258
+#define INT_TYPE 259
+#define FLOAT_TYPE 260
+#define STRING_TYPE 261
+#define BOOLEAN_TYPE 262
+#define VECTOR_TYPE 263
+#define CHAR_TYPE 264
+#define DATE_TYPE 265
+#define RELACIONAL_IGUALDADE 266
+#define RELACIONAL_NEGACAO 267
+#define RELACIONAL_MAIORQUE 268
+#define RELACIONAL_MENORQUE 269
+#define RELACIONAL_MAIORIGUAL 270
+#define RELACIONAL_MENORIGUAL 271
+#define RELACIONAL_OR 272
+#define RELACIONAL_AND 273
+#define MATEMATICO_SOMA 274
+#define MATEMATICO_SUBTRACAO 275
+#define MATEMATICO_MULTIPLICACAO 276
+#define MATEMATICO_DIVISAO 277
+#define MATEMATICO_MOD 278
+#define MATEMATICO_POW 279
+#define MATEMATICO_INCREMENTO 280
+#define MATEMATICO_DECREMENTO 281
+#define DESCONHECIDO 282
+#define IF_TOKEN 283
+#define ELSE_IF_TOKEN 284
+#define ELSE_TOKEN 285
+#define FOR_TOKEN 286
+#define WHILE_TOKEN 287
+#define RETURN_TOKEN 288
+#define BREAK_TOKEN 289
+#define CREATE_FUNC_TOKEN 290
+#define PRINT_TOKEN 291
+#define SCANF_TOKEN 292
+#define ABRIR_PARENTESES_TOKEN 293
+#define FECHAR_PARENTESES_TOKEN 294
+#define ABRIR_CHAVE_TOKEN 295
+#define FECHAR_CHAVE_TOKEN 296
+#define ABRIR_COLCHETE_TOKEN 297
+#define FECHAR_COLCHETE_TOKEN 298
+#define ATRIB_TOKEN 299
+#define VIRGULA_TOKEN 300
+#define VAR_TOKEN 301
+#define COMMENT_TOKEN 302
+#define EOL_TOKEN 303
+#define INT 304
+#define FLOAT 305
+#define DATE 306
+#define STRING 307
+#define CHAR 308
+#define BOOLEAN 309
+#define VECTOR 310
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -259,7 +261,7 @@ union YYSTYPE
         struct No *np;
     } NoObjeto;
 
-#line 263 "y.tab.c"
+#line 265 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -578,19 +580,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  5
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   402
+#define YYLAST   312
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  55
+#define YYNTOKENS  56
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  30
+#define YYNNTS  29
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  104
+#define YYNRULES  91
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  177
+#define YYNSTATES  161
 
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   309
+#define YYMAXUTOK   310
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -632,24 +634,24 @@ static const yytype_int8 yytranslate[] =
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
-      45,    46,    47,    48,    49,    50,    51,    52,    53,    54
+      45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
+      55
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    57,    57,    61,    66,    67,    68,    69,    70,    71,
-      72,    73,    74,    75,    76,    77,    78,    79,    80,    81,
-      82,    83,    84,    85,    86,    87,    91,    95,    96,    97,
-      98,    99,   100,   101,   102,   103,   104,   105,   106,   110,
-     111,   115,   116,   117,   118,   119,   120,   121,   122,   123,
-     124,   128,   129,   133,   134,   135,   136,   137,   138,   139,
-     143,   144,   148,   149,   153,   154,   158,   162,   162,   166,
-     167,   168,   169,   170,   171,   172,   173,   176,   177,   178,
-     179,   180,   181,   184,   184,   185,   189,   193,   194,   195,
-     196,   199,   202,   203,   206,   207,   208,   212,   213,   214,
-     217,   220,   223,   224,   227
+       0,    58,    58,    62,    63,    64,    65,    66,    67,    68,
+      69,    70,    71,    72,    76,    80,    81,    82,    83,    84,
+      85,    86,    87,    88,    89,    90,    91,    95,    96,   100,
+     101,   102,   103,   104,   105,   106,   107,   108,   109,   113,
+     114,   118,   119,   120,   121,   122,   123,   124,   128,   129,
+     133,   134,   138,   139,   143,   147,   147,   151,   152,   153,
+     154,   155,   156,   157,   158,   161,   162,   163,   164,   165,
+     166,   169,   169,   173,   176,   177,   178,   181,   182,   185,
+     186,   189,   190,   191,   195,   196,   197,   200,   203,   206,
+     207,   210
 };
 #endif
 
@@ -658,8 +660,8 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "INT_TYPE", "FLOAT_TYPE", "STRING_TYPE",
-  "BOOLEAN_TYPE", "VECTOR_TYPE", "CHAR_TYPE", "DATE_TYPE",
+  "$end", "error", "$undefined", "MAIN_TOKEN", "INT_TYPE", "FLOAT_TYPE",
+  "STRING_TYPE", "BOOLEAN_TYPE", "VECTOR_TYPE", "CHAR_TYPE", "DATE_TYPE",
   "RELACIONAL_IGUALDADE", "RELACIONAL_NEGACAO", "RELACIONAL_MAIORQUE",
   "RELACIONAL_MENORQUE", "RELACIONAL_MAIORIGUAL", "RELACIONAL_MENORIGUAL",
   "RELACIONAL_OR", "RELACIONAL_AND", "MATEMATICO_SOMA",
@@ -672,11 +674,11 @@ static const char *const yytname[] =
   "FECHAR_CHAVE_TOKEN", "ABRIR_COLCHETE_TOKEN", "FECHAR_COLCHETE_TOKEN",
   "ATRIB_TOKEN", "VIRGULA_TOKEN", "VAR_TOKEN", "COMMENT_TOKEN",
   "EOL_TOKEN", "INT", "FLOAT", "DATE", "STRING", "CHAR", "BOOLEAN",
-  "VECTOR", "$accept", "program", "main", "expr", "atribuicao",
-  "aritmetica", "numero", "relacional", "valorBool", "tipos", "declaracao",
-  "varNames", "varNomesETipos", "funcao", "criarFuncao", "$@1", "anyTipe",
-  "comando", "corpo", "$@2", "condicional", "if", "else", "elseIF",
-  "tabulacao", "repeticao", "imprimir", "input", "retornar", "comment", YY_NULLPTR
+  "VECTOR", "$accept", "program", "expr", "atribuicao", "aritmetica",
+  "numero", "relacional", "valorBool", "tipos", "declaracao", "varNames",
+  "varNomesETipos", "funcao", "criarFuncao", "$@1", "anyTipe", "comando",
+  "corpo", "$@2", "condicional", "if", "else", "elseIF", "tabulacao",
+  "repeticao", "imprimir", "input", "retornar", "comment", YY_NULLPTR
 };
 #endif
 
@@ -690,16 +692,16 @@ static const yytype_int16 yytoknum[] =
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
      285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
      295,   296,   297,   298,   299,   300,   301,   302,   303,   304,
-     305,   306,   307,   308,   309
+     305,   306,   307,   308,   309,   310
 };
 # endif
 
-#define YYPACT_NINF (-144)
+#define YYPACT_NINF (-132)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-97)
+#define YYTABLE_NINF (-41)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -708,24 +710,23 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     -31,   -41,     7,   -29,  -144,  -144,   -26,    -9,    -6,  -144,
-    -144,   242,  -144,  -144,  -144,  -144,  -144,  -144,  -144,     2,
-      14,    15,   316,  -144,     8,    19,    26,    88,     1,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,  -144,   138,  -144,
-     243,  -144,  -144,   377,    24,  -144,   361,  -144,  -144,  -144,
-    -144,  -144,  -144,  -144,  -144,  -144,  -144,    29,    88,    29,
-      33,  -144,   182,  -144,  -144,  -144,   242,    35,    33,  -144,
-    -144,   191,    31,   242,  -144,     6,  -144,  -144,   243,  -144,
-    -144,   361,  -144,  -144,  -144,  -144,    88,    88,    88,    88,
-      88,    88,  -144,  -144,    29,    29,    29,    29,    29,    29,
-      29,    29,    28,  -144,    37,  -144,   182,    45,  -144,   314,
-      56,    58,   190,  -144,  -144,  -144,    16,   277,   242,   278,
-     278,   126,   126,   182,   126,  -144,  -144,  -144,  -144,  -144,
-    -144,  -144,  -144,    54,    -9,    -9,    88,    -9,   150,  -144,
-    -144,   277,  -144,    53,  -144,   322,  -144,    57,    23,  -144,
-     -14,    -9,  -144,    -9,   150,    66,    -9,  -144,  -144,    -5,
-    -144,  -144,    60,    29,  -144,    12,  -144,    74,    76,  -144,
-      -9,    29,  -144,    80,    -9,    53,    72
+       3,   -29,    18,  -132,  -132,  -132,   223,  -132,  -132,  -132,
+    -132,  -132,  -132,  -132,   -23,     2,     4,   241,  -132,    -2,
+       7,    11,   -33,    15,  -132,  -132,  -132,  -132,  -132,  -132,
+    -132,  -132,  -132,   119,  -132,   172,  -132,  -132,   120,     6,
+    -132,   224,  -132,  -132,  -132,  -132,  -132,  -132,  -132,  -132,
+    -132,  -132,    54,   -33,    54,    16,  -132,   278,  -132,  -132,
+    -132,   223,    22,    16,  -132,  -132,    55,    45,   223,  -132,
+     223,   -33,   -33,   -33,   -33,   -33,   -33,  -132,  -132,    54,
+      54,    54,    54,    54,    54,    54,    54,    52,    61,  -132,
+     278,    60,  -132,    12,    70,    74,   171,  -132,  -132,  -132,
+      21,   223,   190,   190,   138,   138,   278,   138,  -132,  -132,
+    -132,  -132,  -132,  -132,  -132,  -132,   223,    68,   -29,   -29,
+     -33,   -29,   258,  -132,  -132,   223,  -132,    67,  -132,    63,
+    -132,    72,    62,  -132,    -9,   -29,  -132,   -29,   258,    78,
+     -29,  -132,  -132,    67,  -132,  -132,    75,    54,  -132,    -7,
+    -132,    81,    92,  -132,   -29,    54,  -132,   100,   -29,    67,
+      94
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -733,40 +734,39 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     0,     3,     1,     0,     0,    83,     2,
-      85,    25,    53,    54,    56,    57,    58,    55,    59,     0,
-       0,     0,     0,    82,     0,     0,     0,     0,    28,   104,
-      11,    40,    39,    75,    72,    71,    51,    74,     0,     7,
-       4,    27,     5,    41,     0,     6,     8,    10,    13,     9,
-      77,    86,    78,    79,    80,    81,    12,     0,     0,     0,
-      28,    73,   103,    29,   102,    67,    25,     0,    28,    40,
-      39,     0,     0,    25,    84,    28,    21,    23,    14,    15,
-      16,    18,    20,    24,    19,    22,     0,     0,     0,     0,
-       0,     0,    37,    38,     0,     0,     0,     0,     0,     0,
-       0,     0,    62,    61,    60,    51,    52,     0,    29,     0,
-       0,     0,     0,   101,    36,    62,     0,    26,    25,    30,
-      31,    33,    32,    34,    35,    43,    44,    45,    46,    47,
-      48,    50,    49,     0,     0,     0,     0,     0,     0,   100,
-      66,    17,    63,    96,    97,     0,    99,     0,     0,    94,
-      87,     0,    64,     0,     0,     0,     0,    95,    88,    89,
-      98,    68,     0,     0,    91,     0,    65,     0,     0,    90,
-       0,     0,    92,     0,     0,    96,    93
+       0,     0,     0,    71,     2,     1,    74,    41,    42,    44,
+      45,    46,    43,    47,     0,     0,     0,     0,    70,     0,
+       0,     0,     0,    16,    91,     9,    28,    27,    63,    60,
+      59,    39,    62,     0,    11,     3,    15,     4,    29,     0,
+       5,     6,     8,    12,     7,    65,    73,    66,    67,    68,
+      69,    10,     0,     0,     0,    16,    61,    90,    17,    89,
+      55,    74,     0,    16,    28,    27,     0,     0,    74,    72,
+      13,     0,     0,     0,     0,     0,     0,    25,    26,     0,
+       0,     0,     0,     0,     0,     0,     0,    50,    48,    39,
+      40,     0,    17,     0,     0,     0,     0,    88,    24,    50,
+       0,    14,    18,    19,    21,    20,    22,    23,    31,    32,
+      33,    34,    35,    36,    38,    37,    74,     0,     0,     0,
+       0,     0,     0,    87,    54,    49,    51,    83,    84,     0,
+      86,     0,     0,    81,    78,     0,    52,     0,     0,     0,
+       0,    82,    75,    83,    85,    56,     0,     0,    77,    78,
+      53,     0,     0,    76,     0,     0,    79,     0,     0,    83,
+      80
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-    -144,  -144,  -144,   -60,   -33,    -1,  -144,   -37,   301,  -129,
-     -21,    51,  -144,   -11,   -19,  -144,   -20,    -3,  -106,  -144,
-    -144,  -144,   -38,  -144,  -143,  -144,  -144,  -144,  -144,    -2
+    -132,  -132,    -5,  -132,    -3,  -132,   -50,   226,  -113,  -132,
+      73,  -132,    -6,  -132,  -132,   126,  -132,  -111,  -132,  -132,
+    -132,    -4,  -132,  -131,  -132,  -132,  -132,  -132,  -132
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
-      -1,     2,     3,    38,    39,   106,    41,    42,    43,    44,
-      45,   104,   148,    63,    47,   111,    48,    49,     9,    11,
-      50,    51,   158,   159,   150,    52,    53,    54,    55,    56
+      -1,     2,    70,    34,    90,    36,    37,    38,    39,    40,
+      88,   132,    58,    42,    95,    43,    44,     4,     6,    45,
+      46,   142,   143,   134,    47,    48,    49,    50,    51
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -774,148 +774,127 @@ static const yytype_int16 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int16 yytable[] =
 {
-      46,    79,    64,     1,     4,    77,   112,     5,     6,   147,
-      40,   103,     7,   117,   155,   156,   165,    80,    83,    82,
-     107,    62,   110,   -96,   -96,   162,    71,    81,   143,   144,
-       8,   146,   176,   157,    10,    84,    85,    78,    72,    57,
-     168,   156,   149,    72,    73,   160,   108,   161,   108,   118,
-     164,    58,    59,    65,   140,    46,    66,   109,   141,   157,
-     133,   153,    46,    67,   172,    40,    27,   154,   175,   102,
-      72,    73,    40,   113,    68,    79,   115,    69,    70,    77,
-      79,   133,   105,   134,    77,   119,   120,   121,   122,   123,
-     124,    80,    83,    82,   137,   138,    80,    83,    82,   142,
-     149,    81,   152,   163,    79,   166,    81,    46,    77,    84,
-      85,    78,   170,   171,    84,    85,    78,    40,   174,   157,
-      80,    83,    82,   116,     0,    27,   167,   169,     0,     0,
-      81,     0,     0,    68,   173,   145,    69,    70,    84,    85,
-      78,    12,    13,    14,    15,    16,    17,    18,    90,    91,
-      92,    93,   108,    12,    13,    14,    15,    16,    17,    18,
-     108,     0,     0,     0,     0,    19,     0,     0,    20,    21,
-      22,    23,    24,    25,    26,    27,     0,     0,    74,     0,
-       0,     0,     0,    75,    29,    76,    31,    32,    33,    34,
-      35,    36,    37,    12,    13,    14,    15,    16,    17,    18,
-      86,    87,    88,    89,    90,    91,    92,    93,     0,    86,
-      87,    88,    89,    90,    91,    92,    93,    19,     0,     0,
-      20,    21,    22,    23,    24,    25,    26,    27,   139,   114,
-       0,     0,     0,     0,     0,    75,    29,    76,    31,    32,
-      33,    34,    35,    36,    37,    12,    13,    14,    15,    16,
-      17,    18,     0,   -52,   -52,   -52,   -52,   -52,   -52,   -52,
-     -52,    86,    87,    88,    89,    90,    91,    92,    93,    19,
-       0,     0,    20,    21,    22,    23,    24,    25,    26,    27,
-      12,    13,    14,    15,    16,    17,    18,    28,    29,    30,
-      31,    32,    33,    34,    35,    36,    37,     0,    88,    89,
-      90,    91,    92,    93,    19,     0,     0,    20,    21,    22,
-      23,    24,    25,    26,    27,     0,     0,     0,     0,     0,
-       0,     0,    75,    29,    76,    31,    32,    33,    34,    35,
-      36,    37,    86,    87,    88,    89,    90,    91,    92,    93,
-      86,    87,    88,    89,    90,    91,    92,    93,     0,     0,
-       0,     0,   135,    27,     0,     0,     0,     0,   136,     0,
-     151,    60,     0,     0,    31,    32,    33,    34,    35,    61,
-      37,   -29,   -29,   -29,   -29,   -29,   -29,   -29,   -29,   -29,
-     -29,   -29,   -29,   -29,   -29,   -29,   -29,    94,    95,    96,
-      97,    98,    99,   100,   101,   125,   126,   127,   128,   129,
-     130,   131,   132
+      41,    33,    91,    35,    94,    22,     1,   127,   128,   131,
+     130,     3,   149,    63,    57,    52,    64,    65,     5,    66,
+     139,   140,   152,   140,   144,   146,   145,    41,   160,   148,
+      35,    71,    72,    73,    74,    75,    76,    77,    78,   141,
+      53,   141,    54,   156,    60,    61,    92,   159,    92,    62,
+      93,   119,    87,    67,    67,    41,    96,   120,    35,    68,
+     124,    97,    41,   101,    41,    35,   117,    35,   102,   103,
+     104,   105,   106,   107,    71,    72,    73,    74,    75,    76,
+      77,    78,    71,    72,    73,    74,    75,    76,    77,    78,
+      41,    99,    22,    35,    98,    41,   116,   151,    35,   118,
+      63,   137,   135,    64,    65,   157,   117,   138,    89,   121,
+      41,   125,   122,    35,   126,   133,   147,   129,   136,    41,
+     154,   150,    35,     7,     8,     9,    10,    11,    12,    13,
+     155,    79,    80,    81,    82,    83,    84,    85,    86,   158,
+     100,    92,   141,    59,     0,   153,     0,    14,     0,    92,
+      15,    16,    17,    18,    19,    20,    21,    22,     0,     0,
+      69,    75,    76,    77,    78,    23,    24,    25,    26,    27,
+      28,    29,    30,    31,    32,     7,     8,     9,    10,    11,
+      12,    13,     0,   -40,   -40,   -40,   -40,   -40,   -40,   -40,
+     -40,    71,    72,    73,    74,    75,    76,    77,    78,    14,
+       0,     0,    15,    16,    17,    18,    19,    20,    21,    22,
+     123,    73,    74,    75,    76,    77,    78,    23,    24,    25,
+      26,    27,    28,    29,    30,    31,    32,     7,     8,     9,
+      10,    11,    12,    13,     0,   -17,   -17,   -17,   -17,   -17,
+     -17,   -17,   -17,   -17,   -17,   -17,   -17,   -17,   -17,   -17,
+     -17,    14,     0,     0,    15,    16,    17,    18,    19,    20,
+      21,    22,     7,     8,     9,    10,    11,    12,    13,    23,
+      24,    25,    26,    27,    28,    29,    30,    31,    32,    22,
+       0,     0,     0,     0,     0,     0,     0,    55,     0,     0,
+      26,    27,    28,    29,    30,    56,    32,    71,    72,    73,
+      74,    75,    76,    77,    78,   108,   109,   110,   111,   112,
+     113,   114,   115
 };
 
 static const yytype_int16 yycheck[] =
 {
-      11,    38,    22,    34,    45,    38,    66,     0,    37,   138,
-      11,    44,    38,    73,    28,    29,   159,    38,    38,    38,
-      57,    22,    59,    28,    29,   154,    27,    38,   134,   135,
-      39,   137,   175,    47,    40,    38,    38,    38,    37,    37,
-      28,    29,    47,    37,    43,   151,    57,   153,    59,    43,
-     156,    37,    37,    45,    38,    66,    37,    58,   118,    47,
-      44,    38,    73,    37,   170,    66,    37,    44,   174,    45,
-      37,    43,    73,    38,    45,   112,    45,    48,    49,   112,
-     117,    44,    53,    38,   117,    86,    87,    88,    89,    90,
-      91,   112,   112,   112,    38,    37,   117,   117,   117,    45,
-      47,   112,    45,    37,   141,    45,   117,   118,   141,   112,
-     112,   112,    38,    37,   117,   117,   117,   118,    38,    47,
-     141,   141,   141,    72,    -1,    37,   163,   165,    -1,    -1,
-     141,    -1,    -1,    45,   171,   136,    48,    49,   141,   141,
-     141,     3,     4,     5,     6,     7,     8,     9,    22,    23,
-      24,    25,   163,     3,     4,     5,     6,     7,     8,     9,
-     171,    -1,    -1,    -1,    -1,    27,    -1,    -1,    30,    31,
-      32,    33,    34,    35,    36,    37,    -1,    -1,    40,    -1,
-      -1,    -1,    -1,    45,    46,    47,    48,    49,    50,    51,
-      52,    53,    54,     3,     4,     5,     6,     7,     8,     9,
-      18,    19,    20,    21,    22,    23,    24,    25,    -1,    18,
-      19,    20,    21,    22,    23,    24,    25,    27,    -1,    -1,
-      30,    31,    32,    33,    34,    35,    36,    37,    38,    38,
-      -1,    -1,    -1,    -1,    -1,    45,    46,    47,    48,    49,
-      50,    51,    52,    53,    54,     3,     4,     5,     6,     7,
-       8,     9,    -1,    10,    11,    12,    13,    14,    15,    16,
-      17,    18,    19,    20,    21,    22,    23,    24,    25,    27,
-      -1,    -1,    30,    31,    32,    33,    34,    35,    36,    37,
-       3,     4,     5,     6,     7,     8,     9,    45,    46,    47,
-      48,    49,    50,    51,    52,    53,    54,    -1,    20,    21,
-      22,    23,    24,    25,    27,    -1,    -1,    30,    31,    32,
-      33,    34,    35,    36,    37,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    45,    46,    47,    48,    49,    50,    51,    52,
-      53,    54,    18,    19,    20,    21,    22,    23,    24,    25,
-      18,    19,    20,    21,    22,    23,    24,    25,    -1,    -1,
-      -1,    -1,    38,    37,    -1,    -1,    -1,    -1,    44,    -1,
-      38,    45,    -1,    -1,    48,    49,    50,    51,    52,    53,
-      54,    10,    11,    12,    13,    14,    15,    16,    17,    18,
-      19,    20,    21,    22,    23,    24,    25,    10,    11,    12,
-      13,    14,    15,    16,    17,    94,    95,    96,    97,    98,
-      99,   100,   101
+       6,     6,    52,     6,    54,    38,     3,   118,   119,   122,
+     121,    40,   143,    46,    17,    38,    49,    50,     0,    22,
+      29,    30,    29,    30,   135,   138,   137,    33,   159,   140,
+      33,    19,    20,    21,    22,    23,    24,    25,    26,    48,
+      38,    48,    38,   154,    46,    38,    52,   158,    54,    38,
+      53,    39,    46,    38,    38,    61,    61,    45,    61,    44,
+      39,    39,    68,    68,    70,    68,    45,    70,    71,    72,
+      73,    74,    75,    76,    19,    20,    21,    22,    23,    24,
+      25,    26,    19,    20,    21,    22,    23,    24,    25,    26,
+      96,    46,    38,    96,    39,   101,    44,   147,   101,    39,
+      46,    39,    39,    49,    50,   155,    45,    45,    54,    39,
+     116,   116,    38,   116,    46,    48,    38,   120,    46,   125,
+      39,    46,   125,     4,     5,     6,     7,     8,     9,    10,
+      38,    11,    12,    13,    14,    15,    16,    17,    18,    39,
+      67,   147,    48,    17,    -1,   149,    -1,    28,    -1,   155,
+      31,    32,    33,    34,    35,    36,    37,    38,    -1,    -1,
+      41,    23,    24,    25,    26,    46,    47,    48,    49,    50,
+      51,    52,    53,    54,    55,     4,     5,     6,     7,     8,
+       9,    10,    -1,    11,    12,    13,    14,    15,    16,    17,
+      18,    19,    20,    21,    22,    23,    24,    25,    26,    28,
+      -1,    -1,    31,    32,    33,    34,    35,    36,    37,    38,
+      39,    21,    22,    23,    24,    25,    26,    46,    47,    48,
+      49,    50,    51,    52,    53,    54,    55,     4,     5,     6,
+       7,     8,     9,    10,    -1,    11,    12,    13,    14,    15,
+      16,    17,    18,    19,    20,    21,    22,    23,    24,    25,
+      26,    28,    -1,    -1,    31,    32,    33,    34,    35,    36,
+      37,    38,     4,     5,     6,     7,     8,     9,    10,    46,
+      47,    48,    49,    50,    51,    52,    53,    54,    55,    38,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    46,    -1,    -1,
+      49,    50,    51,    52,    53,    54,    55,    19,    20,    21,
+      22,    23,    24,    25,    26,    79,    80,    81,    82,    83,
+      84,    85,    86
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    34,    56,    57,    45,     0,    37,    38,    39,    73,
-      40,    74,     3,     4,     5,     6,     7,     8,     9,    27,
-      30,    31,    32,    33,    34,    35,    36,    37,    45,    46,
-      47,    48,    49,    50,    51,    52,    53,    54,    58,    59,
-      60,    61,    62,    63,    64,    65,    68,    69,    71,    72,
-      75,    76,    80,    81,    82,    83,    84,    37,    37,    37,
-      45,    53,    60,    68,    71,    45,    37,    37,    45,    48,
-      49,    60,    37,    43,    40,    45,    47,    59,    60,    62,
-      65,    68,    69,    71,    72,    84,    18,    19,    20,    21,
-      22,    23,    24,    25,    10,    11,    12,    13,    14,    15,
-      16,    17,    45,    59,    66,    53,    60,    62,    68,    60,
-      62,    70,    58,    38,    38,    45,    66,    58,    43,    60,
-      60,    60,    60,    60,    60,    63,    63,    63,    63,    63,
-      63,    63,    63,    44,    38,    38,    44,    38,    37,    38,
-      38,    58,    45,    73,    73,    60,    73,    64,    67,    47,
-      79,    38,    45,    38,    44,    28,    29,    47,    77,    78,
-      73,    73,    64,    37,    73,    79,    45,    62,    28,    77,
-      38,    37,    73,    62,    38,    73,    79
+       0,     3,    57,    40,    73,     0,    74,     4,     5,     6,
+       7,     8,     9,    10,    28,    31,    32,    33,    34,    35,
+      36,    37,    38,    46,    47,    48,    49,    50,    51,    52,
+      53,    54,    55,    58,    59,    60,    61,    62,    63,    64,
+      65,    68,    69,    71,    72,    75,    76,    80,    81,    82,
+      83,    84,    38,    38,    38,    46,    54,    60,    68,    71,
+      46,    38,    38,    46,    49,    50,    60,    38,    44,    41,
+      58,    19,    20,    21,    22,    23,    24,    25,    26,    11,
+      12,    13,    14,    15,    16,    17,    18,    46,    66,    54,
+      60,    62,    68,    60,    62,    70,    58,    39,    39,    46,
+      66,    58,    60,    60,    60,    60,    60,    60,    63,    63,
+      63,    63,    63,    63,    63,    63,    44,    45,    39,    39,
+      45,    39,    38,    39,    39,    58,    46,    73,    73,    60,
+      73,    64,    67,    48,    79,    39,    46,    39,    45,    29,
+      30,    48,    77,    78,    73,    73,    64,    38,    73,    79,
+      46,    62,    29,    77,    39,    38,    73,    62,    39,    73,
+      79
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    55,    56,    57,    58,    58,    58,    58,    58,    58,
-      58,    58,    58,    58,    58,    58,    58,    58,    58,    58,
-      58,    58,    58,    58,    58,    58,    59,    60,    60,    60,
-      60,    60,    60,    60,    60,    60,    60,    60,    60,    61,
-      61,    62,    62,    62,    62,    62,    62,    62,    62,    62,
-      62,    63,    63,    64,    64,    64,    64,    64,    64,    64,
-      65,    65,    66,    66,    67,    67,    68,    70,    69,    71,
-      71,    71,    71,    71,    71,    71,    71,    72,    72,    72,
-      72,    72,    72,    74,    73,    73,    75,    76,    76,    76,
-      76,    77,    78,    78,    79,    79,    79,    80,    80,    80,
-      81,    82,    83,    83,    84
+       0,    56,    57,    58,    58,    58,    58,    58,    58,    58,
+      58,    58,    58,    58,    59,    60,    60,    60,    60,    60,
+      60,    60,    60,    60,    60,    60,    60,    61,    61,    62,
+      62,    62,    62,    62,    62,    62,    62,    62,    62,    63,
+      63,    64,    64,    64,    64,    64,    64,    64,    65,    65,
+      66,    66,    67,    67,    68,    70,    69,    71,    71,    71,
+      71,    71,    71,    71,    71,    72,    72,    72,    72,    72,
+      72,    74,    73,    75,    76,    76,    76,    77,    77,    78,
+      78,    79,    79,    79,    80,    80,    80,    81,    82,    83,
+      83,    84
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     4,     2,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     2,     2,     2,     4,     2,     2,
-       2,     2,     2,     2,     2,     0,     3,     1,     1,     1,
-       3,     3,     3,     3,     3,     3,     3,     2,     2,     1,
-       1,     1,     1,     3,     3,     3,     3,     3,     3,     3,
-       3,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       2,     2,     1,     3,     2,     4,     4,     0,     7,     1,
+       0,     2,     2,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     2,     3,     1,     1,     1,     3,     3,
+       3,     3,     3,     3,     3,     2,     2,     1,     1,     1,
+       1,     3,     3,     3,     3,     3,     3,     3,     3,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     2,     4,
+       1,     3,     2,     4,     4,     0,     7,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     0,     4,     2,     1,     6,     7,     7,
-       9,     2,     5,     8,     1,     2,     0,     5,     7,     5,
-       4,     3,     2,     2,     1
+       1,     0,     4,     1,     0,     7,     9,     2,     0,     5,
+       8,     1,     2,     0,     5,     7,     5,     4,     3,     2,
+       2,     1
 };
 
 
@@ -1611,307 +1590,475 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 57 "translate.y"
-                                                              {(yyvsp[-2].NoObjeto).np = criaNo((yyvsp[-1].NoObjeto).np, (yyvsp[0].NoObjeto).np, "main"); (yyval.NoObjeto).np = criaNo((yyvsp[-3].NoObjeto).np, (yyvsp[-2].NoObjeto).np, "programa"); no = (yyval.NoObjeto).np;}
-#line 1617 "y.tab.c"
+#line 58 "translate.y"
+                     {(yyval.NoObjeto).np = criaNo(NULL, (yyvsp[0].NoObjeto).np, "main"); raiz = (yyval.NoObjeto).np;}
+#line 1596 "y.tab.c"
+    break;
+
+  case 3:
+#line 62 "translate.y"
+               {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1602 "y.tab.c"
+    break;
+
+  case 4:
+#line 63 "translate.y"
+                 {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1608 "y.tab.c"
+    break;
+
+  case 5:
+#line 64 "translate.y"
+                 {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1614 "y.tab.c"
+    break;
+
+  case 6:
+#line 65 "translate.y"
+             {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1620 "y.tab.c"
+    break;
+
+  case 7:
+#line 66 "translate.y"
+              {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1626 "y.tab.c"
+    break;
+
+  case 8:
+#line 67 "translate.y"
+                  {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1632 "y.tab.c"
+    break;
+
+  case 9:
+#line 68 "translate.y"
+                {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1638 "y.tab.c"
+    break;
+
+  case 10:
+#line 69 "translate.y"
+              {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1644 "y.tab.c"
+    break;
+
+  case 11:
+#line 70 "translate.y"
+                 {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1650 "y.tab.c"
+    break;
+
+  case 12:
+#line 71 "translate.y"
+              {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1656 "y.tab.c"
+    break;
+
+  case 13:
+#line 72 "translate.y"
+                {(yyval.NoObjeto).np = criaNo((yyvsp[-1].NoObjeto).np, (yyvsp[0].NoObjeto).np, "Expressões");}
+#line 1662 "y.tab.c"
+    break;
+
+  case 14:
+#line 76 "translate.y"
+                               {(yyvsp[-2].NoObjeto).np = criaNo(NULL, NULL, (yyvsp[-2].NoObjeto).nome); (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, "=");}
+#line 1668 "y.tab.c"
+    break;
+
+  case 15:
+#line 80 "translate.y"
+           {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1674 "y.tab.c"
+    break;
+
+  case 16:
+#line 81 "translate.y"
+                {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1680 "y.tab.c"
+    break;
+
+  case 17:
+#line 82 "translate.y"
+             {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1686 "y.tab.c"
+    break;
+
+  case 18:
+#line 83 "translate.y"
+                                            {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, "+");}
+#line 1692 "y.tab.c"
+    break;
+
+  case 19:
+#line 84 "translate.y"
+                                                 {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, "-");}
+#line 1698 "y.tab.c"
+    break;
+
+  case 20:
+#line 85 "translate.y"
+                                               {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, "/");}
+#line 1704 "y.tab.c"
+    break;
+
+  case 21:
+#line 86 "translate.y"
+                                                     {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, "*");}
+#line 1710 "y.tab.c"
+    break;
+
+  case 22:
+#line 87 "translate.y"
+                                           {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, "%");}
+#line 1716 "y.tab.c"
+    break;
+
+  case 23:
+#line 88 "translate.y"
+                                           {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, "**");}
+#line 1722 "y.tab.c"
+    break;
+
+  case 24:
+#line 89 "translate.y"
+                                                                {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[-1].NoObjeto).nome);}
+#line 1728 "y.tab.c"
+    break;
+
+  case 25:
+#line 90 "translate.y"
+                                       {(yyval.NoObjeto).np = criaNo((yyvsp[-1].NoObjeto).np, NULL, "++" );}
+#line 1734 "y.tab.c"
+    break;
+
+  case 26:
+#line 91 "translate.y"
+                                       {(yyval.NoObjeto).np = criaNo((yyvsp[-1].NoObjeto).np, NULL, "--");}
+#line 1740 "y.tab.c"
+    break;
+
+  case 27:
+#line 95 "translate.y"
+          {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1746 "y.tab.c"
+    break;
+
+  case 28:
+#line 96 "translate.y"
+          {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1752 "y.tab.c"
+    break;
+
+  case 29:
+#line 100 "translate.y"
+              {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1758 "y.tab.c"
     break;
 
   case 30:
-#line 98 "translate.y"
-                                            {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1623 "y.tab.c"
+#line 101 "translate.y"
+              {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1764 "y.tab.c"
     break;
 
   case 31:
-#line 99 "translate.y"
-                                                 {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1629 "y.tab.c"
+#line 102 "translate.y"
+                                               { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
+#line 1770 "y.tab.c"
     break;
 
   case 32:
-#line 100 "translate.y"
-                                               {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1635 "y.tab.c"
+#line 103 "translate.y"
+                                             { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
+#line 1776 "y.tab.c"
     break;
 
   case 33:
-#line 101 "translate.y"
-                                                     {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1641 "y.tab.c"
+#line 104 "translate.y"
+                                              { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
+#line 1782 "y.tab.c"
     break;
 
   case 34:
-#line 102 "translate.y"
-                                           {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1647 "y.tab.c"
+#line 105 "translate.y"
+                                              { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
+#line 1788 "y.tab.c"
     break;
 
   case 35:
-#line 103 "translate.y"
-                                           {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1653 "y.tab.c"
+#line 106 "translate.y"
+                                                { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
+#line 1794 "y.tab.c"
+    break;
+
+  case 36:
+#line 107 "translate.y"
+                                                { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
+#line 1800 "y.tab.c"
+    break;
+
+  case 37:
+#line 108 "translate.y"
+                                         { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
+#line 1806 "y.tab.c"
+    break;
+
+  case 38:
+#line 109 "translate.y"
+                                        { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
+#line 1812 "y.tab.c"
     break;
 
   case 39:
-#line 110 "translate.y"
-          {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
-#line 1659 "y.tab.c"
+#line 113 "translate.y"
+            {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1818 "y.tab.c"
     break;
 
   case 40:
-#line 111 "translate.y"
-          {(yyval.NoObjeto).np = criaNo(NULL, NULL, "inteiro");}
-#line 1665 "y.tab.c"
+#line 114 "translate.y"
+                 {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
+#line 1824 "y.tab.c"
     break;
 
   case 41:
-#line 115 "translate.y"
-              {(yyval.NoObjeto).np = NULL;}
-#line 1671 "y.tab.c"
+#line 118 "translate.y"
+             {inserir_tipo(T_INT); (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1830 "y.tab.c"
     break;
 
   case 42:
-#line 116 "translate.y"
-              {(yyval.NoObjeto).np = NULL;}
-#line 1677 "y.tab.c"
+#line 119 "translate.y"
+                {inserir_tipo(T_FLOAT);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1836 "y.tab.c"
     break;
 
   case 43:
-#line 117 "translate.y"
-                                               { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1683 "y.tab.c"
+#line 120 "translate.y"
+               {inserir_tipo(T_CHAR);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1842 "y.tab.c"
     break;
 
   case 44:
-#line 118 "translate.y"
-                                             { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1689 "y.tab.c"
+#line 121 "translate.y"
+                     {inserir_tipo(T_STRING);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1848 "y.tab.c"
     break;
 
   case 45:
-#line 119 "translate.y"
-                                              { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1695 "y.tab.c"
+#line 122 "translate.y"
+                      {inserir_tipo(T_BOOLEAN);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1854 "y.tab.c"
     break;
 
   case 46:
-#line 120 "translate.y"
-                                              { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1701 "y.tab.c"
+#line 123 "translate.y"
+                     {inserir_tipo(T_ARRAY);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1860 "y.tab.c"
     break;
 
   case 47:
-#line 121 "translate.y"
-                                                { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1707 "y.tab.c"
+#line 124 "translate.y"
+                   {inserir_tipo(T_DATE);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1866 "y.tab.c"
     break;
 
   case 48:
-#line 122 "translate.y"
-                                                { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1713 "y.tab.c"
+#line 128 "translate.y"
+                   {(yyvsp[0].NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome); (yyval.NoObjeto).np = criaNo((yyvsp[0].NoObjeto).np, NULL, (yyvsp[-1].NoObjeto).nome);}
+#line 1872 "y.tab.c"
     break;
 
   case 49:
-#line 123 "translate.y"
-                                         { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1719 "y.tab.c"
+#line 129 "translate.y"
+                                       {(yyvsp[-2].NoObjeto).np = criaNo(NULL, NULL, (yyvsp[-2].NoObjeto).nome); (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-3].NoObjeto).nome);}
+#line 1878 "y.tab.c"
     break;
 
   case 50:
-#line 124 "translate.y"
-                                        { (yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1725 "y.tab.c"
+#line 133 "translate.y"
+              {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1884 "y.tab.c"
+    break;
+
+  case 51:
+#line 134 "translate.y"
+                                       {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal);}
+#line 1890 "y.tab.c"
+    break;
+
+  case 52:
+#line 138 "translate.y"
+                    {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal); (yyvsp[0].NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome); (yyval.NoObjeto).np = criaNo(NULL,(yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
+#line 1896 "y.tab.c"
     break;
 
   case 53:
-#line 133 "translate.y"
-             {inserir_tipo(T_INT);}
-#line 1731 "y.tab.c"
+#line 139 "translate.y"
+                                                   {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal); (yyvsp[0].NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome); (yyval.NoObjeto).np = criaNo((yyvsp[-3].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
+#line 1902 "y.tab.c"
     break;
 
   case 54:
-#line 134 "translate.y"
-                {inserir_tipo(T_FLOAT);}
-#line 1737 "y.tab.c"
+#line 143 "translate.y"
+                                                                      {(yyval.NoObjeto).np = criaNo((yyvsp[-3].NoObjeto).np, (yyvsp[-1].NoObjeto).np, (yyval.NoObjeto).nome);}
+#line 1908 "y.tab.c"
     break;
 
   case 55:
-#line 135 "translate.y"
-               {inserir_tipo(T_CHAR);}
-#line 1743 "y.tab.c"
+#line 147 "translate.y"
+                                {adicionar_tabela('f',escopoAtual->tabela,tabelaGlobal);}
+#line 1914 "y.tab.c"
     break;
 
   case 56:
-#line 136 "translate.y"
-                     {inserir_tipo(T_STRING);}
-#line 1749 "y.tab.c"
+#line 147 "translate.y"
+                                                                                                                                                              {(yyvsp[-5].NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, NULL, (yyvsp[-5].NoObjeto).nome); (yyval.NoObjeto).np = criaNo((yyvsp[-5].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-6].NoObjeto).nome);}
+#line 1920 "y.tab.c"
     break;
 
   case 57:
-#line 137 "translate.y"
-                      {inserir_tipo(T_BOOLEAN);}
-#line 1755 "y.tab.c"
+#line 151 "translate.y"
+        {inserir_tipo(T_INT); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1926 "y.tab.c"
     break;
 
   case 58:
-#line 138 "translate.y"
-                     {inserir_tipo(T_ARRAY);}
-#line 1761 "y.tab.c"
+#line 152 "translate.y"
+                {inserir_tipo(T_FLOAT); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1932 "y.tab.c"
     break;
 
   case 59:
-#line 139 "translate.y"
-                  {inserir_tipo(T_DATE);}
-#line 1767 "y.tab.c"
+#line 153 "translate.y"
+               {inserir_tipo(T_CHAR); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1938 "y.tab.c"
     break;
 
   case 60:
-#line 143 "translate.y"
-                   {(yyval.NoObjeto).np = criaNo((yyvsp[-1].NoObjeto).np, (yyvsp[0].NoObjeto).np, "declaracao");}
-#line 1773 "y.tab.c"
+#line 154 "translate.y"
+                 {inserir_tipo(T_STRING); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1944 "y.tab.c"
+    break;
+
+  case 61:
+#line 155 "translate.y"
+                  {inserir_tipo(T_BOOLEAN); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1950 "y.tab.c"
     break;
 
   case 62:
-#line 148 "translate.y"
-              {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal);}
-#line 1779 "y.tab.c"
+#line 156 "translate.y"
+                 {inserir_tipo(T_ARRAY); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1956 "y.tab.c"
     break;
 
   case 63:
-#line 149 "translate.y"
-                                       {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal);}
-#line 1785 "y.tab.c"
-    break;
-
-  case 64:
-#line 153 "translate.y"
-                    {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal);}
-#line 1791 "y.tab.c"
-    break;
-
-  case 65:
-#line 154 "translate.y"
-                                                   {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal);}
-#line 1797 "y.tab.c"
-    break;
-
-  case 67:
-#line 162 "translate.y"
-                                {adicionar_tabela('f',escopoAtual->tabela,tabelaGlobal);}
-#line 1803 "y.tab.c"
-    break;
-
-  case 69:
-#line 166 "translate.y"
-        {inserir_tipo(T_INT); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-#line 1809 "y.tab.c"
+#line 157 "translate.y"
+               {inserir_tipo(T_DATE); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1962 "y.tab.c"
     break;
 
   case 70:
-#line 167 "translate.y"
-                {inserir_tipo(T_FLOAT); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-#line 1815 "y.tab.c"
+#line 166 "translate.y"
+                  {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1968 "y.tab.c"
     break;
 
   case 71:
-#line 168 "translate.y"
-               {inserir_tipo(T_CHAR); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-#line 1821 "y.tab.c"
+#line 169 "translate.y"
+                      {escopoAtual = aprofundarEscopo(escopoAtual);}
+#line 1974 "y.tab.c"
     break;
 
   case 72:
 #line 169 "translate.y"
-                 {inserir_tipo(T_STRING); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-#line 1827 "y.tab.c"
-    break;
-
-  case 73:
-#line 170 "translate.y"
-                  {inserir_tipo(T_BOOLEAN); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-#line 1833 "y.tab.c"
-    break;
-
-  case 74:
-#line 171 "translate.y"
-                 {inserir_tipo(T_ARRAY); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-#line 1839 "y.tab.c"
+                                                                                             {escopoAtual = voltarEscopo(escopoAtual);  (yyval.NoObjeto).np = (yyvsp[-1].NoObjeto).np;}
+#line 1980 "y.tab.c"
     break;
 
   case 75:
-#line 172 "translate.y"
-               {inserir_tipo(T_DATE); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal);}
-#line 1845 "y.tab.c"
+#line 177 "translate.y"
+                                                                                                  {struct No *temp =  criaNo((yyvsp[-4].NoObjeto).np, (yyvsp[-2].NoObjeto).np, (yyvsp[-6].NoObjeto).nome); (yyval.NoObjeto).np = criaNo(temp, (yyvsp[0].NoObjeto).np,"Mabel Label");}
+#line 1986 "y.tab.c"
     break;
 
-  case 83:
-#line 184 "translate.y"
-                      {escopoAtual = aprofundarEscopo(escopoAtual);}
-#line 1851 "y.tab.c"
+  case 76:
+#line 178 "translate.y"
+                                                                                                                    { struct No *temp =  criaNo((yyvsp[-6].NoObjeto).np, (yyvsp[-4].NoObjeto).np, (yyvsp[-8].NoObjeto).nome); struct No *temp2 = criaNo(temp, (yyvsp[-2].NoObjeto).np,(yyvsp[-2].NoObjeto).nome);(yyval.NoObjeto).np = criaNo(temp2,(yyvsp[0].NoObjeto).np,"Sable Label");}
+#line 1992 "y.tab.c"
+    break;
+
+  case 77:
+#line 181 "translate.y"
+                     {(yyval.NoObjeto).np = criaNo(NULL, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
+#line 1998 "y.tab.c"
+    break;
+
+  case 78:
+#line 182 "translate.y"
+      {(yyval.NoObjeto).np = NULL;}
+#line 2004 "y.tab.c"
+    break;
+
+  case 79:
+#line 185 "translate.y"
+                                                                                  {(yyval.NoObjeto).np =  criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-4].NoObjeto).nome);}
+#line 2010 "y.tab.c"
+    break;
+
+  case 80:
+#line 186 "translate.y"
+                                                                                                                   {(yyvsp[-5].NoObjeto).np =  criaNo((yyvsp[-3].NoObjeto).np, (yyvsp[-1].NoObjeto).np, (yyvsp[-5].NoObjeto).nome); (yyval.NoObjeto).np = criaNo((yyvsp[-7].NoObjeto).np, (yyvsp[-5].NoObjeto).np, (yyvsp[-7].NoObjeto).nome);}
+#line 2016 "y.tab.c"
     break;
 
   case 84:
-#line 184 "translate.y"
-                                                                                             {escopoAtual = voltarEscopo(escopoAtual);}
-#line 1857 "y.tab.c"
+#line 195 "translate.y"
+                                                                              {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-4].NoObjeto).nome);}
+#line 2022 "y.tab.c"
+    break;
+
+  case 85:
+#line 196 "translate.y"
+                                                                                                         {struct No *temp =  criaNo((yyvsp[-4].NoObjeto).np, (yyvsp[-2].NoObjeto).np, "Condicoes"); (yyval.NoObjeto).np = criaNo(temp, (yyvsp[0].NoObjeto).np, (yyvsp[-6].NoObjeto).nome);}
+#line 2028 "y.tab.c"
+    break;
+
+  case 86:
+#line 197 "translate.y"
+                                                                                  {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjeto).np, (yyvsp[0].NoObjeto).np, (yyvsp[-4].NoObjeto).nome);}
+#line 2034 "y.tab.c"
     break;
 
   case 87:
-#line 193 "translate.y"
-                                                                                       {criaNo((yyvsp[-3].NoObjeto).np, (yyvsp[-1].NoObjeto).np, (yyvsp[-5].NoObjeto).nome);}
-#line 1863 "y.tab.c"
+#line 200 "translate.y"
+                                                                    {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[-3].NoObjeto).nome);}
+#line 2040 "y.tab.c"
     break;
 
   case 88:
-#line 194 "translate.y"
-                                                                                                  { struct No *iff = criaNo((yyvsp[-4].NoObjeto).np, (yyvsp[-2].NoObjeto).np, (yyvsp[-6].NoObjeto).nome); (yyval.NoObjeto).np = criaNo(iff, (yyvsp[0].NoObjeto).np, "elseIF");}
-#line 1869 "y.tab.c"
+#line 203 "translate.y"
+                                                                {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[-2].NoObjeto).nome);}
+#line 2046 "y.tab.c"
     break;
 
-  case 91:
-#line 199 "translate.y"
-                     { (yyval.NoObjeto).np = criaNo(NULL, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome); }
-#line 1875 "y.tab.c"
+  case 89:
+#line 206 "translate.y"
+                         {(yyval.NoObjeto).np = criaNo((yyvsp[0].NoObjeto).np,NULL, (yyvsp[-1].NoObjeto).nome);}
+#line 2052 "y.tab.c"
     break;
 
-  case 97:
-#line 212 "translate.y"
-                                                                              {(yyval.NoObjeto).np = criaNo((yyvsp[-4].NoObjeto).np, NULL, "for");}
-#line 1881 "y.tab.c"
-    break;
-
-  case 98:
-#line 213 "translate.y"
-                                                                                                         {(yyval.NoObjeto).np = criaNo((yyvsp[-6].NoObjeto).np, (yyvsp[-5].NoObjeto).np, "for");}
-#line 1887 "y.tab.c"
-    break;
-
-  case 100:
-#line 217 "translate.y"
-                                                                    {(yyval.NoObjeto).np = criaNo(NULL, NULL, "printf");}
-#line 1893 "y.tab.c"
-    break;
-
-  case 101:
-#line 220 "translate.y"
-                                                                {(yyval.NoObjeto).np = criaNo(NULL, NULL, "scanf");}
-#line 1899 "y.tab.c"
-    break;
-
-  case 102:
-#line 223 "translate.y"
-                         {(yyval.NoObjeto).np = NULL;}
-#line 1905 "y.tab.c"
-    break;
-
-  case 103:
-#line 224 "translate.y"
-                              {(yyvsp[-1].NoObjeto).np = criaNo(NULL, NULL, "return"); (yyval.NoObjeto).np = criaNo((yyvsp[-1].NoObjeto).np, (yyvsp[0].NoObjeto).np, "return");}
-#line 1911 "y.tab.c"
+  case 90:
+#line 207 "translate.y"
+                              {(yyval.NoObjeto).np = criaNo((yyvsp[0].NoObjeto).np,NULL, (yyvsp[-1].NoObjeto).nome);}
+#line 2058 "y.tab.c"
     break;
 
 
-#line 1915 "y.tab.c"
+#line 2062 "y.tab.c"
 
       default: break;
     }
@@ -2143,7 +2290,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 229 "translate.y"
+#line 212 "translate.y"
 
 
 void yyerror(char *c){
@@ -2211,7 +2358,7 @@ int main(){
 
     printf("\n Árvore de Sintaxe Abstrata: \n\n");
     printf(" ");
-    imprimirArvore(no);
+    imprimirArvore(raiz);
     printf("______________________________________________\n");
     return 0;
 }

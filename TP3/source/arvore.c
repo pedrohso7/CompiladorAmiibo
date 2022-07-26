@@ -17,11 +17,11 @@ void imprimirArvore(struct No* arvore){
 }
 
 void imprimirEmOrdem(struct No *arvore){
-	int i;
 	if (arvore->filhoEsquerdo) {
 		imprimirEmOrdem(arvore->filhoEsquerdo);
 	}
 
+  if(strcmp(arvore->token, "Expressões") == 0) printf("\n");
   printf("%s, ", arvore->token);
 	
   if (arvore->filhoDireito) {
