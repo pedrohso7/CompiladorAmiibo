@@ -1,32 +1,15 @@
-Don soma(Bug x, Bug y){
-   Rover x ++ y
-}
+main{
+    Don numeroPar(Bug x, Bug y){
+        Mabel(x%2==0){
+            Rover true
+        }
 
-Orville(0, n) { 
-	// código 
-	Brewster
-}
+        Label{
+            Rover false
+        }
+    }
 
-Wilbur(true) {
-	Bug nome 
-	// código 
+SeaCreature b
+Bug a = "oi"
+b = numeroPar(a,b)
 }
-Mabel(x > 10) { 
-	Bug nome 
-	// código
-}
-Sable(x > 5) { 
-	// código 
-}
-Label { 
-	// código 
-}
-SeaCreature nome,da,var
-soma(x,y)
-//SeaCreature
-a = 10
-a = Saharah()
-Pave("Nome:")
-Pave(a)
-24/01/2010
-24/01/2021

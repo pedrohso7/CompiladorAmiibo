@@ -1,5 +1,4 @@
 main{
-    // declaracao variavel
     Bug numero
     Pave("Digite um número: ")
     numero = Saharah()

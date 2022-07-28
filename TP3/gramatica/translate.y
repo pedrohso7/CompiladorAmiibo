@@ -9,15 +9,23 @@
     #include "../headers/escopo.h"
     extern int yylineno;
     extern char* yytext;
+    
 
     void yyerror(char *c);
     int yylex(void);
     void inserir_tipo(TipoPrimitivo entrada);
-    void adicionar_tabela(char c,TabelaDeSimbolos* tabela,TabelaDeSimbolos* global);
+    void adicionar_tabela(char* nome, char c,TabelaDeSimbolos* tabela,TabelaDeSimbolos* global);
+    void checar_declaracao(char* c);
+    int checar_tipos(int tipoA,int tipoB);
     EscopoPonteiro aprofundarEscopo(EscopoPonteiro escopoAcima);
     EscopoPonteiro voltarEscopo(EscopoPonteiro escopo);
+    TipoPrimitivo get_tipo_Tabela(char* c);
 
-    int ImprimirFechamentoEscopo = -1;
+
+
+    int errosemantico = 0;
+    char errors[10][100];
+    int ImprimirFechamentoEscopo = 0;
     TipoPrimitivo tipo;
     TabelaDeSimbolos *tabelaGlobal;
     EscopoPonteiro escopoAtual;
@@ -26,10 +34,16 @@
 %}
 
 %union{
-    struct nomeVariavel{
+    struct NoObjeto{
         char nome[100];
         struct No *np;
     } NoObjeto;
+    
+    struct NoObjeto2 { 
+			char nome[100];
+            struct No *np;
+			int tipo;
+	} NoObjetoTipado; 
 }
 
 %token <NoObjeto> MAIN_TOKEN
@@ -43,10 +57,12 @@
 %token <NoObjeto> ABRIR_PARENTESES_TOKEN FECHAR_PARENTESES_TOKEN
 %token <NoObjeto> ABRIR_CHAVE_TOKEN FECHAR_CHAVE_TOKEN  
 %token <NoObjeto> ABRIR_COLCHETE_TOKEN FECHAR_COLCHETE_TOKEN
-%token <NoObjeto> ATRIB_TOKEN VIRGULA_TOKEN VAR_TOKEN COMMENT_TOKEN
+%token <NoObjeto> ATRIB_TOKEN VIRGULA_TOKEN  COMMENT_TOKEN
 %token <NoObjeto> EOL_TOKEN
-%token <NoObjeto> INT FLOAT DATE STRING CHAR BOOLEAN VECTOR
-%type <NoObjeto> expr program aritmetica numero relacional valorBool tipos declaracao varNames varNomesETipos funcao criarFuncao anyTipe comando corpo condicional if else elseIF tabulacao repeticao imprimir input retornar comment atribuicao
+%token <NoObjetoTipado> INT FLOAT DATE STRING CHAR BOOLEAN VECTOR VAR_TOKEN
+
+%type <NoObjeto> expr program tipos declaracao varNames varNomesETipos funcao criarFuncao comando corpo condicional if else elseIF tabulacao repeticao imprimir input retornar comment atribuicao parametros
+%type <NoObjetoTipado> init aritmetica relacional numero anyTipe valorBool
 
 %left MATEMATICO_SOMA MATEMATICO_SUBTRACAO
 %left MATEMATICO_DIVISAO MATEMATICO_MULTIPLICACAO
@@ -73,45 +89,55 @@ expr:
     ;
 
 atribuicao: 
-    VAR_TOKEN ATRIB_TOKEN expr {$1.np = criaNo(NULL, NULL, $1.nome); $$.np = criaNo($1.np, $3.np, "=");}
+    VAR_TOKEN {checar_declaracao($1.nome);}  ATRIB_TOKEN init {
+        $1.np = criaNo(NULL, NULL, $1.nome); 
+        $$.np = criaNo($1.np, $4.np, "=");
+        checar_tipos(get_tipo_Tabela($1.nome),$4.tipo);
+        }
     ;
 
+init:
+    aritmetica {$$.np = $1.np;$$.tipo = $1.tipo;}
+    | anyTipe {$$.np = $1.np;$$.tipo = $1.tipo;}
+    | relacional {$$.np = $1.np;$$.tipo = $1.tipo;}
+    | input {$$.np = $1.np;$$.tipo = T_STRING;}
+
 aritmetica:
-    numero {$$.np = $1.np;}
-    | VAR_TOKEN {$$.np = criaNo(NULL, NULL, $1.nome);}
-    | funcao {$$.np = $1.np;}
-    | aritmetica MATEMATICO_SOMA aritmetica {$$.np = criaNo($1.np, $3.np, "+");}
-    | aritmetica MATEMATICO_SUBTRACAO aritmetica {$$.np = criaNo($1.np, $3.np, "-");}
-    | aritmetica MATEMATICO_DIVISAO aritmetica {$$.np = criaNo($1.np, $3.np, "/");}
-    | aritmetica MATEMATICO_MULTIPLICACAO aritmetica {$$.np = criaNo($1.np, $3.np, "*");}
-    | aritmetica MATEMATICO_MOD aritmetica {$$.np = criaNo($1.np, $3.np, "%");}
-    | aritmetica MATEMATICO_POW aritmetica {$$.np = criaNo($1.np, $3.np, "**");}
-    | ABRIR_PARENTESES_TOKEN aritmetica FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, $2.nome);}
-    | aritmetica MATEMATICO_INCREMENTO {$$.np = criaNo($1.np, NULL, "++" );}
-    | aritmetica MATEMATICO_DECREMENTO {$$.np = criaNo($1.np, NULL, "--");}
+    numero {$$.np = $1.np; $$.tipo = $1.tipo;}
+    | VAR_TOKEN {$$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = get_tipo_Tabela($1.nome);}
+    | funcao {$$.np = $1.np;$$.tipo = T_DESCONHECIDO;}
+    | aritmetica MATEMATICO_SOMA aritmetica {$$.np = criaNo($1.np, $3.np, "+");$$.tipo = $1.tipo;}
+    | aritmetica MATEMATICO_SUBTRACAO aritmetica {$$.np = criaNo($1.np, $3.np, "-");$$.tipo = $1.tipo;}
+    | aritmetica MATEMATICO_DIVISAO aritmetica {$$.np = criaNo($1.np, $3.np, "/");$$.tipo = $1.tipo;}
+    | aritmetica MATEMATICO_MULTIPLICACAO aritmetica {$$.np = criaNo($1.np, $3.np, "*");$$.tipo = $1.tipo;}
+    | aritmetica MATEMATICO_MOD aritmetica {$$.np = criaNo($1.np, $3.np, "%");$$.tipo = $1.tipo;}
+    | aritmetica MATEMATICO_POW aritmetica {$$.np = criaNo($1.np, $3.np, "**");$$.tipo = $1.tipo;}
+    | ABRIR_PARENTESES_TOKEN aritmetica FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, $2.nome);$$.tipo = $2.tipo;}
+    | aritmetica MATEMATICO_INCREMENTO {$$.np = criaNo($1.np, NULL, "++" );$$.tipo = $1.tipo;}
+    | aritmetica MATEMATICO_DECREMENTO {$$.np = criaNo($1.np, NULL, "--");$$.tipo = $1.tipo;}
     ;
 
 numero:
-    FLOAT {$$.np = criaNo(NULL, NULL, $1.nome);}
-    | INT {$$.np = criaNo(NULL, NULL, $1.nome);}
+    FLOAT {$$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = T_FLOAT;} 
+    | INT {$$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = T_INT;}
     ;
     
 relacional:
-    valorBool {$$.np = $1.np;}
-    | funcao  {$$.np = $1.np;}
-    | valorBool RELACIONAL_IGUALDADE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);}
-    | valorBool RELACIONAL_NEGACAO valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);}
-    | valorBool RELACIONAL_MAIORQUE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);}
-    | valorBool RELACIONAL_MENORQUE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);}
-    | valorBool RELACIONAL_MAIORIGUAL valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);}
-    | valorBool RELACIONAL_MENORIGUAL valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);}
-    | valorBool RELACIONAL_AND valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);}
-    | valorBool RELACIONAL_OR valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);}
+    valorBool {$$.np = $1.np;$$.tipo = $1.tipo;}
+    | funcao  {$$.np = $1.np;$$.tipo = T_DESCONHECIDO;}
+    | valorBool RELACIONAL_IGUALDADE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
+    | valorBool RELACIONAL_NEGACAO valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
+    | valorBool RELACIONAL_MAIORQUE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
+    | valorBool RELACIONAL_MENORQUE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
+    | valorBool RELACIONAL_MAIORIGUAL valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
+    | valorBool RELACIONAL_MENORIGUAL valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
+    | valorBool RELACIONAL_AND valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
+    | valorBool RELACIONAL_OR valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
     ;
 
 valorBool:
-    BOOLEAN {$$.np = criaNo(NULL, NULL, $1.nome);}
-    | aritmetica {$$.np = $1.np;}
+    BOOLEAN {$$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = T_BOOLEAN;}
+    | aritmetica {$$.np = $1.np;$$.tipo = $1.tipo;}
     ;
 
 tipos:
@@ -126,35 +152,44 @@ tipos:
 
 declaracao:
     tipos varNames {$2.np = criaNo(NULL, NULL, $2.nome); $$.np = criaNo($2.np, NULL, $1.nome);}
-    | tipos VAR_TOKEN ATRIB_TOKEN expr {$2.np = criaNo(NULL, NULL, $2.nome); $$.np = criaNo($2.np, $4.np, $1.nome);}
+    | tipos VAR_TOKEN{adicionar_tabela($2.nome,'v',escopoAtual->tabela,tabelaGlobal);} ATRIB_TOKEN init {
+        $2.np = criaNo(NULL, NULL, $2.nome); 
+        $$.np = criaNo($2.np, $5.np, $1.nome);
+        checar_tipos(get_tipo_Tabela($2.nome),$5.tipo);
+
+        }
     ;
 
 varNames:
-    VAR_TOKEN {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);}
-    | varNames VIRGULA_TOKEN VAR_TOKEN {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal);}
+    VAR_TOKEN {adicionar_tabela($1.nome,'v',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);}
+    | varNames VIRGULA_TOKEN VAR_TOKEN {adicionar_tabela($3.nome,'v',escopoAtual->tabela,tabelaGlobal);}
     ;
 
 varNomesETipos:
-    tipos VAR_TOKEN {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal); $2.np = criaNo(NULL, NULL, $2.nome); $$.np = criaNo(NULL,$2.np, $1.nome);}
-    | varNomesETipos VIRGULA_TOKEN tipos VAR_TOKEN {adicionar_tabela('v',escopoAtual->tabela,tabelaGlobal); $4.np = criaNo(NULL, NULL, $4.nome); $$.np = criaNo($1.np, $4.np, $3.nome);}
+    tipos VAR_TOKEN {adicionar_tabela($1.nome,'v',escopoAtual->tabela,tabelaGlobal); $2.np = criaNo(NULL, NULL, $2.nome); $$.np = criaNo(NULL,$2.np, $1.nome);}
+    | varNomesETipos VIRGULA_TOKEN tipos VAR_TOKEN {adicionar_tabela($4.nome,'v',escopoAtual->tabela,tabelaGlobal); $4.np = criaNo(NULL, NULL, $4.nome); $$.np = criaNo($1.np, $4.np, $3.nome);}
     ;
 
 funcao:
-    VAR_TOKEN ABRIR_PARENTESES_TOKEN varNames FECHAR_PARENTESES_TOKEN {$$.np = criaNo($1.np, $3.np, $$.nome);}
+    VAR_TOKEN ABRIR_PARENTESES_TOKEN parametros FECHAR_PARENTESES_TOKEN {$$.np = criaNo($1.np, $3.np, $$.nome);}
 
+parametros:
+     VAR_TOKEN {$$.np = criaNo(NULL, NULL, $1.nome);}
+    | parametros VIRGULA_TOKEN VAR_TOKEN
+    ;
 
 criarFuncao:
-    CREATE_FUNC_TOKEN VAR_TOKEN {adicionar_tabela('f',escopoAtual->tabela,tabelaGlobal);} ABRIR_PARENTESES_TOKEN varNomesETipos FECHAR_PARENTESES_TOKEN corpo {$2.np = criaNo($5.np, NULL, $2.nome); $$.np = criaNo($2.np, $7.np, $1.nome);}
+    CREATE_FUNC_TOKEN VAR_TOKEN {adicionar_tabela($2.nome,'f',escopoAtual->tabela,tabelaGlobal);} ABRIR_PARENTESES_TOKEN varNomesETipos FECHAR_PARENTESES_TOKEN corpo {$2.np = criaNo($5.np, NULL, $2.nome); $$.np = criaNo($2.np, $7.np, $1.nome);}
     
 
 anyTipe:
-    INT {inserir_tipo(T_INT); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);}
-	| FLOAT {inserir_tipo(T_FLOAT); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);}
-	| CHAR {inserir_tipo(T_CHAR); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);}
-	| STRING {inserir_tipo(T_STRING); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);}
-	| BOOLEAN {inserir_tipo(T_BOOLEAN); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);} 
-	| VECTOR {inserir_tipo(T_ARRAY); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);}
-	| DATE {inserir_tipo(T_DATE); adicionar_tabela('c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);}
+    INT {inserir_tipo(T_INT); adicionar_tabela($1.nome,'c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = T_INT;}
+	| FLOAT {inserir_tipo(T_FLOAT); adicionar_tabela($1.nome,'c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = T_FLOAT;}
+	| CHAR {inserir_tipo(T_CHAR); adicionar_tabela($1.nome,'c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = T_CHAR;}
+	| STRING {inserir_tipo(T_STRING); adicionar_tabela($1.nome,'c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = T_STRING;}
+	| BOOLEAN {inserir_tipo(T_BOOLEAN); adicionar_tabela($1.nome,'c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = T_BOOLEAN;} 
+	| VECTOR {inserir_tipo(T_ARRAY); adicionar_tabela($1.nome,'c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = T_ARRAY;}
+	| DATE {inserir_tipo(T_DATE); adicionar_tabela($1.nome,'c',escopoAtual->tabela,tabelaGlobal); $$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = T_DATE;}
     | VAR_TOKEN
     
 comando:
@@ -174,7 +209,7 @@ condicional:
 
 
 if:
-	| IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo tabulacao else {struct No *temp =  criaNo($3.np, $5.np, $1.nome); $$.np = criaNo(temp, $7.np,"Mabel Label");}
+	IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo tabulacao else {struct No *temp =  criaNo($3.np, $5.np, $1.nome); $$.np = criaNo(temp, $7.np,"Mabel Label");}
 	| IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo tabulacao elseIF tabulacao else  { struct No *temp =  criaNo($3.np, $5.np, $1.nome); struct No *temp2 = criaNo(temp, $7.np,$7.nome);$$.np = criaNo(temp2,$9.np,"Sable Label");}
 
 else:
@@ -221,32 +256,66 @@ void inserir_tipo(TipoPrimitivo entrada) {
 	tipo = entrada;
 }
 
-void adicionar_tabela(char c,TabelaDeSimbolos* tabela,TabelaDeSimbolos* global){
+// Caso de erro 1 - Variável não declarada
+void checar_declaracao(char* c){
+    int simbl = simboloExiste(escopoAtual->tabela,strdup(c));
+    if (simbl == 0){
+        sprintf(errors[errosemantico], "Linha %d: Variável \"%s\" sendo utilizada antes de ser declarada!\n", yylineno, c);  
+        errosemantico++;
+    }
+}
+
+// Caso de erro 3 - Checagem de tipo
+int checar_tipos(int tipoA,int tipoB){
+    //printf("\n%d %d\n",tipoA,tipoB);
+    if (tipoA == tipoB){
+        return 1;
+    } else {
+        sprintf(errors[errosemantico], "Linha %d: inconsistência de tipos! Entre: %s e %s \n", yylineno,retornaNomeTipoPrimitivo(tipoA),retornaNomeTipoPrimitivo(tipoB));  
+        errosemantico++;
+        return 0; 
+    }
+}
+
+TipoPrimitivo get_tipo_Tabela(char* c){
+    Simbolo* simbl = pegarSimbolo(escopoAtual->tabela,c);
+    if (simbl == NULL){
+        return T_DESCONHECIDO;
+    } else{
+        return simbl->tipo;
+    }
+}
+
+
+void adicionar_tabela(char* nome,char c,TabelaDeSimbolos* tabela,TabelaDeSimbolos* global){
     int S = 0;
-    S = simboloExiste(tabela,strdup(yytext));
+    S = simboloExiste(tabela,strdup(nome));
     //printf("\n%d\n",S);
 
     if(S == 0){
         if(c == 'v'){
-            adicionaSimboloNaTabela(tabela, strdup(yytext), tipo, T_VARIAVEL, yylineno);
-            adicionaSimboloNaTabela(global, strdup(yytext), tipo, T_VARIAVEL, yylineno);
+            adicionaSimboloNaTabela(tabela, strdup(nome), tipo, T_VARIAVEL, yylineno);
+            adicionaSimboloNaTabela(global, strdup(nome), tipo, T_VARIAVEL, yylineno);
         }
         else if(c == 'f'){
-            adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO, T_FUNCAO, yylineno);
-            adicionaSimboloNaTabela(global, strdup(yytext), T_DESCONHECIDO, T_FUNCAO, yylineno);
+            adicionaSimboloNaTabela(tabela, strdup(nome), T_DESCONHECIDO, T_FUNCAO, yylineno);
+            adicionaSimboloNaTabela(global, strdup(nome), T_DESCONHECIDO, T_FUNCAO, yylineno);
         }
         else if(c == 'c'){
-            adicionaSimboloNaTabela(tabela, strdup(yytext), tipo, T_CONSTANTE, yylineno);
-            adicionaSimboloNaTabela(global, strdup(yytext), tipo, T_CONSTANTE, yylineno);
+            adicionaSimboloNaTabela(tabela, strdup(nome), tipo, T_CONSTANTE, yylineno);
+            adicionaSimboloNaTabela(global, strdup(nome), tipo, T_CONSTANTE, yylineno);
         }
         else if(c == 'p'){
-            adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO, T_PALAVRACHAVE, yylineno);
-            adicionaSimboloNaTabela(global, strdup(yytext), T_DESCONHECIDO, T_PALAVRACHAVE, yylineno);
+            adicionaSimboloNaTabela(tabela, strdup(nome), T_DESCONHECIDO, T_PALAVRACHAVE, yylineno);
+            adicionaSimboloNaTabela(global, strdup(nome), T_DESCONHECIDO, T_PALAVRACHAVE, yylineno);
         }
         else {
-            adicionaSimboloNaTabela(tabela, strdup(yytext), T_DESCONHECIDO, T_DESCONHECIDO_TOKEN, yylineno);
-            adicionaSimboloNaTabela(global, strdup(yytext), T_DESCONHECIDO, T_DESCONHECIDO_TOKEN, yylineno );
+            adicionaSimboloNaTabela(tabela, strdup(nome), T_DESCONHECIDO, T_DESCONHECIDO_TOKEN, yylineno);
+            adicionaSimboloNaTabela(global, strdup(nome), T_DESCONHECIDO, T_DESCONHECIDO_TOKEN, yylineno );
         }
+    } else if(c == 'v'){// Caso de erro 2 - Múltiplas declarações da mesma variável
+        sprintf(errors[errosemantico], "Linha %d: Multiplas declarações da variável \"%s\"!\n", yylineno, strdup(nome));  
+        errosemantico++;
     }
 }
 
@@ -263,21 +332,29 @@ EscopoPonteiro voltarEscopo(EscopoPonteiro escopo){
 int main(){
     tabelaGlobal = criaTabelaDeSimbolos();
     escopoAtual = criarEscopo(NULL);
+    int i = 0;
     
     #ifdef YYDEBUG
     yydebug = 0;
     #endif
     yyparse();
+    if (errosemantico >= 1){
+        for(i=0;i<errosemantico;i++){
+            printf("%s\n",errors[i]);
+        }
+    }
+
     printf("\n\nCódigo compilado com sucesso!\n\n");
-    printf("\n\n\n Tabela de Símbolos no Escopo Master:\n");
-    imprimirTabeladeSimbolos(escopoAtual->tabela);
-    printf("\n\n\n Tabela de Símbolos Global:\n");
+    //printf("\n\n\n Tabela de Símbolos no Escopo Master:\n");
+    //imprimirTabeladeSimbolos(escopoAtual->tabela);
+    //printf("\n\n\n Tabela de Símbolos Global:\n");
     imprimirTabeladeSimbolos(tabelaGlobal);
 
-    printf("\n Árvore de Sintaxe Abstrata: \n\n");
-    printf(" ");
-    imprimirArvore(raiz);
-    printf("______________________________________________\n");
+    //printf("\n Árvore de Sintaxe Abstrata: \n\n");
+    //printf(" ");
+    //imprimirArvore(raiz);
+    //printf("______________________________________________\n");
+
     return 0;
 }
 

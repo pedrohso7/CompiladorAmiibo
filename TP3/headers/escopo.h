@@ -16,7 +16,7 @@ typedef struct Escopo {
 } Escopo;
 
 Escopo* criarEscopo(Escopo *prev);
-Simbolo* procuraTokenPeloLexema();
-Simbolo* procuraTokenPeloLexemaEscopoAtual();
+Simbolo* procuraTokenPeloLexema(Escopo* escopoInicial, char* lexema);
+Simbolo* procuraTokenPeloLexemaEscopoAtual(Escopo* escopoAutal, char* lexema);
 
 #endif

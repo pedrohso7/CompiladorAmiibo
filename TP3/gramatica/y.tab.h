@@ -92,16 +92,16 @@ extern int yydebug;
     FECHAR_COLCHETE_TOKEN = 298,
     ATRIB_TOKEN = 299,
     VIRGULA_TOKEN = 300,
-    VAR_TOKEN = 301,
-    COMMENT_TOKEN = 302,
-    EOL_TOKEN = 303,
-    INT = 304,
-    FLOAT = 305,
-    DATE = 306,
-    STRING = 307,
-    CHAR = 308,
-    BOOLEAN = 309,
-    VECTOR = 310
+    COMMENT_TOKEN = 301,
+    EOL_TOKEN = 302,
+    INT = 303,
+    FLOAT = 304,
+    DATE = 305,
+    STRING = 306,
+    CHAR = 307,
+    BOOLEAN = 308,
+    VECTOR = 309,
+    VAR_TOKEN = 310
   };
 #endif
 /* Tokens.  */
@@ -148,29 +148,35 @@ extern int yydebug;
 #define FECHAR_COLCHETE_TOKEN 298
 #define ATRIB_TOKEN 299
 #define VIRGULA_TOKEN 300
-#define VAR_TOKEN 301
-#define COMMENT_TOKEN 302
-#define EOL_TOKEN 303
-#define INT 304
-#define FLOAT 305
-#define DATE 306
-#define STRING 307
-#define CHAR 308
-#define BOOLEAN 309
-#define VECTOR 310
+#define COMMENT_TOKEN 301
+#define EOL_TOKEN 302
+#define INT 303
+#define FLOAT 304
+#define DATE 305
+#define STRING 306
+#define CHAR 307
+#define BOOLEAN 308
+#define VECTOR 309
+#define VAR_TOKEN 310
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 28 "translate.y"
+#line 36 "translate.y"
 
-    struct nomeVariavel{
+    struct NoObjeto{
         char nome[100];
         struct No *np;
     } NoObjeto;
+    
+    struct NoObjeto2 { 
+			char nome[100];
+            struct No *np;
+			int tipo;
+	} NoObjetoTipado; 
 
-#line 174 "y.tab.h"
+#line 180 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

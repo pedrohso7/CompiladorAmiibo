@@ -50,7 +50,7 @@ variavel    {letra}{caractere}*
 %% 
 
  /* Tokens de fim de linha e ignorar espaço */
-{ws}		                       {/*nenhuma acao e nenhum retorno*/}
+{ws}		                           {/*nenhuma acao e nenhum retorno*/}
 {eol}                              {printf("\n%d\t",yylineno); strcpy(yylval.NoObjeto.nome,(yytext)); return EOL_TOKEN;}
 
  /* Tokens de declarações de tipos */ 
