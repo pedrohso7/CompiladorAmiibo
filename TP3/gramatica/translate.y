@@ -268,6 +268,11 @@ void checar_declaracao(char* c){
 // Caso de erro 3 - Checagem de tipo
 int checar_tipos(int tipoA,int tipoB){
     //printf("\n%d %d\n",tipoA,tipoB);
+    if(tipoB == -1){
+        sprintf(errors[errosemantico], "Linha %d: Aviso! Operações entre tipo(s) desconhecidos!: %s e %s \n", yylineno,retornaNomeTipoPrimitivo(tipoA),retornaNomeTipoPrimitivo(tipoB));  
+        errosemantico++;
+        return 0;
+    }
     if (tipoA == tipoB){
         return 1;
     } else {
