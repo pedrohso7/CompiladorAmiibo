@@ -163,7 +163,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 36 "translate.y"
+#line 39 "translate.y"
 
     struct NoObjeto{
         char nome[100];
@@ -174,9 +174,19 @@ union YYSTYPE
 			char nome[100];
             struct No *np;
 			int tipo;
-	} NoObjetoTipado; 
+	} NoObjetoTipado;
 
-#line 180 "y.tab.h"
+    struct NoObjeto3 { 
+			char nome[100];
+            struct No *np;
+			int tipo;
+			char corpoIf[5];
+			char corpoElse[5];
+            char corpoElseIf[5];
+	} NoObjetoCorpo; 
+ 
+
+#line 190 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

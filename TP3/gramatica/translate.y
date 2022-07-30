@@ -22,14 +22,17 @@
     TipoPrimitivo get_tipo_Tabela(char* c);
 
 
-
     int errosemantico = 0;
+    int varTemporaria = 0;
+    int label = 0;
     char errors[10][100];
     int ImprimirFechamentoEscopo = 0;
     TipoPrimitivo tipo;
     TabelaDeSimbolos *tabelaGlobal;
     EscopoPonteiro escopoAtual;
     struct No *raiz;
+    char codigoEndereco[50][100];
+    int contadorLinhasEndereco = 0;
 
 %}
 
@@ -43,7 +46,17 @@
 			char nome[100];
             struct No *np;
 			int tipo;
-	} NoObjetoTipado; 
+	} NoObjetoTipado;
+
+    struct NoObjeto3 { 
+			char nome[100];
+            struct No *np;
+			int tipo;
+			char corpoIf[5];
+			char corpoElse[5];
+            char corpoElseIf[5];
+	} NoObjetoCorpo; 
+ 
 }
 
 %token <NoObjeto> MAIN_TOKEN
@@ -61,8 +74,9 @@
 %token <NoObjeto> EOL_TOKEN
 %token <NoObjetoTipado> INT FLOAT DATE STRING CHAR BOOLEAN VECTOR VAR_TOKEN
 
-%type <NoObjeto> expr program tipos declaracao varNames varNomesETipos funcao criarFuncao comando corpo condicional if else elseIF tabulacao repeticao imprimir input retornar comment atribuicao parametros
-%type <NoObjetoTipado> init aritmetica relacional numero anyTipe valorBool
+%type <NoObjeto> expr program tipos declaracao varNames varNomesETipos funcao criarFuncao comando  condicional if else elseIF tabulacao repeticao imprimir input retornar comment atribuicao parametros
+%type <NoObjetoTipado> init numero anyTipe valorBool
+%type <NoObjetoCorpo> corpo aritmetica relacional
 
 %left MATEMATICO_SOMA MATEMATICO_SUBTRACAO
 %left MATEMATICO_DIVISAO MATEMATICO_MULTIPLICACAO
@@ -93,28 +107,47 @@ atribuicao:
         $1.np = criaNo(NULL, NULL, $1.nome); 
         $$.np = criaNo($1.np, $4.np, "=");
         checar_tipos(get_tipo_Tabela($1.nome),$4.tipo);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s\n", $1.nome, $4.nome);
+
         }
     ;
 
 init:
-    aritmetica {$$.np = $1.np;$$.tipo = $1.tipo;}
-    | anyTipe {$$.np = $1.np;$$.tipo = $1.tipo;}
-    | relacional {$$.np = $1.np;$$.tipo = $1.tipo;}
-    | input {$$.np = $1.np;$$.tipo = T_STRING;}
+    aritmetica {$$.np = $1.np;$$.tipo = $1.tipo;strcpy($$.nome, $1.nome);}
+    | anyTipe {$$.np = $1.np;$$.tipo = $1.tipo; strcpy($$.nome, $1.nome);}
+    | relacional {$$.np = $1.np;$$.tipo = $1.tipo; strcpy($$.nome, $1.nome);}
+    | input {$$.np = $1.np;$$.tipo = T_STRING; strcpy($$.nome, $1.nome);}
 
 aritmetica:
-    numero {$$.np = $1.np; $$.tipo = $1.tipo;}
-    | VAR_TOKEN {$$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = get_tipo_Tabela($1.nome);}
-    | funcao {$$.np = $1.np;$$.tipo = T_DESCONHECIDO;}
-    | aritmetica MATEMATICO_SOMA aritmetica {$$.np = criaNo($1.np, $3.np, "+");$$.tipo = $1.tipo;}
-    | aritmetica MATEMATICO_SUBTRACAO aritmetica {$$.np = criaNo($1.np, $3.np, "-");$$.tipo = $1.tipo;}
-    | aritmetica MATEMATICO_DIVISAO aritmetica {$$.np = criaNo($1.np, $3.np, "/");$$.tipo = $1.tipo;}
-    | aritmetica MATEMATICO_MULTIPLICACAO aritmetica {$$.np = criaNo($1.np, $3.np, "*");$$.tipo = $1.tipo;}
-    | aritmetica MATEMATICO_MOD aritmetica {$$.np = criaNo($1.np, $3.np, "%");$$.tipo = $1.tipo;}
-    | aritmetica MATEMATICO_POW aritmetica {$$.np = criaNo($1.np, $3.np, "**");$$.tipo = $1.tipo;}
+    numero {$$.np = $1.np; $$.tipo = $1.tipo; strcpy($$.nome, $1.nome);}
+    | VAR_TOKEN {$$.np = criaNo(NULL, NULL, $1.nome);$$.tipo = get_tipo_Tabela($1.nome);strcpy($$.nome, $1.nome);}
+    | funcao {$$.np = $1.np;$$.tipo = T_DESCONHECIDO;strcpy($$.nome, $1.nome);}
+    | aritmetica MATEMATICO_SOMA aritmetica {
+        $$.np = criaNo($1.np, $3.np, "+");
+        $$.tipo = $1.tipo;
+        sprintf($$.nome, "t%d", varTemporaria++);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", $$.nome, $1.nome,$2.nome,$3.nome);
+        }
+    | aritmetica MATEMATICO_SUBTRACAO aritmetica {$$.np = criaNo($1.np, $3.np, "-");$$.tipo = $1.tipo; 
+        sprintf($$.nome, "t%d", varTemporaria++);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", $$.nome, $1.nome,$2.nome,$3.nome);}
+    | aritmetica MATEMATICO_DIVISAO aritmetica {$$.np = criaNo($1.np, $3.np, "/");$$.tipo = $1.tipo;
+        sprintf($$.nome, "t%d", varTemporaria++);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", $$.nome, $1.nome,$2.nome,$3.nome);}
+    | aritmetica MATEMATICO_MULTIPLICACAO aritmetica {$$.np = criaNo($1.np, $3.np, "*");$$.tipo = $1.tipo;
+        sprintf($$.nome, "t%d", varTemporaria++);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", $$.nome, $1.nome,$2.nome,$3.nome);}
+    | aritmetica MATEMATICO_MOD aritmetica {$$.np = criaNo($1.np, $3.np, "%");$$.tipo = $1.tipo;
+        sprintf($$.nome, "t%d", varTemporaria++);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", $$.nome, $1.nome,$2.nome,$3.nome);}
+    | aritmetica MATEMATICO_POW aritmetica {$$.np = criaNo($1.np, $3.np, "**");$$.tipo = $1.tipo;
+        sprintf($$.nome, "t%d", varTemporaria++);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", $$.nome, $1.nome,$2.nome,$3.nome);}
     | ABRIR_PARENTESES_TOKEN aritmetica FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, $2.nome);$$.tipo = $2.tipo;}
-    | aritmetica MATEMATICO_INCREMENTO {$$.np = criaNo($1.np, NULL, "++" );$$.tipo = $1.tipo;}
-    | aritmetica MATEMATICO_DECREMENTO {$$.np = criaNo($1.np, NULL, "--");$$.tipo = $1.tipo;}
+    | aritmetica MATEMATICO_INCREMENTO {$$.np = criaNo($1.np, NULL, "++" );$$.tipo = $1.tipo;
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s + 1\n", $1.nome, $1.nome);}
+    | aritmetica MATEMATICO_DECREMENTO {$$.np = criaNo($1.np, NULL, "--");$$.tipo = $1.tipo;
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s - 1\n", $1.nome, $1.nome);}
     ;
 
 numero:
@@ -123,16 +156,24 @@ numero:
     ;
     
 relacional:
-    valorBool {$$.np = $1.np;$$.tipo = $1.tipo;}
-    | funcao  {$$.np = $1.np;$$.tipo = T_DESCONHECIDO;}
-    | valorBool RELACIONAL_IGUALDADE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
-    | valorBool RELACIONAL_NEGACAO valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
-    | valorBool RELACIONAL_MAIORQUE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
-    | valorBool RELACIONAL_MENORQUE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
-    | valorBool RELACIONAL_MAIORIGUAL valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
-    | valorBool RELACIONAL_MENORIGUAL valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
-    | valorBool RELACIONAL_AND valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
-    | valorBool RELACIONAL_OR valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;}
+    valorBool {$$.np = $1.np;$$.tipo = $1.tipo; strcpy($$.nome, $1.nome);}
+    | funcao  {$$.np = $1.np;$$.tipo = T_DESCONHECIDO; strcpy($$.nome, $1.nome);}
+    | valorBool RELACIONAL_IGUALDADE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;
+    sprintf($$.nome, "%s %s %s ",$1.nome,$2.nome,$3.nome);}
+    | valorBool RELACIONAL_NEGACAO valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;
+    sprintf($$.nome, "%s %s %s ",$1.nome,$2.nome,$3.nome);}
+    | valorBool RELACIONAL_MAIORQUE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;
+    sprintf($$.nome, "%s %s %s ",$1.nome,$2.nome,$3.nome);}
+    | valorBool RELACIONAL_MENORQUE valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;
+    sprintf($$.nome, "%s %s %s ",$1.nome,$2.nome,$3.nome);}
+    | valorBool RELACIONAL_MAIORIGUAL valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;
+    sprintf($$.nome, "%s %s %s ",$1.nome,$2.nome,$3.nome);}
+    | valorBool RELACIONAL_MENORIGUAL valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;
+    sprintf($$.nome, "%s %s %s ",$1.nome,$2.nome,$3.nome);}
+    | valorBool RELACIONAL_AND valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;
+    sprintf($$.nome, "%s && %s ",$1.nome,$3.nome);}
+    | valorBool RELACIONAL_OR valorBool { $$.np = criaNo($1.np, $3.np, $2.nome);$$.tipo = $1.tipo;
+    sprintf($$.nome, "%s || %s ",$1.nome,$3.nome);}
     ;
 
 valorBool:
@@ -156,7 +197,7 @@ declaracao:
         $2.np = criaNo(NULL, NULL, $2.nome); 
         $$.np = criaNo($2.np, $5.np, $1.nome);
         checar_tipos(get_tipo_Tabela($2.nome),$5.tipo);
-
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s\n", $2.nome, $5.nome);
         }
     ;
 
@@ -209,16 +250,50 @@ condicional:
 
 
 if:
-	IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo tabulacao else {struct No *temp =  criaNo($3.np, $5.np, $1.nome); $$.np = criaNo(temp, $7.np,"Mabel Label");}
-	| IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo tabulacao elseIF tabulacao else  { struct No *temp =  criaNo($3.np, $5.np, $1.nome); struct No *temp2 = criaNo(temp, $7.np,$7.nome);$$.np = criaNo(temp2,$9.np,"Sable Label");}
+	IF_TOKEN ABRIR_PARENTESES_TOKEN relacional {
+        sprintf($3.corpoIf, "%d", label++);
+        sprintf($3.corpoElse, "%d", label++);    
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = %s\n", varTemporaria,$3.nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "IF FALSE (t%d) GOTO %s\n",varTemporaria,$3.corpoElse);
+        varTemporaria++;
+    }
+    FECHAR_PARENTESES_TOKEN corpo tabulacao{
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "GOTO %s\n", $3.corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", $3.corpoElse);
+    } 
+    elseIF tabulacao else  {
+        struct No *temp =  criaNo($3.np, $6.np, $1.nome); 
+        struct No *temp2 = criaNo(temp, $9.np,$9.nome);
+        $$.np = criaNo(temp2,$11.np,"Sable Label");
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", $3.corpoIf);
+    }
 
 else:
     ELSE_TOKEN corpo {$$.np = criaNo(NULL, $2.np, $1.nome);}
     | {$$.np = NULL;}
 
 elseIF:
-    ELSE_IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo {$$.np =  criaNo($3.np, $5.np, $1.nome);}
-	| elseIF tabulacao ELSE_IF_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo tabulacao {$3.np =  criaNo($5.np, $7.np, $3.nome); $$.np = criaNo($1.np, $3.np, $1.nome);}
+    ELSE_IF_TOKEN ABRIR_PARENTESES_TOKEN relacional{
+        sprintf($3.corpoElse, "%d", label++);    
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = %s\n", varTemporaria,$3.nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "IF FALSE (t%d) GOTO %s\n",varTemporaria,$3.corpoElse);
+        varTemporaria++;
+    } FECHAR_PARENTESES_TOKEN corpo {$$.np =  criaNo($3.np, $6.np, $1.nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", $3.corpoElse);
+
+    }
+	| elseIF tabulacao ELSE_IF_TOKEN ABRIR_PARENTESES_TOKEN relacional {
+        sprintf($5.corpoElse, "%d", label++);    
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = %s\n", varTemporaria,$5.nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "IF FALSE (t%d) GOTO %s\n",varTemporaria,$5.corpoElse);
+        varTemporaria++;
+    }FECHAR_PARENTESES_TOKEN corpo tabulacao {
+        $5.np =  criaNo($5.np, $8.np, $3.nome); 
+        $$.np = criaNo($1.np, $3.np, $1.nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", $5.corpoElse);
+
+    }
+    | 
 
 tabulacao:
 	EOL_TOKEN
@@ -227,15 +302,62 @@ tabulacao:
     ;
 
 repeticao:
-    FOR_TOKEN ABRIR_PARENTESES_TOKEN aritmetica FECHAR_PARENTESES_TOKEN corpo {$$.np = criaNo($3.np, $5.np, $1.nome);}
-    | FOR_TOKEN ABRIR_PARENTESES_TOKEN aritmetica VIRGULA_TOKEN aritmetica FECHAR_PARENTESES_TOKEN corpo {struct No *temp =  criaNo($3.np, $5.np, "Condicoes"); $$.np = criaNo(temp, $7.np, $1.nome);}
-    | WHILE_TOKEN ABRIR_PARENTESES_TOKEN relacional FECHAR_PARENTESES_TOKEN corpo {$$.np = criaNo($3.np, $5.np, $1.nome);}
+    FOR_TOKEN ABRIR_PARENTESES_TOKEN  aritmetica {
+        sprintf($3.corpoIf, "%d", label++);
+        sprintf($3.corpoElse, "%d", label++);    
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = 0\n", varTemporaria);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", $3.corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "IF FALSE (t%d <= %s) GOTO %s\n",varTemporaria,$3.nome,$3.corpoElse);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = t%d + 1\n", varTemporaria, varTemporaria);
+        varTemporaria++;
+        
+
+    } FECHAR_PARENTESES_TOKEN corpo {
+        $$.np = criaNo($3.np, $6.np, $1.nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "GOTO %s\n", $3.corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", $3.corpoElse);
+        
+        }
+    | FOR_TOKEN ABRIR_PARENTESES_TOKEN aritmetica VIRGULA_TOKEN aritmetica {
+        sprintf($3.corpoIf, "%d", label++);
+        sprintf($3.corpoElse, "%d", label++);    
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = %s\n", varTemporaria,$3.nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", $3.corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "IF FALSE (t%d <= %s) GOTO %s\n",varTemporaria,$3.nome,$3.corpoElse);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = t%d + 1\n", varTemporaria, varTemporaria);
+        varTemporaria++;
+    }
+    FECHAR_PARENTESES_TOKEN corpo {
+        struct No *temp =  criaNo($3.np, $5.np, "Condicoes"); 
+        $$.np = criaNo(temp, $8.np, $1.nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "GOTO %s\n", $3.corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", $3.corpoElse);
+    }
+    | WHILE_TOKEN ABRIR_PARENTESES_TOKEN relacional {
+        sprintf($3.corpoIf, "%d", label++);
+        sprintf($3.corpoElse, "%d", label++);    
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = %s\n", varTemporaria,$3.nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", $3.corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "IF FALSE (t%d) GOTO %s\n",varTemporaria,$3.corpoElse);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = t%d + 1\n", varTemporaria, varTemporaria);
+        varTemporaria++;
+
+    }
+    FECHAR_PARENTESES_TOKEN corpo {
+        $$.np = criaNo($3.np, $6.np, $1.nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "GOTO %s\n", $3.corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", $3.corpoElse);
+        }
 
 imprimir:
-    PRINT_TOKEN ABRIR_PARENTESES_TOKEN expr FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, $1.nome);}
+    PRINT_TOKEN ABRIR_PARENTESES_TOKEN init FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, $1.nome);
+    sprintf(codigoEndereco[contadorLinhasEndereco++], "%s(%s)\n", $1.nome, $3.nome);
+    }
 
 input:
-    SCANF_TOKEN ABRIR_PARENTESES_TOKEN  FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, $1.nome);}
+    SCANF_TOKEN ABRIR_PARENTESES_TOKEN  FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, $1.nome);
+        sprintf($$.nome, "%s()",$1.nome);}
+
 
 retornar:
     RETURN_TOKEN anyTipe {$$.np = criaNo($2.np,NULL, $1.nome);}
@@ -324,6 +446,8 @@ void adicionar_tabela(char* nome,char c,TabelaDeSimbolos* tabela,TabelaDeSimbolo
     }
 }
 
+
+
 EscopoPonteiro aprofundarEscopo(EscopoPonteiro escopoAcima){
     EscopoPonteiro escp = criarEscopo(escopoAcima);
     return escp;
@@ -359,6 +483,12 @@ int main(){
     //printf(" ");
     //imprimirArvore(raiz);
     //printf("______________________________________________\n");
+
+    printf("\t\t\t\t\t\t\t   CÓDIGO DE TRÊS ENDEREÇOS \n\n");
+	for(int i=0; i<contadorLinhasEndereco; i++){
+		printf("%s", codigoEndereco[i]);
+	}
+	printf("\n\n");
 
     return 0;
 }

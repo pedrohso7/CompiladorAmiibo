@@ -1,15 +1,14 @@
 main{
-    Don numeroPar(Bug x, Bug y){
-        Mabel(x%2==0){
-            Rover true
-        }
-
-        Label{
-            Rover false
-        }
+    Mabel(true == true){
+        Pave("O número é par!")
     }
 
-SeaCreature b
-Bug a = "oi"
-b = numeroPar(a,b)
+    Sable(true == false){
+        Pave("O número é impar!")
+    }
+
+    Label{
+        Pave("O número é impar!")
+    }
+
 }

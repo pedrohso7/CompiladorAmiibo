@@ -90,17 +90,20 @@
     TipoPrimitivo get_tipo_Tabela(char* c);
 
 
-
     int errosemantico = 0;
+    int varTemporaria = 0;
+    int label = 0;
     char errors[10][100];
     int ImprimirFechamentoEscopo = 0;
     TipoPrimitivo tipo;
     TabelaDeSimbolos *tabelaGlobal;
     EscopoPonteiro escopoAtual;
     struct No *raiz;
+    char codigoEndereco[50][100];
+    int contadorLinhasEndereco = 0;
 
 
-#line 104 "y.tab.c"
+#line 107 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -262,7 +265,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 36 "translate.y"
+#line 39 "translate.y"
 
     struct NoObjeto{
         char nome[100];
@@ -273,9 +276,19 @@ union YYSTYPE
 			char nome[100];
             struct No *np;
 			int tipo;
-	} NoObjetoTipado; 
+	} NoObjetoTipado;
 
-#line 279 "y.tab.c"
+    struct NoObjeto3 { 
+			char nome[100];
+            struct No *np;
+			int tipo;
+			char corpoIf[5];
+			char corpoElse[5];
+            char corpoElseIf[5];
+	} NoObjetoCorpo; 
+ 
+
+#line 292 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -594,16 +607,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  5
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   320
+#define YYLAST   287
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  56
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  33
+#define YYNNTS  40
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  98
+#define YYNRULES  105
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  169
+#define YYNSTATES  175
 
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   310
@@ -654,18 +667,19 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_int16 yyrline[] =
 {
-       0,    74,    74,    78,    79,    80,    81,    82,    83,    84,
-      85,    86,    87,    88,    92,    92,   100,   101,   102,   103,
-     106,   107,   108,   109,   110,   111,   112,   113,   114,   115,
-     116,   117,   121,   122,   126,   127,   128,   129,   130,   131,
-     132,   133,   134,   135,   139,   140,   144,   145,   146,   147,
-     148,   149,   150,   154,   155,   155,   164,   165,   169,   170,
-     174,   177,   178,   182,   182,   186,   187,   188,   189,   190,
-     191,   192,   193,   196,   197,   198,   199,   200,   201,   204,
-     204,   208,   212,   213,   216,   217,   220,   221,   224,   225,
-     226,   230,   231,   232,   235,   238,   241,   242,   245
+       0,    88,    88,    92,    93,    94,    95,    96,    97,    98,
+      99,   100,   101,   102,   106,   106,   116,   117,   118,   119,
+     122,   123,   124,   125,   131,   134,   137,   140,   143,   146,
+     147,   149,   154,   155,   159,   160,   161,   163,   165,   167,
+     169,   171,   173,   175,   180,   181,   185,   186,   187,   188,
+     189,   190,   191,   195,   196,   196,   205,   206,   210,   211,
+     215,   218,   219,   223,   223,   227,   228,   229,   230,   231,
+     232,   233,   234,   237,   238,   239,   240,   241,   242,   245,
+     245,   249,   253,   260,   253,   272,   273,   276,   276,   285,
+     285,   296,   299,   300,   301,   305,   305,   321,   321,   336,
+     336,   353,   358,   363,   364,   367
 };
 #endif
 
@@ -691,9 +705,9 @@ static const char *const yytname[] =
   "$accept", "program", "expr", "atribuicao", "$@1", "init", "aritmetica",
   "numero", "relacional", "valorBool", "tipos", "declaracao", "$@2",
   "varNames", "varNomesETipos", "funcao", "parametros", "criarFuncao",
-  "$@3", "anyTipe", "comando", "corpo", "$@4", "condicional", "if", "else",
-  "elseIF", "tabulacao", "repeticao", "imprimir", "input", "retornar",
-  "comment", YY_NULLPTR
+  "$@3", "anyTipe", "comando", "corpo", "$@4", "condicional", "if", "$@5",
+  "$@6", "else", "elseIF", "$@7", "$@8", "tabulacao", "repeticao", "$@9",
+  "$@10", "$@11", "imprimir", "input", "retornar", "comment", YY_NULLPTR
 };
 #endif
 
@@ -711,7 +725,7 @@ static const yytype_int16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF (-140)
+#define YYPACT_NINF (-123)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -725,23 +739,24 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-       7,     2,    44,  -140,  -140,  -140,   231,  -140,  -140,  -140,
-    -140,  -140,  -140,  -140,    13,    15,    20,   249,  -140,     5,
-      23,    25,    -8,  -140,  -140,  -140,  -140,  -140,  -140,  -140,
-    -140,  -140,    -1,   127,  -140,   180,  -140,  -140,   277,    10,
-    -140,   232,  -140,  -140,  -140,  -140,  -140,  -140,  -140,  -140,
-    -140,  -140,    71,    -8,    71,  -140,    45,   286,  -140,  -140,
-    -140,   231,    47,  -140,  -140,    45,    54,    29,    50,  -140,
-     231,    -8,    -8,    -8,    -8,    -8,    -8,  -140,  -140,    71,
-      71,    71,    71,    71,    71,    71,    71,    52,    43,  -140,
-     286,    68,  -140,     0,    69,    51,   179,  -140,  -140,  -140,
-      17,    91,   198,   198,    87,    87,   286,    87,  -140,  -140,
-    -140,  -140,  -140,  -140,  -140,  -140,    73,    36,     2,     2,
-      -8,     2,   266,  -140,  -140,    66,  -140,   180,  -140,  -140,
-    -140,    91,  -140,    75,  -140,    79,  -140,    83,    42,  -140,
-    -140,  -140,   -15,     2,  -140,     2,   266,    85,     2,  -140,
-    -140,    75,  -140,  -140,    92,    71,  -140,   -13,  -140,   109,
-     112,  -140,     2,    71,  -140,   113,     2,    75,   104
+       9,   -26,    23,  -123,  -123,  -123,   182,  -123,  -123,  -123,
+    -123,  -123,  -123,  -123,   -23,   -22,   -14,   200,  -123,   -10,
+      -5,     6,   -27,  -123,  -123,  -123,  -123,  -123,  -123,  -123,
+    -123,  -123,    15,   130,  -123,   183,  -123,  -123,   228,     5,
+    -123,   245,  -123,  -123,  -123,  -123,  -123,  -123,  -123,  -123,
+    -123,  -123,    43,   -27,    43,  -123,    24,   253,  -123,  -123,
+    -123,    93,    -7,  -123,  -123,    24,    63,     8,    21,  -123,
+     182,   -27,   -27,   -27,   -27,   -27,   -27,  -123,  -123,    43,
+      43,    43,    43,    43,    43,    43,    43,    30,    31,  -123,
+     253,  -123,  -123,    16,  -123,    37,    39,   183,  -123,  -123,
+    -123,  -123,  -123,  -123,    34,    93,    88,    88,    81,    81,
+     253,    81,  -123,  -123,  -123,  -123,  -123,  -123,  -123,  -123,
+      46,    38,    56,   -27,    61,    77,   217,  -123,  -123,    62,
+    -123,    93,  -123,   -26,   253,   -26,   -26,    66,    58,  -123,
+    -123,    71,    83,  -123,  -123,  -123,   -26,   217,  -123,    76,
+     -26,  -123,    69,  -123,    97,  -123,  -123,    90,    71,    43,
+     -21,  -123,    91,   -26,  -123,    94,    43,  -123,   -26,  -123,
+    -123,   110,   -26,    71,    76
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -751,39 +766,40 @@ static const yytype_int8 yydefact[] =
 {
        0,     0,     0,    79,     2,     1,     0,    46,    47,    49,
       50,    51,    48,    52,     0,     0,     0,     0,    78,     0,
-       0,     0,     0,    98,     9,    33,    32,    71,    68,    67,
+       0,     0,     0,   105,     9,    33,    32,    71,    68,    67,
       44,    70,    21,     0,    11,     3,    20,     4,    34,     0,
        5,     6,     8,    12,     7,    73,    81,    74,    75,    76,
-      77,    10,     0,     0,     0,    69,    21,    97,    22,    96,
+      77,    10,     0,     0,     0,    69,    21,   104,    22,   103,
       63,     0,     0,    33,    32,    21,     0,     0,     0,    80,
       13,     0,     0,     0,     0,     0,     0,    30,    31,     0,
        0,     0,     0,     0,     0,     0,     0,    56,    53,    44,
-      45,     0,    22,     0,     0,     0,     0,    95,    29,    61,
-       0,     0,    23,    24,    26,    25,    27,    28,    36,    37,
-      38,    39,    40,    41,    43,    42,     0,     0,     0,     0,
-       0,     0,     0,    94,    60,     0,    15,    16,    18,    17,
-      19,     0,    57,    90,    91,     0,    93,     0,     0,    62,
-      55,    88,    85,     0,    58,     0,     0,     0,     0,    89,
-      82,    90,    92,    64,     0,     0,    84,    85,    59,     0,
-       0,    83,     0,     0,    86,     0,     0,    90,    87
+      45,    82,    22,    95,    99,     0,     0,    16,    18,    17,
+      19,   102,    29,    61,     0,     0,    23,    24,    26,    25,
+      27,    28,    36,    37,    38,    39,    40,    41,    43,    42,
+       0,     0,     0,     0,     0,     0,     0,   101,    60,     0,
+      15,     0,    57,     0,    97,     0,     0,     0,     0,    62,
+      55,    94,     0,    96,   100,    58,     0,     0,    92,    83,
+       0,    64,     0,    93,    91,    98,    59,     0,    94,     0,
+      86,    87,     0,     0,    84,     0,     0,    85,     0,    89,
+      88,     0,     0,    94,    90
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-    -140,  -140,    -2,  -140,  -140,    22,    -4,  -140,   -49,   234,
-    -111,  -140,  -140,  -140,  -140,    -6,  -140,  -140,  -140,   -16,
-    -140,  -112,  -140,  -140,  -140,   -27,  -140,  -139,  -140,  -140,
-     -93,  -140,  -140
+    -123,  -123,   126,  -123,  -123,  -100,    -4,  -123,   -51,   201,
+    -122,  -123,  -123,  -123,  -123,    -6,  -123,  -123,  -123,   -11,
+    -123,  -116,  -123,  -123,  -123,  -123,  -123,  -123,  -123,  -123,
+    -123,  -115,  -123,  -123,  -123,  -123,  -123,   -54,  -123,  -123
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
-      -1,     2,    70,    34,    68,   126,    90,    36,    37,    38,
-      39,    40,   116,    88,   138,    58,   100,    42,    95,    43,
-      44,     4,     6,    45,    46,   150,   151,   142,    47,    48,
-      49,    50,    51
+      -1,     2,    70,    34,    68,    96,    90,    36,    37,    38,
+      39,    40,   120,    88,   138,    58,   104,    42,    95,    43,
+      44,     4,     6,    45,    46,   122,   154,   164,   158,   165,
+     171,   149,    47,   124,   142,   125,    48,    49,    50,    51
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -791,76 +807,68 @@ static const yytype_int16 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int16 yytable[] =
 {
-      41,    59,    35,    91,    33,    94,   133,   134,   130,   136,
-       1,   137,   157,    57,   147,   148,   160,   148,    66,    71,
-      72,    73,    74,    75,    76,    77,    78,    41,   168,    35,
-      22,   152,   149,   153,   149,   154,   156,    67,   130,   119,
-      63,    64,     3,   -14,     5,   120,    92,    65,    92,    93,
-     164,    52,   128,    53,   167,    41,   124,    35,    54,    96,
-      60,    61,   125,    62,    41,    87,    35,   102,   103,   104,
-     105,   106,   107,    71,    72,    73,    74,    75,    76,    77,
-      78,   145,   128,    67,    99,   129,    97,   146,   117,   122,
-      41,   132,    35,    98,   101,    92,   -54,   127,    71,    72,
-      73,    74,    75,    76,    77,    78,   159,   118,   121,    22,
-      75,    76,    77,    78,   165,   129,   135,   131,   143,    63,
-      64,   139,   141,   155,    89,    92,    65,   127,    21,    22,
-     161,     7,     8,     9,    10,    11,    12,    13,   144,    25,
-      26,    27,    28,    29,    30,    31,    56,   158,   162,    92,
-     163,   149,   166,   140,     0,    14,     0,    92,    15,    16,
-      17,    18,    19,    20,    21,    22,     0,     0,    69,     0,
-       0,     0,     0,    23,    24,    25,    26,    27,    28,    29,
-      30,    31,    32,     7,     8,     9,    10,    11,    12,    13,
-       0,   -45,   -45,   -45,   -45,   -45,   -45,   -45,   -45,    71,
-      72,    73,    74,    75,    76,    77,    78,    14,     0,     0,
-      15,    16,    17,    18,    19,    20,    21,    22,   123,    73,
-      74,    75,    76,    77,    78,    23,    24,    25,    26,    27,
-      28,    29,    30,    31,    32,     7,     8,     9,    10,    11,
-      12,    13,     0,   -22,   -22,   -22,   -22,   -22,   -22,   -22,
-     -22,   -22,   -22,   -22,   -22,   -22,   -22,   -22,   -22,    14,
-       0,     0,    15,    16,    17,    18,    19,    20,    21,    22,
-       7,     8,     9,    10,    11,    12,    13,    23,    24,    25,
-      26,    27,    28,    29,    30,    31,    32,    22,    79,    80,
-      81,    82,    83,    84,    85,    86,     0,    25,    26,    27,
-      28,    29,    55,    31,    56,    71,    72,    73,    74,    75,
-      76,    77,    78,   108,   109,   110,   111,   112,   113,   114,
-     115
+      41,    91,    35,    94,   137,   130,    59,   100,   162,   163,
+      98,    22,     1,    57,     3,    52,    53,   141,    66,   143,
+     144,    63,    64,     5,    54,   152,   153,    41,    65,    35,
+     151,   140,   101,    61,   155,    71,    72,    73,    74,    75,
+      76,    77,    78,   160,    62,    60,    92,   167,    92,    93,
+      99,   100,   170,    67,    98,    92,   173,    97,   174,   -14,
+      87,   123,    67,   103,    41,   105,    35,   106,   107,   108,
+     109,   110,   111,   128,   -54,   126,   121,   100,   127,   129,
+      98,    22,    71,    72,    73,    74,    75,    76,    77,    78,
+     131,    63,    64,   132,    99,   133,    89,   146,    65,    92,
+     135,    97,   102,   147,    75,    76,    77,    78,   161,    73,
+      74,    75,    76,    77,    78,   169,   136,   139,   148,   134,
+      99,   145,   150,   153,   156,    92,   157,    97,   159,   166,
+      21,    22,    33,   168,     7,     8,     9,    10,    11,    12,
+      13,    25,    26,    27,    28,    29,    30,    31,    56,   172,
+       0,     0,     0,    92,     0,     0,     0,     0,    14,     0,
+      92,    15,    16,    17,    18,    19,    20,    21,    22,     0,
+       0,    69,     0,     0,     0,     0,    23,    24,    25,    26,
+      27,    28,    29,    30,    31,    32,     7,     8,     9,    10,
+      11,    12,    13,     0,   -45,   -45,   -45,   -45,   -45,   -45,
+     -45,   -45,    71,    72,    73,    74,    75,    76,    77,    78,
+      14,     0,     0,    15,    16,    17,    18,    19,    20,    21,
+      22,     7,     8,     9,    10,    11,    12,    13,    23,    24,
+      25,    26,    27,    28,    29,    30,    31,    32,    22,    79,
+      80,    81,    82,    83,    84,    85,    86,     0,    25,    26,
+      27,    28,    29,    55,    31,    56,   -22,   -22,   -22,   -22,
+     -22,   -22,   -22,   -22,   -22,   -22,   -22,   -22,   -22,   -22,
+     -22,   -22,    71,    72,    73,    74,    75,    76,    77,    78,
+     112,   113,   114,   115,   116,   117,   118,   119
 };
 
 static const yytype_int16 yycheck[] =
 {
-       6,    17,     6,    52,     6,    54,   118,   119,   101,   121,
-       3,   122,   151,    17,    29,    30,    29,    30,    22,    19,
-      20,    21,    22,    23,    24,    25,    26,    33,   167,    33,
-      38,   143,    47,   145,    47,   146,   148,    38,   131,    39,
-      48,    49,    40,    44,     0,    45,    52,    55,    54,    53,
-     162,    38,   101,    38,   166,    61,    39,    61,    38,    61,
-      55,    38,    45,    38,    70,    55,    70,    71,    72,    73,
-      74,    75,    76,    19,    20,    21,    22,    23,    24,    25,
-      26,    39,   131,    38,    55,   101,    39,    45,    45,    38,
-      96,    55,    96,    39,    44,   101,    44,   101,    19,    20,
-      21,    22,    23,    24,    25,    26,   155,    39,    39,    38,
-      23,    24,    25,    26,   163,   131,   120,    44,    39,    48,
-      49,    55,    47,    38,    53,   131,    55,   131,    37,    38,
-     157,     4,     5,     6,     7,     8,     9,    10,    55,    48,
-      49,    50,    51,    52,    53,    54,    55,    55,    39,   155,
-      38,    47,    39,   131,    -1,    28,    -1,   163,    31,    32,
-      33,    34,    35,    36,    37,    38,    -1,    -1,    41,    -1,
-      -1,    -1,    -1,    46,    47,    48,    49,    50,    51,    52,
-      53,    54,    55,     4,     5,     6,     7,     8,     9,    10,
-      -1,    11,    12,    13,    14,    15,    16,    17,    18,    19,
-      20,    21,    22,    23,    24,    25,    26,    28,    -1,    -1,
-      31,    32,    33,    34,    35,    36,    37,    38,    39,    21,
-      22,    23,    24,    25,    26,    46,    47,    48,    49,    50,
-      51,    52,    53,    54,    55,     4,     5,     6,     7,     8,
-       9,    10,    -1,    11,    12,    13,    14,    15,    16,    17,
-      18,    19,    20,    21,    22,    23,    24,    25,    26,    28,
-      -1,    -1,    31,    32,    33,    34,    35,    36,    37,    38,
-       4,     5,     6,     7,     8,     9,    10,    46,    47,    48,
-      49,    50,    51,    52,    53,    54,    55,    38,    11,    12,
-      13,    14,    15,    16,    17,    18,    -1,    48,    49,    50,
-      51,    52,    53,    54,    55,    19,    20,    21,    22,    23,
-      24,    25,    26,    79,    80,    81,    82,    83,    84,    85,
-      86
+       6,    52,     6,    54,   126,   105,    17,    61,    29,    30,
+      61,    38,     3,    17,    40,    38,    38,   133,    22,   135,
+     136,    48,    49,     0,    38,   147,    47,    33,    55,    33,
+     146,   131,    39,    38,   150,    19,    20,    21,    22,    23,
+      24,    25,    26,   158,    38,    55,    52,   163,    54,    53,
+      61,   105,   168,    38,   105,    61,   172,    61,   173,    44,
+      55,    45,    38,    55,    70,    44,    70,    71,    72,    73,
+      74,    75,    76,    39,    44,    38,    45,   131,    39,    45,
+     131,    38,    19,    20,    21,    22,    23,    24,    25,    26,
+      44,    48,    49,    55,   105,    39,    53,    39,    55,   105,
+      39,   105,    39,    45,    23,    24,    25,    26,   159,    21,
+      22,    23,    24,    25,    26,   166,    39,    55,    47,   123,
+     131,    55,    39,    47,    55,   131,    29,   131,    38,    38,
+      37,    38,     6,    39,     4,     5,     6,     7,     8,     9,
+      10,    48,    49,    50,    51,    52,    53,    54,    55,    39,
+      -1,    -1,    -1,   159,    -1,    -1,    -1,    -1,    28,    -1,
+     166,    31,    32,    33,    34,    35,    36,    37,    38,    -1,
+      -1,    41,    -1,    -1,    -1,    -1,    46,    47,    48,    49,
+      50,    51,    52,    53,    54,    55,     4,     5,     6,     7,
+       8,     9,    10,    -1,    11,    12,    13,    14,    15,    16,
+      17,    18,    19,    20,    21,    22,    23,    24,    25,    26,
+      28,    -1,    -1,    31,    32,    33,    34,    35,    36,    37,
+      38,     4,     5,     6,     7,     8,     9,    10,    46,    47,
+      48,    49,    50,    51,    52,    53,    54,    55,    38,    11,
+      12,    13,    14,    15,    16,    17,    18,    -1,    48,    49,
+      50,    51,    52,    53,    54,    55,    11,    12,    13,    14,
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    19,    20,    21,    22,    23,    24,    25,    26,
+      79,    80,    81,    82,    83,    84,    85,    86
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -871,19 +879,20 @@ static const yytype_int8 yystos[] =
        7,     8,     9,    10,    28,    31,    32,    33,    34,    35,
       36,    37,    38,    46,    47,    48,    49,    50,    51,    52,
       53,    54,    55,    58,    59,    62,    63,    64,    65,    66,
-      67,    71,    73,    75,    76,    79,    80,    84,    85,    86,
-      87,    88,    38,    38,    38,    53,    55,    62,    71,    75,
+      67,    71,    73,    75,    76,    79,    80,    88,    92,    93,
+      94,    95,    38,    38,    38,    53,    55,    62,    71,    75,
       55,    38,    38,    48,    49,    55,    62,    38,    60,    41,
       58,    19,    20,    21,    22,    23,    24,    25,    26,    11,
       12,    13,    14,    15,    16,    17,    18,    55,    69,    53,
-      62,    64,    71,    62,    64,    74,    58,    39,    39,    55,
-      72,    44,    62,    62,    62,    62,    62,    62,    65,    65,
-      65,    65,    65,    65,    65,    65,    68,    45,    39,    39,
-      45,    39,    38,    39,    39,    45,    61,    62,    64,    75,
-      86,    44,    55,    77,    77,    62,    77,    66,    70,    55,
-      61,    47,    83,    39,    55,    39,    45,    29,    30,    47,
-      81,    82,    77,    77,    66,    38,    77,    83,    55,    64,
-      29,    81,    39,    38,    77,    64,    39,    77,    83
+      62,    64,    71,    62,    64,    74,    61,    62,    64,    75,
+      93,    39,    39,    55,    72,    44,    62,    62,    62,    62,
+      62,    62,    65,    65,    65,    65,    65,    65,    65,    65,
+      68,    45,    81,    45,    89,    91,    38,    39,    39,    45,
+      61,    44,    55,    39,    62,    39,    39,    66,    70,    55,
+      61,    77,    90,    77,    77,    55,    39,    45,    47,    87,
+      39,    77,    66,    47,    82,    77,    55,    29,    84,    38,
+      87,    64,    29,    30,    83,    85,    38,    77,    39,    64,
+      77,    86,    39,    77,    87
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -897,8 +906,9 @@ static const yytype_int8 yyr1[] =
       66,    66,    66,    67,    68,    67,    69,    69,    70,    70,
       71,    72,    72,    74,    73,    75,    75,    75,    75,    75,
       75,    75,    75,    76,    76,    76,    76,    76,    76,    78,
-      77,    79,    80,    80,    81,    81,    82,    82,    83,    83,
-      83,    84,    84,    84,    85,    86,    87,    87,    88
+      77,    79,    81,    82,    80,    83,    83,    85,    84,    86,
+      84,    84,    87,    87,    87,    89,    88,    90,    88,    91,
+      88,    92,    93,    94,    94,    95
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -912,8 +922,9 @@ static const yytype_int8 yyr2[] =
        1,     1,     1,     2,     0,     5,     1,     3,     2,     4,
        4,     1,     3,     0,     7,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     0,
-       4,     1,     7,     9,     2,     0,     5,     8,     1,     2,
-       0,     5,     7,     5,     4,     3,     2,     2,     1
+       4,     1,     0,     0,    11,     2,     0,     0,     6,     0,
+       9,     0,     1,     2,     0,     0,     6,     0,     8,     0,
+       6,     4,     3,     2,     2,     1
 };
 
 
@@ -1609,526 +1620,665 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 74 "translate.y"
-                     {(yyval.NoObjeto).np = criaNo(NULL, (yyvsp[0].NoObjeto).np, "main"); raiz = (yyval.NoObjeto).np;}
-#line 1615 "y.tab.c"
+#line 88 "translate.y"
+                     {(yyval.NoObjeto).np = criaNo(NULL, (yyvsp[0].NoObjetoCorpo).np, "main"); raiz = (yyval.NoObjeto).np;}
+#line 1626 "y.tab.c"
     break;
 
   case 3:
-#line 78 "translate.y"
-               {(yyval.NoObjeto).np = (yyvsp[0].NoObjetoTipado).np;}
-#line 1621 "y.tab.c"
+#line 92 "translate.y"
+               {(yyval.NoObjeto).np = (yyvsp[0].NoObjetoCorpo).np;}
+#line 1632 "y.tab.c"
     break;
 
   case 4:
-#line 79 "translate.y"
-                 {(yyval.NoObjeto).np = (yyvsp[0].NoObjetoTipado).np;}
-#line 1627 "y.tab.c"
+#line 93 "translate.y"
+                 {(yyval.NoObjeto).np = (yyvsp[0].NoObjetoCorpo).np;}
+#line 1638 "y.tab.c"
     break;
 
   case 5:
-#line 80 "translate.y"
+#line 94 "translate.y"
                  {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
-#line 1633 "y.tab.c"
+#line 1644 "y.tab.c"
     break;
 
   case 6:
-#line 81 "translate.y"
+#line 95 "translate.y"
              {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
-#line 1639 "y.tab.c"
+#line 1650 "y.tab.c"
     break;
 
   case 7:
-#line 82 "translate.y"
+#line 96 "translate.y"
               {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
-#line 1645 "y.tab.c"
+#line 1656 "y.tab.c"
     break;
 
   case 8:
-#line 83 "translate.y"
+#line 97 "translate.y"
                   {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
-#line 1651 "y.tab.c"
+#line 1662 "y.tab.c"
     break;
 
   case 9:
-#line 84 "translate.y"
+#line 98 "translate.y"
                 {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
-#line 1657 "y.tab.c"
+#line 1668 "y.tab.c"
     break;
 
   case 10:
-#line 85 "translate.y"
+#line 99 "translate.y"
               {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
-#line 1663 "y.tab.c"
+#line 1674 "y.tab.c"
     break;
 
   case 11:
-#line 86 "translate.y"
+#line 100 "translate.y"
                  {(yyval.NoObjeto).np = (yyvsp[0].NoObjeto).np;}
-#line 1669 "y.tab.c"
+#line 1680 "y.tab.c"
     break;
 
   case 12:
-#line 87 "translate.y"
+#line 101 "translate.y"
               {(yyval.NoObjeto).np = (yyvsp[0].NoObjetoTipado).np;}
-#line 1675 "y.tab.c"
+#line 1686 "y.tab.c"
     break;
 
   case 13:
-#line 88 "translate.y"
+#line 102 "translate.y"
                 {(yyval.NoObjeto).np = criaNo((yyvsp[-1].NoObjeto).np, (yyvsp[0].NoObjeto).np, "Expressões");}
-#line 1681 "y.tab.c"
+#line 1692 "y.tab.c"
     break;
 
   case 14:
-#line 92 "translate.y"
+#line 106 "translate.y"
               {checar_declaracao((yyvsp[0].NoObjetoTipado).nome);}
-#line 1687 "y.tab.c"
+#line 1698 "y.tab.c"
     break;
 
   case 15:
-#line 92 "translate.y"
+#line 106 "translate.y"
                                                               {
         (yyvsp[-3].NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[-3].NoObjetoTipado).nome); 
         (yyval.NoObjeto).np = criaNo((yyvsp[-3].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, "=");
         checar_tipos(get_tipo_Tabela((yyvsp[-3].NoObjetoTipado).nome),(yyvsp[0].NoObjetoTipado).tipo);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s\n", (yyvsp[-3].NoObjetoTipado).nome, (yyvsp[0].NoObjetoTipado).nome);
+
         }
-#line 1697 "y.tab.c"
+#line 1710 "y.tab.c"
     break;
 
   case 16:
-#line 100 "translate.y"
-               {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjetoTipado).np;(yyval.NoObjetoTipado).tipo = (yyvsp[0].NoObjetoTipado).tipo;}
-#line 1703 "y.tab.c"
+#line 116 "translate.y"
+               {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjetoCorpo).np;(yyval.NoObjetoTipado).tipo = (yyvsp[0].NoObjetoCorpo).tipo;strcpy((yyval.NoObjetoTipado).nome, (yyvsp[0].NoObjetoCorpo).nome);}
+#line 1716 "y.tab.c"
     break;
 
   case 17:
-#line 101 "translate.y"
-              {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjetoTipado).np;(yyval.NoObjetoTipado).tipo = (yyvsp[0].NoObjetoTipado).tipo;}
-#line 1709 "y.tab.c"
+#line 117 "translate.y"
+              {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjetoTipado).np;(yyval.NoObjetoTipado).tipo = (yyvsp[0].NoObjetoTipado).tipo; strcpy((yyval.NoObjetoTipado).nome, (yyvsp[0].NoObjetoTipado).nome);}
+#line 1722 "y.tab.c"
     break;
 
   case 18:
-#line 102 "translate.y"
-                 {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjetoTipado).np;(yyval.NoObjetoTipado).tipo = (yyvsp[0].NoObjetoTipado).tipo;}
-#line 1715 "y.tab.c"
+#line 118 "translate.y"
+                 {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjetoCorpo).np;(yyval.NoObjetoTipado).tipo = (yyvsp[0].NoObjetoCorpo).tipo; strcpy((yyval.NoObjetoTipado).nome, (yyvsp[0].NoObjetoCorpo).nome);}
+#line 1728 "y.tab.c"
     break;
 
   case 19:
-#line 103 "translate.y"
-            {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjeto).np;(yyval.NoObjetoTipado).tipo = T_STRING;}
-#line 1721 "y.tab.c"
+#line 119 "translate.y"
+            {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjeto).np;(yyval.NoObjetoTipado).tipo = T_STRING; strcpy((yyval.NoObjetoTipado).nome, (yyvsp[0].NoObjeto).nome);}
+#line 1734 "y.tab.c"
     break;
 
   case 20:
-#line 106 "translate.y"
-           {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjetoTipado).np; (yyval.NoObjetoTipado).tipo = (yyvsp[0].NoObjetoTipado).tipo;}
-#line 1727 "y.tab.c"
+#line 122 "translate.y"
+           {(yyval.NoObjetoCorpo).np = (yyvsp[0].NoObjetoTipado).np; (yyval.NoObjetoCorpo).tipo = (yyvsp[0].NoObjetoTipado).tipo; strcpy((yyval.NoObjetoCorpo).nome, (yyvsp[0].NoObjetoTipado).nome);}
+#line 1740 "y.tab.c"
     break;
 
   case 21:
-#line 107 "translate.y"
-                {(yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = get_tipo_Tabela((yyvsp[0].NoObjetoTipado).nome);}
-#line 1733 "y.tab.c"
+#line 123 "translate.y"
+                {(yyval.NoObjetoCorpo).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoCorpo).tipo = get_tipo_Tabela((yyvsp[0].NoObjetoTipado).nome);strcpy((yyval.NoObjetoCorpo).nome, (yyvsp[0].NoObjetoTipado).nome);}
+#line 1746 "y.tab.c"
     break;
 
   case 22:
-#line 108 "translate.y"
-             {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjeto).np;(yyval.NoObjetoTipado).tipo = T_DESCONHECIDO;}
-#line 1739 "y.tab.c"
+#line 124 "translate.y"
+             {(yyval.NoObjetoCorpo).np = (yyvsp[0].NoObjeto).np;(yyval.NoObjetoCorpo).tipo = T_DESCONHECIDO;strcpy((yyval.NoObjetoCorpo).nome, (yyvsp[0].NoObjeto).nome);}
+#line 1752 "y.tab.c"
     break;
 
   case 23:
-#line 109 "translate.y"
-                                            {(yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, "+");(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
-#line 1745 "y.tab.c"
-    break;
-
-  case 24:
-#line 110 "translate.y"
-                                                 {(yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, "-");(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
-#line 1751 "y.tab.c"
-    break;
-
-  case 25:
-#line 111 "translate.y"
-                                               {(yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, "/");(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
-#line 1757 "y.tab.c"
-    break;
-
-  case 26:
-#line 112 "translate.y"
-                                                     {(yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, "*");(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
+#line 125 "translate.y"
+                                            {
+        (yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoCorpo).np, (yyvsp[0].NoObjetoCorpo).np, "+");
+        (yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoCorpo).tipo;
+        sprintf((yyval.NoObjetoCorpo).nome, "t%d", varTemporaria++);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", (yyval.NoObjetoCorpo).nome, (yyvsp[-2].NoObjetoCorpo).nome,(yyvsp[-1].NoObjeto).nome,(yyvsp[0].NoObjetoCorpo).nome);
+        }
 #line 1763 "y.tab.c"
     break;
 
-  case 27:
-#line 113 "translate.y"
-                                           {(yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, "%");(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
-#line 1769 "y.tab.c"
+  case 24:
+#line 131 "translate.y"
+                                                 {(yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoCorpo).np, (yyvsp[0].NoObjetoCorpo).np, "-");(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoCorpo).tipo; 
+        sprintf((yyval.NoObjetoCorpo).nome, "t%d", varTemporaria++);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", (yyval.NoObjetoCorpo).nome, (yyvsp[-2].NoObjetoCorpo).nome,(yyvsp[-1].NoObjeto).nome,(yyvsp[0].NoObjetoCorpo).nome);}
+#line 1771 "y.tab.c"
     break;
 
-  case 28:
-#line 114 "translate.y"
-                                           {(yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, "**");(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
-#line 1775 "y.tab.c"
+  case 25:
+#line 134 "translate.y"
+                                               {(yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoCorpo).np, (yyvsp[0].NoObjetoCorpo).np, "/");(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoCorpo).tipo;
+        sprintf((yyval.NoObjetoCorpo).nome, "t%d", varTemporaria++);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", (yyval.NoObjetoCorpo).nome, (yyvsp[-2].NoObjetoCorpo).nome,(yyvsp[-1].NoObjeto).nome,(yyvsp[0].NoObjetoCorpo).nome);}
+#line 1779 "y.tab.c"
     break;
 
-  case 29:
-#line 115 "translate.y"
-                                                                {(yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[-1].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = (yyvsp[-1].NoObjetoTipado).tipo;}
-#line 1781 "y.tab.c"
-    break;
-
-  case 30:
-#line 116 "translate.y"
-                                       {(yyval.NoObjetoTipado).np = criaNo((yyvsp[-1].NoObjetoTipado).np, NULL, "++" );(yyval.NoObjetoTipado).tipo = (yyvsp[-1].NoObjetoTipado).tipo;}
+  case 26:
+#line 137 "translate.y"
+                                                     {(yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoCorpo).np, (yyvsp[0].NoObjetoCorpo).np, "*");(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoCorpo).tipo;
+        sprintf((yyval.NoObjetoCorpo).nome, "t%d", varTemporaria++);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", (yyval.NoObjetoCorpo).nome, (yyvsp[-2].NoObjetoCorpo).nome,(yyvsp[-1].NoObjeto).nome,(yyvsp[0].NoObjetoCorpo).nome);}
 #line 1787 "y.tab.c"
     break;
 
+  case 27:
+#line 140 "translate.y"
+                                           {(yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoCorpo).np, (yyvsp[0].NoObjetoCorpo).np, "%");(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoCorpo).tipo;
+        sprintf((yyval.NoObjetoCorpo).nome, "t%d", varTemporaria++);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", (yyval.NoObjetoCorpo).nome, (yyvsp[-2].NoObjetoCorpo).nome,(yyvsp[-1].NoObjeto).nome,(yyvsp[0].NoObjetoCorpo).nome);}
+#line 1795 "y.tab.c"
+    break;
+
+  case 28:
+#line 143 "translate.y"
+                                           {(yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoCorpo).np, (yyvsp[0].NoObjetoCorpo).np, "**");(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoCorpo).tipo;
+        sprintf((yyval.NoObjetoCorpo).nome, "t%d", varTemporaria++);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", (yyval.NoObjetoCorpo).nome, (yyvsp[-2].NoObjetoCorpo).nome,(yyvsp[-1].NoObjeto).nome,(yyvsp[0].NoObjetoCorpo).nome);}
+#line 1803 "y.tab.c"
+    break;
+
+  case 29:
+#line 146 "translate.y"
+                                                                {(yyval.NoObjetoCorpo).np = criaNo(NULL, NULL, (yyvsp[-1].NoObjetoCorpo).nome);(yyval.NoObjetoCorpo).tipo = (yyvsp[-1].NoObjetoCorpo).tipo;}
+#line 1809 "y.tab.c"
+    break;
+
+  case 30:
+#line 147 "translate.y"
+                                       {(yyval.NoObjetoCorpo).np = criaNo((yyvsp[-1].NoObjetoCorpo).np, NULL, "++" );(yyval.NoObjetoCorpo).tipo = (yyvsp[-1].NoObjetoCorpo).tipo;
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s + 1\n", (yyvsp[-1].NoObjetoCorpo).nome, (yyvsp[-1].NoObjetoCorpo).nome);}
+#line 1816 "y.tab.c"
+    break;
+
   case 31:
-#line 117 "translate.y"
-                                       {(yyval.NoObjetoTipado).np = criaNo((yyvsp[-1].NoObjetoTipado).np, NULL, "--");(yyval.NoObjetoTipado).tipo = (yyvsp[-1].NoObjetoTipado).tipo;}
-#line 1793 "y.tab.c"
-    break;
-
-  case 32:
-#line 121 "translate.y"
-          {(yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_FLOAT;}
-#line 1799 "y.tab.c"
-    break;
-
-  case 33:
-#line 122 "translate.y"
-          {(yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_INT;}
-#line 1805 "y.tab.c"
-    break;
-
-  case 34:
-#line 126 "translate.y"
-              {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjetoTipado).np;(yyval.NoObjetoTipado).tipo = (yyvsp[0].NoObjetoTipado).tipo;}
-#line 1811 "y.tab.c"
-    break;
-
-  case 35:
-#line 127 "translate.y"
-              {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjeto).np;(yyval.NoObjetoTipado).tipo = T_DESCONHECIDO;}
-#line 1817 "y.tab.c"
-    break;
-
-  case 36:
-#line 128 "translate.y"
-                                               { (yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
+#line 149 "translate.y"
+                                       {(yyval.NoObjetoCorpo).np = criaNo((yyvsp[-1].NoObjetoCorpo).np, NULL, "--");(yyval.NoObjetoCorpo).tipo = (yyvsp[-1].NoObjetoCorpo).tipo;
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s - 1\n", (yyvsp[-1].NoObjetoCorpo).nome, (yyvsp[-1].NoObjetoCorpo).nome);}
 #line 1823 "y.tab.c"
     break;
 
-  case 37:
-#line 129 "translate.y"
-                                             { (yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
+  case 32:
+#line 154 "translate.y"
+          {(yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_FLOAT;}
 #line 1829 "y.tab.c"
     break;
 
-  case 38:
-#line 130 "translate.y"
-                                              { (yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
+  case 33:
+#line 155 "translate.y"
+          {(yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_INT;}
 #line 1835 "y.tab.c"
     break;
 
-  case 39:
-#line 131 "translate.y"
-                                              { (yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
+  case 34:
+#line 159 "translate.y"
+              {(yyval.NoObjetoCorpo).np = (yyvsp[0].NoObjetoTipado).np;(yyval.NoObjetoCorpo).tipo = (yyvsp[0].NoObjetoTipado).tipo; strcpy((yyval.NoObjetoCorpo).nome, (yyvsp[0].NoObjetoTipado).nome);}
 #line 1841 "y.tab.c"
     break;
 
-  case 40:
-#line 132 "translate.y"
-                                                { (yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
+  case 35:
+#line 160 "translate.y"
+              {(yyval.NoObjetoCorpo).np = (yyvsp[0].NoObjeto).np;(yyval.NoObjetoCorpo).tipo = T_DESCONHECIDO; strcpy((yyval.NoObjetoCorpo).nome, (yyvsp[0].NoObjeto).nome);}
 #line 1847 "y.tab.c"
     break;
 
+  case 36:
+#line 161 "translate.y"
+                                               { (yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoTipado).tipo;
+    sprintf((yyval.NoObjetoCorpo).nome, "%s %s %s ",(yyvsp[-2].NoObjetoTipado).nome,(yyvsp[-1].NoObjeto).nome,(yyvsp[0].NoObjetoTipado).nome);}
+#line 1854 "y.tab.c"
+    break;
+
+  case 37:
+#line 163 "translate.y"
+                                             { (yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoTipado).tipo;
+    sprintf((yyval.NoObjetoCorpo).nome, "%s %s %s ",(yyvsp[-2].NoObjetoTipado).nome,(yyvsp[-1].NoObjeto).nome,(yyvsp[0].NoObjetoTipado).nome);}
+#line 1861 "y.tab.c"
+    break;
+
+  case 38:
+#line 165 "translate.y"
+                                              { (yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoTipado).tipo;
+    sprintf((yyval.NoObjetoCorpo).nome, "%s %s %s ",(yyvsp[-2].NoObjetoTipado).nome,(yyvsp[-1].NoObjeto).nome,(yyvsp[0].NoObjetoTipado).nome);}
+#line 1868 "y.tab.c"
+    break;
+
+  case 39:
+#line 167 "translate.y"
+                                              { (yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoTipado).tipo;
+    sprintf((yyval.NoObjetoCorpo).nome, "%s %s %s ",(yyvsp[-2].NoObjetoTipado).nome,(yyvsp[-1].NoObjeto).nome,(yyvsp[0].NoObjetoTipado).nome);}
+#line 1875 "y.tab.c"
+    break;
+
+  case 40:
+#line 169 "translate.y"
+                                                { (yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoTipado).tipo;
+    sprintf((yyval.NoObjetoCorpo).nome, "%s %s %s ",(yyvsp[-2].NoObjetoTipado).nome,(yyvsp[-1].NoObjeto).nome,(yyvsp[0].NoObjetoTipado).nome);}
+#line 1882 "y.tab.c"
+    break;
+
   case 41:
-#line 133 "translate.y"
-                                                { (yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
-#line 1853 "y.tab.c"
-    break;
-
-  case 42:
-#line 134 "translate.y"
-                                         { (yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
-#line 1859 "y.tab.c"
-    break;
-
-  case 43:
-#line 135 "translate.y"
-                                        { (yyval.NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoTipado).tipo = (yyvsp[-2].NoObjetoTipado).tipo;}
-#line 1865 "y.tab.c"
-    break;
-
-  case 44:
-#line 139 "translate.y"
-            {(yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_BOOLEAN;}
-#line 1871 "y.tab.c"
-    break;
-
-  case 45:
-#line 140 "translate.y"
-                 {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjetoTipado).np;(yyval.NoObjetoTipado).tipo = (yyvsp[0].NoObjetoTipado).tipo;}
-#line 1877 "y.tab.c"
-    break;
-
-  case 46:
-#line 144 "translate.y"
-             {inserir_tipo(T_INT); (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
-#line 1883 "y.tab.c"
-    break;
-
-  case 47:
-#line 145 "translate.y"
-                {inserir_tipo(T_FLOAT);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 171 "translate.y"
+                                                { (yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoTipado).tipo;
+    sprintf((yyval.NoObjetoCorpo).nome, "%s %s %s ",(yyvsp[-2].NoObjetoTipado).nome,(yyvsp[-1].NoObjeto).nome,(yyvsp[0].NoObjetoTipado).nome);}
 #line 1889 "y.tab.c"
     break;
 
+  case 42:
+#line 173 "translate.y"
+                                         { (yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoTipado).tipo;
+    sprintf((yyval.NoObjetoCorpo).nome, "%s && %s ",(yyvsp[-2].NoObjetoTipado).nome,(yyvsp[0].NoObjetoTipado).nome);}
+#line 1896 "y.tab.c"
+    break;
+
+  case 43:
+#line 175 "translate.y"
+                                        { (yyval.NoObjetoCorpo).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);(yyval.NoObjetoCorpo).tipo = (yyvsp[-2].NoObjetoTipado).tipo;
+    sprintf((yyval.NoObjetoCorpo).nome, "%s || %s ",(yyvsp[-2].NoObjetoTipado).nome,(yyvsp[0].NoObjetoTipado).nome);}
+#line 1903 "y.tab.c"
+    break;
+
+  case 44:
+#line 180 "translate.y"
+            {(yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_BOOLEAN;}
+#line 1909 "y.tab.c"
+    break;
+
+  case 45:
+#line 181 "translate.y"
+                 {(yyval.NoObjetoTipado).np = (yyvsp[0].NoObjetoCorpo).np;(yyval.NoObjetoTipado).tipo = (yyvsp[0].NoObjetoCorpo).tipo;}
+#line 1915 "y.tab.c"
+    break;
+
+  case 46:
+#line 185 "translate.y"
+             {inserir_tipo(T_INT); (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1921 "y.tab.c"
+    break;
+
+  case 47:
+#line 186 "translate.y"
+                {inserir_tipo(T_FLOAT);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
+#line 1927 "y.tab.c"
+    break;
+
   case 48:
-#line 146 "translate.y"
+#line 187 "translate.y"
                {inserir_tipo(T_CHAR);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
-#line 1895 "y.tab.c"
+#line 1933 "y.tab.c"
     break;
 
   case 49:
-#line 147 "translate.y"
+#line 188 "translate.y"
                      {inserir_tipo(T_STRING);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
-#line 1901 "y.tab.c"
+#line 1939 "y.tab.c"
     break;
 
   case 50:
-#line 148 "translate.y"
+#line 189 "translate.y"
                       {inserir_tipo(T_BOOLEAN);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
-#line 1907 "y.tab.c"
+#line 1945 "y.tab.c"
     break;
 
   case 51:
-#line 149 "translate.y"
+#line 190 "translate.y"
                      {inserir_tipo(T_ARRAY);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
-#line 1913 "y.tab.c"
+#line 1951 "y.tab.c"
     break;
 
   case 52:
-#line 150 "translate.y"
+#line 191 "translate.y"
                    {inserir_tipo(T_DATE);  (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
-#line 1919 "y.tab.c"
+#line 1957 "y.tab.c"
     break;
 
   case 53:
-#line 154 "translate.y"
+#line 195 "translate.y"
                    {(yyvsp[0].NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome); (yyval.NoObjeto).np = criaNo((yyvsp[0].NoObjeto).np, NULL, (yyvsp[-1].NoObjeto).nome);}
-#line 1925 "y.tab.c"
+#line 1963 "y.tab.c"
     break;
 
   case 54:
-#line 155 "translate.y"
+#line 196 "translate.y"
                      {adicionar_tabela((yyvsp[0].NoObjetoTipado).nome,'v',escopoAtual->tabela,tabelaGlobal);}
-#line 1931 "y.tab.c"
+#line 1969 "y.tab.c"
     break;
 
   case 55:
-#line 155 "translate.y"
+#line 196 "translate.y"
                                                                                                         {
         (yyvsp[-3].NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[-3].NoObjetoTipado).nome); 
         (yyval.NoObjeto).np = criaNo((yyvsp[-3].NoObjetoTipado).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-4].NoObjeto).nome);
         checar_tipos(get_tipo_Tabela((yyvsp[-3].NoObjetoTipado).nome),(yyvsp[0].NoObjetoTipado).tipo);
-
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s\n", (yyvsp[-3].NoObjetoTipado).nome, (yyvsp[0].NoObjetoTipado).nome);
         }
-#line 1942 "y.tab.c"
+#line 1980 "y.tab.c"
     break;
 
   case 56:
-#line 164 "translate.y"
+#line 205 "translate.y"
               {adicionar_tabela((yyvsp[0].NoObjetoTipado).nome,'v',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);}
-#line 1948 "y.tab.c"
+#line 1986 "y.tab.c"
     break;
 
   case 57:
-#line 165 "translate.y"
+#line 206 "translate.y"
                                        {adicionar_tabela((yyvsp[0].NoObjetoTipado).nome,'v',escopoAtual->tabela,tabelaGlobal);}
-#line 1954 "y.tab.c"
+#line 1992 "y.tab.c"
     break;
 
   case 58:
-#line 169 "translate.y"
+#line 210 "translate.y"
                     {adicionar_tabela((yyvsp[-1].NoObjeto).nome,'v',escopoAtual->tabela,tabelaGlobal); (yyvsp[0].NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome); (yyval.NoObjeto).np = criaNo(NULL,(yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1960 "y.tab.c"
+#line 1998 "y.tab.c"
     break;
 
   case 59:
-#line 170 "translate.y"
+#line 211 "translate.y"
                                                    {adicionar_tabela((yyvsp[0].NoObjetoTipado).nome,'v',escopoAtual->tabela,tabelaGlobal); (yyvsp[0].NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome); (yyval.NoObjeto).np = criaNo((yyvsp[-3].NoObjeto).np, (yyvsp[0].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).nome);}
-#line 1966 "y.tab.c"
+#line 2004 "y.tab.c"
     break;
 
   case 60:
-#line 174 "translate.y"
+#line 215 "translate.y"
                                                                         {(yyval.NoObjeto).np = criaNo((yyvsp[-3].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).np, (yyval.NoObjeto).nome);}
-#line 1972 "y.tab.c"
+#line 2010 "y.tab.c"
     break;
 
   case 61:
-#line 177 "translate.y"
+#line 218 "translate.y"
                {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);}
-#line 1978 "y.tab.c"
+#line 2016 "y.tab.c"
     break;
 
   case 63:
-#line 182 "translate.y"
+#line 223 "translate.y"
                                 {adicionar_tabela((yyvsp[0].NoObjetoTipado).nome,'f',escopoAtual->tabela,tabelaGlobal);}
-#line 1984 "y.tab.c"
+#line 2022 "y.tab.c"
     break;
 
   case 64:
-#line 182 "translate.y"
-                                                                                                                                                                      {(yyvsp[-5].NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjeto).np, NULL, (yyvsp[-5].NoObjetoTipado).nome); (yyval.NoObjeto).np = criaNo((yyvsp[-5].NoObjetoTipado).np, (yyvsp[0].NoObjeto).np, (yyvsp[-6].NoObjeto).nome);}
-#line 1990 "y.tab.c"
+#line 223 "translate.y"
+                                                                                                                                                                      {(yyvsp[-5].NoObjetoTipado).np = criaNo((yyvsp[-2].NoObjeto).np, NULL, (yyvsp[-5].NoObjetoTipado).nome); (yyval.NoObjeto).np = criaNo((yyvsp[-5].NoObjetoTipado).np, (yyvsp[0].NoObjetoCorpo).np, (yyvsp[-6].NoObjeto).nome);}
+#line 2028 "y.tab.c"
     break;
 
   case 65:
-#line 186 "translate.y"
+#line 227 "translate.y"
         {inserir_tipo(T_INT); adicionar_tabela((yyvsp[0].NoObjetoTipado).nome,'c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_INT;}
-#line 1996 "y.tab.c"
+#line 2034 "y.tab.c"
     break;
 
   case 66:
-#line 187 "translate.y"
+#line 228 "translate.y"
                 {inserir_tipo(T_FLOAT); adicionar_tabela((yyvsp[0].NoObjetoTipado).nome,'c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_FLOAT;}
-#line 2002 "y.tab.c"
+#line 2040 "y.tab.c"
     break;
 
   case 67:
-#line 188 "translate.y"
+#line 229 "translate.y"
                {inserir_tipo(T_CHAR); adicionar_tabela((yyvsp[0].NoObjetoTipado).nome,'c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_CHAR;}
-#line 2008 "y.tab.c"
+#line 2046 "y.tab.c"
     break;
 
   case 68:
-#line 189 "translate.y"
+#line 230 "translate.y"
                  {inserir_tipo(T_STRING); adicionar_tabela((yyvsp[0].NoObjetoTipado).nome,'c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_STRING;}
-#line 2014 "y.tab.c"
+#line 2052 "y.tab.c"
     break;
 
   case 69:
-#line 190 "translate.y"
+#line 231 "translate.y"
                   {inserir_tipo(T_BOOLEAN); adicionar_tabela((yyvsp[0].NoObjetoTipado).nome,'c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_BOOLEAN;}
-#line 2020 "y.tab.c"
+#line 2058 "y.tab.c"
     break;
 
   case 70:
-#line 191 "translate.y"
+#line 232 "translate.y"
                  {inserir_tipo(T_ARRAY); adicionar_tabela((yyvsp[0].NoObjetoTipado).nome,'c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_ARRAY;}
-#line 2026 "y.tab.c"
+#line 2064 "y.tab.c"
     break;
 
   case 71:
-#line 192 "translate.y"
+#line 233 "translate.y"
                {inserir_tipo(T_DATE); adicionar_tabela((yyvsp[0].NoObjetoTipado).nome,'c',escopoAtual->tabela,tabelaGlobal); (yyval.NoObjetoTipado).np = criaNo(NULL, NULL, (yyvsp[0].NoObjetoTipado).nome);(yyval.NoObjetoTipado).tipo = T_DATE;}
-#line 2032 "y.tab.c"
+#line 2070 "y.tab.c"
     break;
 
   case 78:
-#line 201 "translate.y"
+#line 242 "translate.y"
                   {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[0].NoObjeto).nome);}
-#line 2038 "y.tab.c"
+#line 2076 "y.tab.c"
     break;
 
   case 79:
-#line 204 "translate.y"
+#line 245 "translate.y"
                       {escopoAtual = aprofundarEscopo(escopoAtual);}
-#line 2044 "y.tab.c"
+#line 2082 "y.tab.c"
     break;
 
   case 80:
-#line 204 "translate.y"
-                                                                                             {escopoAtual = voltarEscopo(escopoAtual);  (yyval.NoObjeto).np = (yyvsp[-1].NoObjeto).np;}
-#line 2050 "y.tab.c"
+#line 245 "translate.y"
+                                                                                             {escopoAtual = voltarEscopo(escopoAtual);  (yyval.NoObjetoCorpo).np = (yyvsp[-1].NoObjeto).np;}
+#line 2088 "y.tab.c"
     break;
 
   case 82:
-#line 212 "translate.y"
-                                                                                                {struct No *temp =  criaNo((yyvsp[-4].NoObjetoTipado).np, (yyvsp[-2].NoObjeto).np, (yyvsp[-6].NoObjeto).nome); (yyval.NoObjeto).np = criaNo(temp, (yyvsp[0].NoObjeto).np,"Mabel Label");}
-#line 2056 "y.tab.c"
+#line 253 "translate.y"
+                                                   {
+        sprintf((yyvsp[0].NoObjetoCorpo).corpoIf, "%d", label++);
+        sprintf((yyvsp[0].NoObjetoCorpo).corpoElse, "%d", label++);    
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = %s\n", varTemporaria,(yyvsp[0].NoObjetoCorpo).nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "IF FALSE (t%d) GOTO %s\n",varTemporaria,(yyvsp[0].NoObjetoCorpo).corpoElse);
+        varTemporaria++;
+    }
+#line 2100 "y.tab.c"
     break;
 
   case 83:
-#line 213 "translate.y"
-                                                                                                                    { struct No *temp =  criaNo((yyvsp[-6].NoObjetoTipado).np, (yyvsp[-4].NoObjeto).np, (yyvsp[-8].NoObjeto).nome); struct No *temp2 = criaNo(temp, (yyvsp[-2].NoObjeto).np,(yyvsp[-2].NoObjeto).nome);(yyval.NoObjeto).np = criaNo(temp2,(yyvsp[0].NoObjeto).np,"Sable Label");}
-#line 2062 "y.tab.c"
+#line 260 "translate.y"
+                                           {
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "GOTO %s\n", (yyvsp[-4].NoObjetoCorpo).corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", (yyvsp[-4].NoObjetoCorpo).corpoElse);
+    }
+#line 2109 "y.tab.c"
     break;
 
   case 84:
-#line 216 "translate.y"
-                     {(yyval.NoObjeto).np = criaNo(NULL, (yyvsp[0].NoObjeto).np, (yyvsp[-1].NoObjeto).nome);}
-#line 2068 "y.tab.c"
+#line 264 "translate.y"
+                           {
+        struct No *temp =  criaNo((yyvsp[-8].NoObjetoCorpo).np, (yyvsp[-5].NoObjetoCorpo).np, (yyvsp[-10].NoObjeto).nome); 
+        struct No *temp2 = criaNo(temp, (yyvsp[-2].NoObjeto).np,(yyvsp[-2].NoObjeto).nome);
+        (yyval.NoObjeto).np = criaNo(temp2,(yyvsp[0].NoObjeto).np,"Sable Label");
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", (yyvsp[-8].NoObjetoCorpo).corpoIf);
+    }
+#line 2120 "y.tab.c"
     break;
 
   case 85:
-#line 217 "translate.y"
-      {(yyval.NoObjeto).np = NULL;}
-#line 2074 "y.tab.c"
+#line 272 "translate.y"
+                     {(yyval.NoObjeto).np = criaNo(NULL, (yyvsp[0].NoObjetoCorpo).np, (yyvsp[-1].NoObjeto).nome);}
+#line 2126 "y.tab.c"
     break;
 
   case 86:
-#line 220 "translate.y"
-                                                                                  {(yyval.NoObjeto).np =  criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjeto).np, (yyvsp[-4].NoObjeto).nome);}
-#line 2080 "y.tab.c"
+#line 273 "translate.y"
+      {(yyval.NoObjeto).np = NULL;}
+#line 2132 "y.tab.c"
     break;
 
   case 87:
-#line 221 "translate.y"
-                                                                                                                   {(yyvsp[-5].NoObjeto).np =  criaNo((yyvsp[-3].NoObjetoTipado).np, (yyvsp[-1].NoObjeto).np, (yyvsp[-5].NoObjeto).nome); (yyval.NoObjeto).np = criaNo((yyvsp[-7].NoObjeto).np, (yyvsp[-5].NoObjeto).np, (yyvsp[-7].NoObjeto).nome);}
-#line 2086 "y.tab.c"
+#line 276 "translate.y"
+                                                   {
+        sprintf((yyvsp[0].NoObjetoCorpo).corpoElse, "%d", label++);    
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = %s\n", varTemporaria,(yyvsp[0].NoObjetoCorpo).nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "IF FALSE (t%d) GOTO %s\n",varTemporaria,(yyvsp[0].NoObjetoCorpo).corpoElse);
+        varTemporaria++;
+    }
+#line 2143 "y.tab.c"
     break;
 
-  case 91:
-#line 230 "translate.y"
-                                                                              {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjeto).np, (yyvsp[-4].NoObjeto).nome);}
-#line 2092 "y.tab.c"
+  case 88:
+#line 281 "translate.y"
+                                    {(yyval.NoObjeto).np =  criaNo((yyvsp[-3].NoObjetoCorpo).np, (yyvsp[0].NoObjetoCorpo).np, (yyvsp[-5].NoObjeto).nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", (yyvsp[-3].NoObjetoCorpo).corpoElse);
+
+    }
+#line 2152 "y.tab.c"
     break;
 
-  case 92:
-#line 231 "translate.y"
-                                                                                                         {struct No *temp =  criaNo((yyvsp[-4].NoObjetoTipado).np, (yyvsp[-2].NoObjetoTipado).np, "Condicoes"); (yyval.NoObjeto).np = criaNo(temp, (yyvsp[0].NoObjeto).np, (yyvsp[-6].NoObjeto).nome);}
-#line 2098 "y.tab.c"
+  case 89:
+#line 285 "translate.y"
+                                                                           {
+        sprintf((yyvsp[0].NoObjetoCorpo).corpoElse, "%d", label++);    
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = %s\n", varTemporaria,(yyvsp[0].NoObjetoCorpo).nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "IF FALSE (t%d) GOTO %s\n",varTemporaria,(yyvsp[0].NoObjetoCorpo).corpoElse);
+        varTemporaria++;
+    }
+#line 2163 "y.tab.c"
     break;
 
-  case 93:
-#line 232 "translate.y"
-                                                                                  {(yyval.NoObjeto).np = criaNo((yyvsp[-2].NoObjetoTipado).np, (yyvsp[0].NoObjeto).np, (yyvsp[-4].NoObjeto).nome);}
-#line 2104 "y.tab.c"
-    break;
+  case 90:
+#line 290 "translate.y"
+                                             {
+        (yyvsp[-4].NoObjetoCorpo).np =  criaNo((yyvsp[-4].NoObjetoCorpo).np, (yyvsp[-1].NoObjetoCorpo).np, (yyvsp[-6].NoObjeto).nome); 
+        (yyval.NoObjeto).np = criaNo((yyvsp[-8].NoObjeto).np, (yyvsp[-6].NoObjeto).np, (yyvsp[-8].NoObjeto).nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", (yyvsp[-4].NoObjetoCorpo).corpoElse);
 
-  case 94:
-#line 235 "translate.y"
-                                                                    {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[-3].NoObjeto).nome);}
-#line 2110 "y.tab.c"
+    }
+#line 2174 "y.tab.c"
     break;
 
   case 95:
-#line 238 "translate.y"
-                                                                {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[-2].NoObjeto).nome);}
-#line 2116 "y.tab.c"
+#line 305 "translate.y"
+                                                 {
+        sprintf((yyvsp[0].NoObjetoCorpo).corpoIf, "%d", label++);
+        sprintf((yyvsp[0].NoObjetoCorpo).corpoElse, "%d", label++);    
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = 0\n", varTemporaria);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", (yyvsp[0].NoObjetoCorpo).corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "IF FALSE (t%d <= %s) GOTO %s\n",varTemporaria,(yyvsp[0].NoObjetoCorpo).nome,(yyvsp[0].NoObjetoCorpo).corpoElse);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = t%d + 1\n", varTemporaria, varTemporaria);
+        varTemporaria++;
+        
+
+    }
+#line 2190 "y.tab.c"
     break;
 
   case 96:
-#line 241 "translate.y"
-                         {(yyval.NoObjeto).np = criaNo((yyvsp[0].NoObjetoTipado).np,NULL, (yyvsp[-1].NoObjeto).nome);}
-#line 2122 "y.tab.c"
+#line 315 "translate.y"
+                                    {
+        (yyval.NoObjeto).np = criaNo((yyvsp[-3].NoObjetoCorpo).np, (yyvsp[0].NoObjetoCorpo).np, (yyvsp[-5].NoObjeto).nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "GOTO %s\n", (yyvsp[-3].NoObjetoCorpo).corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", (yyvsp[-3].NoObjetoCorpo).corpoElse);
+        
+        }
+#line 2201 "y.tab.c"
     break;
 
   case 97:
-#line 242 "translate.y"
-                              {(yyval.NoObjeto).np = criaNo((yyvsp[0].NoObjetoTipado).np,NULL, (yyvsp[-1].NoObjeto).nome);}
-#line 2128 "y.tab.c"
+#line 321 "translate.y"
+                                                                           {
+        sprintf((yyvsp[-2].NoObjetoCorpo).corpoIf, "%d", label++);
+        sprintf((yyvsp[-2].NoObjetoCorpo).corpoElse, "%d", label++);    
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = %s\n", varTemporaria,(yyvsp[-2].NoObjetoCorpo).nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", (yyvsp[-2].NoObjetoCorpo).corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "IF FALSE (t%d <= %s) GOTO %s\n",varTemporaria,(yyvsp[-2].NoObjetoCorpo).nome,(yyvsp[-2].NoObjetoCorpo).corpoElse);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = t%d + 1\n", varTemporaria, varTemporaria);
+        varTemporaria++;
+    }
+#line 2215 "y.tab.c"
+    break;
+
+  case 98:
+#line 330 "translate.y"
+                                  {
+        struct No *temp =  criaNo((yyvsp[-5].NoObjetoCorpo).np, (yyvsp[-3].NoObjetoCorpo).np, "Condicoes"); 
+        (yyval.NoObjeto).np = criaNo(temp, (yyvsp[0].NoObjetoCorpo).np, (yyvsp[-7].NoObjeto).nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "GOTO %s\n", (yyvsp[-5].NoObjetoCorpo).corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", (yyvsp[-5].NoObjetoCorpo).corpoElse);
+    }
+#line 2226 "y.tab.c"
+    break;
+
+  case 99:
+#line 336 "translate.y"
+                                                    {
+        sprintf((yyvsp[0].NoObjetoCorpo).corpoIf, "%d", label++);
+        sprintf((yyvsp[0].NoObjetoCorpo).corpoElse, "%d", label++);    
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = %s\n", varTemporaria,(yyvsp[0].NoObjetoCorpo).nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", (yyvsp[0].NoObjetoCorpo).corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "IF FALSE (t%d) GOTO %s\n",varTemporaria,(yyvsp[0].NoObjetoCorpo).corpoElse);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "t%d = t%d + 1\n", varTemporaria, varTemporaria);
+        varTemporaria++;
+
+    }
+#line 2241 "y.tab.c"
+    break;
+
+  case 100:
+#line 346 "translate.y"
+                                  {
+        (yyval.NoObjeto).np = criaNo((yyvsp[-3].NoObjetoCorpo).np, (yyvsp[0].NoObjetoCorpo).np, (yyvsp[-5].NoObjeto).nome);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "GOTO %s\n", (yyvsp[-3].NoObjetoCorpo).corpoIf);
+        sprintf(codigoEndereco[contadorLinhasEndereco++], "LABEL %s\n", (yyvsp[-3].NoObjetoCorpo).corpoElse);
+        }
+#line 2251 "y.tab.c"
+    break;
+
+  case 101:
+#line 353 "translate.y"
+                                                                    {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[-3].NoObjeto).nome);
+    sprintf(codigoEndereco[contadorLinhasEndereco++], "%s(%s)\n", (yyvsp[-3].NoObjeto).nome, (yyvsp[-1].NoObjetoTipado).nome);
+    }
+#line 2259 "y.tab.c"
+    break;
+
+  case 102:
+#line 358 "translate.y"
+                                                                {(yyval.NoObjeto).np = criaNo(NULL, NULL, (yyvsp[-2].NoObjeto).nome);
+        sprintf((yyval.NoObjeto).nome, "%s()",(yyvsp[-2].NoObjeto).nome);}
+#line 2266 "y.tab.c"
+    break;
+
+  case 103:
+#line 363 "translate.y"
+                         {(yyval.NoObjeto).np = criaNo((yyvsp[0].NoObjetoTipado).np,NULL, (yyvsp[-1].NoObjeto).nome);}
+#line 2272 "y.tab.c"
+    break;
+
+  case 104:
+#line 364 "translate.y"
+                              {(yyval.NoObjeto).np = criaNo((yyvsp[0].NoObjetoCorpo).np,NULL, (yyvsp[-1].NoObjeto).nome);}
+#line 2278 "y.tab.c"
     break;
 
 
-#line 2132 "y.tab.c"
+#line 2282 "y.tab.c"
 
       default: break;
     }
@@ -2360,7 +2510,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 247 "translate.y"
+#line 369 "translate.y"
 
 
 void yyerror(char *c){
@@ -2441,6 +2591,8 @@ void adicionar_tabela(char* nome,char c,TabelaDeSimbolos* tabela,TabelaDeSimbolo
     }
 }
 
+
+
 EscopoPonteiro aprofundarEscopo(EscopoPonteiro escopoAcima){
     EscopoPonteiro escp = criarEscopo(escopoAcima);
     return escp;
@@ -2476,6 +2628,12 @@ int main(){
     //printf(" ");
     //imprimirArvore(raiz);
     //printf("______________________________________________\n");
+
+    printf("\t\t\t\t\t\t\t   CÓDIGO DE TRÊS ENDEREÇOS \n\n");
+	for(int i=0; i<contadorLinhasEndereco; i++){
+		printf("%s", codigoEndereco[i]);
+	}
+	printf("\n\n");
 
     return 0;
 }
