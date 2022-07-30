@@ -143,7 +143,9 @@ aritmetica:
     | aritmetica MATEMATICO_POW aritmetica {$$.np = criaNo($1.np, $3.np, "**");$$.tipo = $1.tipo;
         sprintf($$.nome, "t%d", varTemporaria++);
         sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s %s %s\n", $$.nome, $1.nome,$2.nome,$3.nome);}
-    | ABRIR_PARENTESES_TOKEN aritmetica FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, $2.nome);$$.tipo = $2.tipo;}
+    | ABRIR_PARENTESES_TOKEN aritmetica FECHAR_PARENTESES_TOKEN {$$.np = criaNo(NULL, NULL, $2.nome);$$.tipo = $2.tipo;
+        sprintf($$.nome, $2.nome);
+    }
     | aritmetica MATEMATICO_INCREMENTO {$$.np = criaNo($1.np, NULL, "++" );$$.tipo = $1.tipo;
         sprintf(codigoEndereco[contadorLinhasEndereco++], "%s = %s + 1\n", $1.nome, $1.nome);}
     | aritmetica MATEMATICO_DECREMENTO {$$.np = criaNo($1.np, NULL, "--");$$.tipo = $1.tipo;
