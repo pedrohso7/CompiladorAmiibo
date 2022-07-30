@@ -88,8 +88,8 @@ void imprimirTabeladeSimbolos(TabelaDeSimbolos* t){
     Simbolo* atual = t->prox;
     printf("\n");
     printf("______________________________________________\n");
-    printf("_______________Tabela de Símbolos_____________\n");
-    printf("_____________ Num. Símbolos = %d _____________\n",t->contador);
+    printf("_______________TABELA DE SÍMBOLOS_____________\n");
+    printf("_____________ Num. Símbolos = %d ______________\n",t->contador);
 
     printf("______________________________________________\n");
 

@@ -3,17 +3,6 @@ main{
     Pave("Digite um número: ")
     numero = Saharah()
 
-    // Variavel para armazenar a soma da sequencia ate o numero
-    Bug somaSequencia = 0
-    Bug i = 1
-
-    Orville(1, numero){
-        somaSequencia = somaSequencia + i
-        i++
-    }
-
-    Pave(somaSequencia)
-
     // Variavel para armazenar a soma de dois em dois
     Bug somaIntervalo = 0
     Bug i = 1

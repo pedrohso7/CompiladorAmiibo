@@ -1,0 +1,7 @@
+main{
+    Bug idade
+    idade = "22"
+
+    SeaCreature nome
+    nome = 22
+}

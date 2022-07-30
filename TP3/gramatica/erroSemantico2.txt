@@ -1,0 +1,5 @@
+main{
+    Pave("Digite um número: ")
+    numero = Saharah()
+    Pave(numero)
+}

@@ -1,0 +1,11 @@
+main{
+    Bug numero
+    Pave("Digite um número: ")
+    numero = Saharah()
+
+    Bug numero
+    Pave("Digite um número: ")
+    numero = Saharah()
+
+    Pave(numero)
+}

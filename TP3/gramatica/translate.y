@@ -481,16 +481,20 @@ int main(){
     //printf("\n\n\n Tabela de Símbolos Global:\n");
     imprimirTabeladeSimbolos(tabelaGlobal);
 
-    //printf("\n Árvore de Sintaxe Abstrata: \n\n");
-    //printf(" ");
-    //imprimirArvore(raiz);
-    //printf("______________________________________________\n");
+    printf("        ÁRVORE DE SINTAXE ABSTRATA \n");
+    printf("______________________________________________\n\n");
+    printf(" ");
+    imprimirArvore(raiz);
+    printf("______________________________________________\n");
 
-    printf("\t\t\t\t\t\t\t   CÓDIGO DE TRÊS ENDEREÇOS \n\n");
+    printf("          CÓDIGO DE TRÊS ENDEREÇOS \n");
+    printf("______________________________________________\n\n");
+
 	for(int i=0; i<contadorLinhasEndereco; i++){
 		printf("%s", codigoEndereco[i]);
 	}
-	printf("\n\n");
+	printf("\n");
+    printf("______________________________________________\n");
 
     return 0;
 }
