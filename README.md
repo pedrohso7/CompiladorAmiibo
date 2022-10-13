@@ -45,9 +45,10 @@ O compilador foi confeccionado utilizando as seguintes tecnologias:
 Primeiro é necessário entender as fases de um compilador:
 </p
 
-<p align="middle">
-<img alt="Login" title="App" src="https://user-images.githubusercontent.com/32853995/195723459-4ab02b7b-eebf-4bc9-bbe0-d10b8225baf0.png" width="800"/>
+<p align="center">
+<img alt="fases do compilador" title="App" src="https://user-images.githubusercontent.com/32853995/195723459-4ab02b7b-eebf-4bc9-bbe0-d10b8225baf0.png" width="800"/>
 </p>
+
 <h4>Analisador Léxico</h4>
 
 <p align="justify">
