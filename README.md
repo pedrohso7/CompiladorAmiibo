@@ -60,6 +60,15 @@ Para cada Lexema o analisador léxico produz um **token** de saída na forma:
 ```
 
 Para confeccionar esse analisador foi utilizado o Lex, um gerador de analisador léxico baseado nos lexemas definidos por nós.
+
+
+<h4>Tabela de símbolos</h4>
+
+<p align="justify">
+São estruturas de dados usadas pelos compiladores para conter informações sobre os tokens do programa fonte. As entradas na tabela de símbolos
+contêm informações sobre um identificador, como seu nome/lexema, seu tipo, seu endereço na memória, seu escopo, etc.
+</p>
+          
 <h4>Analisador Sintático</h4>
 
 <p align="justify">
