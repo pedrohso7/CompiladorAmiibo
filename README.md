@@ -19,14 +19,14 @@
 ## ✦ O projeto
 <p align="justify">
 O projeto se trata de um compilador criado pelos colaboradores para uma linguagem de programação também pensada por nós chamada Amiibo.
-O trabalho foi concebido com a finalidade de estudar um compilador utilizando ferramentas geradoras da área confecionado pelos alunos:
+O compilador foi concebido com a finalidade de estudar um compilador e suas fases utilizando ferramentas geradoras da área. Os autores do projeto são:
 </p>
 
 <ul>
   <li>Estela Miranda Batista</li>
+  <li>João Marcos Alves</li>
   <li>Pedro Oliveira</li>
   <li>Eduardo Vinícius</li>
-  <li>João Marcos Alves</li>
   <li>Mariana Souza</li>
 </ul>
 
