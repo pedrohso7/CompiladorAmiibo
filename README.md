@@ -1,13 +1,106 @@
-# TPCompiladores
+![amiibo](https://user-images.githubusercontent.com/32853995/195695431-6a0bd058-6c78-48a9-bda4-f85b63dcd22f.png)
 
-Trabalho desenvolvido para avaliação na disciplina de compiladores de 2022/1 na Universidade Federal de Viçosa - Campus Florestal (rendeu uns extras) 
-confecionado pelos alunos: 
-- Estela Miranda Batista
-- Pedro Oliveira
-- Eduardo Vinícius
-- João Marcos Alves
-- Mariana Souza
 
-Se tratava de criar um compilador para uma linguagem que também foi criada por nós, chamada Amiibo. O projeto era incremental, logo, a pasta TP3 do 
-repositório é o trabalho cujo todas as etapas do compilador que foram implementadas. 
-O repositório acompanha a documentação também criada por nós e explica o que foi implementado, como funciona, etc.
+<div align="center">
+          
+<a href="https://github.com/pedrohso7/CompiladorAmiibo/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/pedrohso7/CompiladorAmiibo"></a> <a href="https://github.com/pedrohso7/CompiladorAmiibo/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/pedrohso7/CompiladorAmiibo"></a>
+</div>
+          
+<p align="center">
+  <a href="#-o-projeto">O projeto</a>
+  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-tecnologias">tecnologias</a>
+  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-detalhes-do-compilador">Detalhes do compilador</a>
+  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-como-usar">Como Usar</a>
+</p>
+
+## ✦ O projeto
+<p align="justify">
+O projeto se trata de um compilador criado pelos colaboradores para uma linguagem de programação também pensada por nós chamada Amiibo.
+O trabalho foi concebido com a finalidade de estudar um compilador utilizando ferramentas geradoras da área confecionado pelos alunos:
+</p>
+
+<ul>
+  <li>Estela Miranda Batista</li>
+  <li>Pedro Oliveira</li>
+  <li>Eduardo Vinícius</li>
+  <li>João Marcos Alves</li>
+  <li>Mariana Souza</li>
+</ul>
+
+<p align="justify">
+O projeto era incremental, logo, a pasta TP3 do repositório é o trabalho cujo todas as etapas do compilador que foram implementadas. O repositório acompanha a documentação do projeto, como funciona, etc.
+</p>
+
+## ✦ Tecnologias
+O compilador foi confeccionado utilizando as seguintes tecnologias:
+- [Lex](https://www.javatpoint.com/lex)
+- [Yacc](https://pt.wikipedia.org/wiki/Yacc)
+- [C](https://en.wikipedia.org/wiki/C_(programming_language))
+
+## ✦ Detalhes do compilador
+<p align="justify">
+Primeiro é necessário entender as fases de um compilador
+</p
+
+<img alt="Login" title="App" src="https://user-images.githubusercontent.com/32853995/195704942-cde10078-6e7e-4933-ac2c-34c1c009f249.png" width="400"/>
+
+<h4>Analisador Léxico</h4>
+
+<p align="justify">
+A primeira fase do compilador é chamado de **Análise Léxica** ou **escaneamento**. Ele lê a a sequência de caracteres do código fonte e constrói, a partir dele, um outro código transformado em sequências com significado chamados de **lexemas** e salva na **tabela de símbolos*. Essa etapa garante que erros léxicos não se propaguem para as próximas etapas, ou seja, todos os tokens gerados deverão ser tokens válidos para nossa linguagem, caso contrário um erro léxico será apontado.
+
+Para cada Lexema o analisador léxico produz um **token** de saída na forma:
+</p>
+
+```
+<token-name attribute-value>
+```
+
+Para confeccionar esse analisador foi utilizado o Lex, um gerador de analisador léxico baseado nos lexemas definidos por nós.
+<h4>Analisador Sintático</h4>
+
+<p align="justify">
+Durante essa análise, verifica-se a ordem de disposição dos tokens para saber se os tokens, apesar de serem válidos, fazem sentido na referida linguagem. Primeiro constrói-se a árvore sintática do código analisado e verifica se essa é uma árvore sintática válida, ou seja, uma produção válida da linguagem. Se a árvore for válida, o código não apresenta erros sintáticos.
+</p>
+
+<h4>Analisador Semântico</h4>
+
+<p align="justify">
+A última etapa de análise se trata de discriminar essa árvore sintática, ou seja, se essa construção da árvore, apesar de ser válida, se faz sentido semanticamente para a linguagem. Isto é, analisa-se os tokens da árvore através do escopo de acesso ou tipos das variáveis, visibilidade, etc.
+  
+Para confeccionar esses dois últimos analisadores foi utilizado o Yacc, um gerador de analisador sintático/semântico que utiliza trecho de códigos em C para auxiliar, por exemplo, a organizar os dados em estrutura de árvore, tabelas e etc, permitindo a nós replicar o comportamento de um compilador nessas fases do projeto.
+</p>
+
+<h4>Gerador de código intermediário</h4>
+
+<p align="justify">
+Aqui o código fonte será transformado em um código mais próximo do programa objeto, ou seja, mais próximo do que um computador consegue executar. Existem duas representação intermediárias, sendo elas as árvores (árvore sintática, por exemplo) e as representações lineares, como os códigos de três endereços. Para essa etapa, optamos por implementar o código de três endereços.
+</p>
+
+<h4>Gerador de código de máquina</h4>
+
+<p align="justify">
+A partir do código intermediário gerado, iremos fazer a tradução do mesmo para um formato interpretável pelo computador.
+</p>
+
+## ✦ Como usar
+<p align="justify">
+Para rodar o compilador, primeiro você precisa ter um código baseado na linguagem Amiibo. Na pasta gramatica temos exemplos utilizáveis mas você pode alterá-los como quiser. Dito isto, basta rodar o comando abaixo, garantindo que você está na pasta TP3 no terminal:
+</p>
+
+```
+make all <nome_do_arquivo_de_entrada>
+```
+
+<p align="justify">
+A saída será no próprio terminal.
+</p>
+
+## ✦ Start to use
+
+<p align="justify">
+Vá em frente, clone e estude o nosso projeto!!
+</p>
