@@ -42,11 +42,12 @@ O compilador foi confeccionado utilizando as seguintes tecnologias:
 
 ## ✦ Detalhes do compilador
 <p align="justify">
-Primeiro é necessário entender as fases de um compilador
+Primeiro é necessário entender as fases de um compilador:
 </p
 
-<img alt="Login" title="App" src="https://user-images.githubusercontent.com/32853995/195704942-cde10078-6e7e-4933-ac2c-34c1c009f249.png" width="400"/>
-
+<p align="middle">
+<img alt="Login" title="App" src="https://user-images.githubusercontent.com/32853995/195723459-4ab02b7b-eebf-4bc9-bbe0-d10b8225baf0.png" width="400"/>
+</p>
 <h4>Analisador Léxico</h4>
 
 <p align="justify">
@@ -66,19 +67,19 @@ Para confeccionar esse analisador foi utilizado o Lex, um gerador de analisador 
 
 <p align="justify">
 São estruturas de dados usadas pelos compiladores para conter informações sobre os tokens do programa fonte. As entradas na tabela de símbolos
-contêm informações sobre um identificador, como seu nome/lexema, seu tipo, seu endereço na memória, seu escopo, etc.
+contêm informações sobre um identificador, como seu nome/lexema, seu tipo, seu endereço na memória, seu escopo, linha de ocorrência, etc. No nosso caso, foi criada uma estrutura em C, utilizada nas ferramentas geradoras para salvar os tokens cujo a estrutura é a de uma lista encadeada (para mais detalhes, abra a documentação e se delicie).
 </p>
           
 <h4>Analisador Sintático</h4>
 
 <p align="justify">
-Durante essa análise, verifica-se a ordem de disposição dos tokens para saber se os tokens, apesar de serem válidos, fazem sentido na referida linguagem. Primeiro constrói-se a árvore sintática do código analisado e verifica se essa é uma árvore sintática válida, ou seja, uma produção válida da linguagem. Se a árvore for válida, o código não apresenta erros sintáticos.
+Durante essa análise, verifica-se a ordem de disposição dos tokens para saber se os tokens, apesar de serem válidos, fazem sentido na referida linguagem. Primeiro constrói-se a árvore sintática do código analisado e verifica se essa é uma árvore sintática válida, ou seja, uma produção válida da linguagem. Se a árvore for válida, o código não apresenta erros sintáticos. Para isso, criamos uma árvore binária que a cada produção da gramática desse código fonte insere um novo nó (para mais detalhes, abra a documentação e se delicie).
 </p>
 
 <h4>Analisador Semântico</h4>
 
 <p align="justify">
-A última etapa de análise se trata de discriminar essa árvore sintática, ou seja, se essa construção da árvore, apesar de ser válida, se faz sentido semanticamente para a linguagem. Isto é, analisa-se os tokens da árvore através do escopo de acesso ou tipos das variáveis, visibilidade, etc.
+A última etapa de análise se trata de discriminar essa árvore sintática, ou seja, se essa construção da árvore, apesar de ser válida, se faz sentido semanticamente para a linguagem. Isto é, analisa-se os tokens da árvore através do escopo de acesso ou tipos das variáveis, visibilidade, etc. Como a estrutura da árvore sintática, tabela de símbolos e escopo "a essa altura" já foram criados, bastou realizar as devidas verificações restantes.
   
 Para confeccionar esses dois últimos analisadores foi utilizado o Yacc, um gerador de analisador sintático/semântico que utiliza trecho de códigos em C para auxiliar, por exemplo, a organizar os dados em estrutura de árvore, tabelas e etc, permitindo a nós replicar o comportamento de um compilador nessas fases do projeto.
 </p>
