@@ -46,7 +46,7 @@ Primeiro é necessário entender as fases de um compilador:
 </p
           
 <p align="middle">
-<img alt="Fases do compilador" title="App" src="https://user-images.githubusercontent.com/32853995/195723459-4ab02b7b-eebf-4bc9-bbe0-d10b8225baf0.png" width="800"/>
+<img alt="Fases do compilador" title="App" src="https://user-images.githubusercontent.com/32853995/195723459-4ab02b7b-eebf-4bc9-bbe0-d10b8225baf0.png" width="1000"/>
 </p>
 <!-- 
 <p align="center">
